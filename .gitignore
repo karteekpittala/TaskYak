@@ -1,1 +1,21 @@
+
 /node_modules
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+npm-debug.log
+node_modules
+
+config/secretDatabase.js
+config/secretAuth.js
+>>>>>>> f383128791db60657981900ef3398d26bf38325f

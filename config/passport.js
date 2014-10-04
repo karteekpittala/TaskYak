@@ -1,3 +1,4 @@
+
 var mongoose = require('mongoose')
   , LocalStrategy = require('passport-local').Strategy
   , FacebookStrategy = require('passport-facebook').Strategy
@@ -52,3 +53,4 @@ module.exports = function (passport, config) {
 	  }
 	));
 }
+

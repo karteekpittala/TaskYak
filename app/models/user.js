@@ -116,5 +116,5 @@ UserSchema.statics.findOrCreateOAuthUser = function(profile, done){
 	});
 }
 
-var User = mongoose.model("User", UserSchema);
-module.exports = User;
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', UserSchema);

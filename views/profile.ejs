@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<title> TaskYak </title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+</head>
+<body>
+<div class="jumbotron text-center">
+		<h1><span class="fa fa-lock"></span> TaskYak </h1>
+		<span class = "pull-right">	<a href="/logout" class="btn btn-default" >Logout</a></span>
+</div>		
+	<div class="container">
+  	<div class="row">
+  
+		<!-- FACEBOOK INFORMATION -->
+				<% if (user.facebook.token) { %>
+					<p>
+						<strong> Hi <%= user.facebook.name %> </strong>
+					</p>
+				<% } else { %>
+					<a href="/connect/facebook" class="btn btn-default" >Connect Facebook</a>
+				<% } %>
+
+		<span class = "pull-right">	
+				<% if (!user.local.email) { %>
+					<a href="/connect/local" class="btn btn-default">Connect Local</a> </br>
+				<% } %> 
+
+				<% if (!user.twitter.token) { %>
+					<a href="/connect/twitter" class="btn btn-default">Connect Twitter</a>
+				<% } %> 
+	    </span>	
+
+	</div>
+	</div>			
+
+</body>
+</html>

@@ -21,13 +21,14 @@ module.exports = function(app, passport){
 
  /* GET Task list page. */
 	app.get('/tasklist', function(req, res) {
-	    var db = req.db;
-	    var collection = db.get('taskcollection');
-	    collection.find({},{},function(e,docs){
-	        res.render('tasklist', {
-	            "tasklist" : docs
-	        });
-	    });
+		console.log ("Inside get");
+		Task.find({}, function (err, docs) {
+			console.log(docs)
+			res.render('tasklist',{
+				tasks: docs
+			});
+  		// docs is an array
+		});
 	});
 
 	/* GET Add Task page. */
