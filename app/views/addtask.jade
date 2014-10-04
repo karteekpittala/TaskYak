@@ -21,6 +21,9 @@ html
               input#inputTaskName.form-control(type='text', placeholder="Get some milk dawg", name='taskName')
             .form-group
               label Who's gonna do that shit?
-              input#inputName.form-control(type='text', placeholder="You lazy ass nigga", name='taskOwner')
+              select.form-control(name="taskOwner")
+               each user in users
+                option #{user.firstName} #{user.lastName}
+              //input#inputName.form-control(type='text', placeholder="You lazy ass nigga", name='taskOwner')
             button#btnsubmit.btn.btn-warning.btn-lg(type='submit') Add it
           

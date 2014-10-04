@@ -21,9 +21,7 @@ module.exports = function(app, passport){
 
  /* GET Task list page. */
 	app.get('/tasklist', function(req, res) {
-		console.log ("Inside get");
 		Task.find({}, function (err, docs) {
-			console.log(docs)
 			res.render('tasklist',{
 				tasks: docs
 			});
@@ -33,7 +31,12 @@ module.exports = function(app, passport){
 
 	/* GET Add Task page. */
 	app.get('/addtask', function(req, res){
-	  res.render('addtask', { title: 'Add Task!' })
+		User.find({}, function (err, docs) {
+			res.render('addtask',{
+				users: docs
+			});
+
+			});		
 	  });
 
 
