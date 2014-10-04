@@ -14,8 +14,8 @@ module.exports = function(app, passport){
 	app.post('/addtask', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
-		var taskDoer = name;
-		Task.addtask(req.body.taskName,taskDoer, req.body.taskPriority, req.body.taskOwner, function(err, user){
+		var taskCreator = name;
+		Task.addtask(req.body.taskName,taskCreator, req.body.taskPriority, req.body.taskDoer, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
 		});
@@ -27,7 +27,8 @@ module.exports = function(app, passport){
 		//console.log(req.user);
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
-		Task.find({taskOwner:{$regex : ".*"+name+".*"}}, function (err, docs) {
+		Task.find({taskDoer:{$regex : ".*"+name+".*"}}, function (err, docs) {
+			console.log(docs);
 			res.render('tasklist',{
 				tasks: docs
 			});

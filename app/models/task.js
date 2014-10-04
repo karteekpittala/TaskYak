@@ -1,23 +1,21 @@
 var mongoose = require('mongoose');
-var hash = require('../util/hash');
-
 
 TaskSchema = mongoose.Schema({
 	taskName:  String,
-	taskDoer: String,
+	taskCreator: String,
 	taskPriority: Number,
-	taskOwner:   String
+	taskDoer:   String
 });
 
 
-TaskSchema.statics.addtask = function(taskName, taskDoer, taskPriority, taskOwner, done){
+TaskSchema.statics.addtask = function(taskName, taskCreator, taskPriority, taskDoer, done){
 	var Task = this;
 	
 	Task.create({
 		taskName : taskName,
-		taskDoer : taskDoer,
+		taskCreator : taskCreator,
 		taskPriority: taskPriority,
-		taskOwner : taskOwner
+		taskDoer : taskDoer
 	}, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);
