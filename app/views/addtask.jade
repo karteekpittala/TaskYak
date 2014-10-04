@@ -1,9 +1,16 @@
 doctype html
 html
   head
-    title  TaskYak 
+    title TaskYak 
     link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
     link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
+    script(src='http://bsdp-asset.blackcherry.us/1.3.0/bootstrap-datepicker.min.js')
+    link(rel='stylesheet', href='http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+    script(type='text/javascript').
+      $("#duedate").datepicker();
+   
+
   body
     .jumbotron.text-center
       h1
@@ -13,18 +20,18 @@ html
         .col-sm-6.col-sm-offset-3
           h2
             |  Add task
-          //
-             LOGIN FORM 
           form(name="addtask",action='/addtask', method='post')
             .form-group
               label What ya gotta get done?
               input#inputTaskName.form-control(type='text', placeholder="Get some milk dawg", name='taskName')
             .form-group
+              label How fast you wanna get done, lazy dawg?
+              input#inputTaskName.form-control(type='text', placeholder="1 is Fuck that shit, 10 is Now! Fucker", name='taskPriority')  
+            .form-group
               label Who's gonna do that shit?
-              h3
-               each user in users
-                input(type = 'checkbox', name="taskOwner",value='#{user.firstName} #{user.lastName}').form-control.input-sm
-                | #{user.firstName} #{user.lastName}
-              //input#inputName.form-control(type='text', placeholder="You lazy ass nigga", name='taskOwner')
-            button#btnsubmit.btn.btn-warning.btn-lg(type='submit') Add it
-          
+                each user in users
+                  input(type = 'checkbox', name="taskOwner",value='#{user.firstName} #{user.lastName}').form-control.input-sm
+                  | #{user.firstName} #{user.lastName}
+                  
+            button#btnsubmit.btn.btn-warning.btn-lg(type='submit') Add it 
+

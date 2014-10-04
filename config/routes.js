@@ -15,7 +15,7 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var taskDoer = name;
-		Task.addtask(req.body.taskName,taskDoer, req.body.taskOwner, function(err, user){
+		Task.addtask(req.body.taskName,taskDoer, req.body.taskPriority, req.body.taskOwner, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
 		});
