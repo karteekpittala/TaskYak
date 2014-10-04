@@ -29,9 +29,13 @@ html
               input#inputTaskName.form-control(type='text', placeholder="1 is Fuck that shit, 10 is Now! Fucker", name='taskPriority')  
             .form-group
               label Who's gonna do that shit?
-                each user in users
-                  input(type = 'checkbox', name="taskDoer",value='#{user.firstName} #{user.lastName}').form-control.input-sm
-                  | #{user.firstName} #{user.lastName}
+                select.form-control(name="taskDoer")
+                  each user in users
+                    option #{user.firstName} #{user.lastName}
+   
+                //- each user in users
+                //-   input(type = 'checkbox', name="taskDoer",value='#{user.firstName} #{user.lastName}').form-control.input-sm
+                //-   | #{user.firstName} #{user.lastName}
 
             button#btnsubmit.btn.btn-warning.btn-lg(type='submit') Add it 
 
