@@ -10,6 +10,7 @@ TaskSchema = mongoose.Schema({
 
 TaskSchema.statics.addtask = function(taskName, taskOwner, done){
 	var Task = this;
+	//var taskDoer = JSON.stringify(taskOwner)
 	Task.create({
 		taskName : taskName,
 		taskOwner : taskOwner

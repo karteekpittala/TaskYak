@@ -21,9 +21,10 @@ html
               input#inputTaskName.form-control(type='text', placeholder="Get some milk dawg", name='taskName')
             .form-group
               label Who's gonna do that shit?
-              select.form-control(name="taskOwner")
+              h3
                each user in users
-                option #{user.firstName} #{user.lastName}
+                input(type = 'checkbox', name="taskOwner",value='#{user.firstName} #{user.lastName}').form-control.input-sm
+                | #{user.firstName} #{user.lastName}
               //input#inputName.form-control(type='text', placeholder="You lazy ass nigga", name='taskOwner')
             button#btnsubmit.btn.btn-warning.btn-lg(type='submit') Add it
           
