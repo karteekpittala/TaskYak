@@ -1,4 +1,5 @@
 var User = require('../app/models/user');
+var Task = require('../app/models/task');
 var Auth = require('./middlewares/authorization.js');
 
 module.exports = function(app, passport){
@@ -9,6 +10,31 @@ module.exports = function(app, passport){
 			res.render("home", { user : null});
 		}
 	});
+
+	app.post('/addtask', function(req, res) {
+		Task.addtask(req.body.taskName, req.body.taskOwner, function(err, user){
+			if(err) throw err;
+			res.redirect("profile");					
+		});
+	});
+
+
+ /* GET Task list page. */
+	app.get('/tasklist', function(req, res) {
+	    var db = req.db;
+	    var collection = db.get('taskcollection');
+	    collection.find({},{},function(e,docs){
+	        res.render('tasklist', {
+	            "tasklist" : docs
+	        });
+	    });
+	});
+
+	/* GET Add Task page. */
+	app.get('/addtask', function(req, res){
+	  res.render('addtask', { title: 'Add Task!' })
+	  });
+
 
 	app.get("/login", function(req, res){ 
 		res.render("login");
