@@ -4,16 +4,17 @@ var hash = require('../util/hash');
 
 TaskSchema = mongoose.Schema({
 	taskName:  String,
+	taskDoer: String,
 	taskOwner:   String
 });
 
 
-TaskSchema.statics.addtask = function(taskName, taskOwner, done){
+TaskSchema.statics.addtask = function(taskName, taskDoer, taskOwner, done){
 	var Task = this;
-	var taskDoer = JSON.stringify(taskOwner)
-	console.log(taskDoer)
+	
 	Task.create({
 		taskName : taskName,
+		taskDoer : taskDoer,
 		taskOwner : taskOwner
 	}, function(err, user){
 		if(err) throw err;
@@ -21,10 +22,6 @@ TaskSchema.statics.addtask = function(taskName, taskOwner, done){
 		done(null, user);
 	});	
 }
-
-
-
-
 
 
 var Task = mongoose.model("Task", TaskSchema);

@@ -11,8 +11,11 @@ module.exports = function(app, passport){
 		}
 	});
 
-	app.post('/addtask', function(req, res) {
-		Task.addtask(req.body.taskName, req.body.taskOwner, function(err, user){
+	app.post('/addtask', Auth.isAuthenticated, function(req, res) {
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		var taskDoer = name;
+		Task.addtask(req.body.taskName,taskDoer, req.body.taskOwner, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
 		});
@@ -20,8 +23,11 @@ module.exports = function(app, passport){
 
 
  /* GET Task list page. */
-	app.get('/tasklist', function(req, res) {
-		Task.find({}, function (err, docs) {
+	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
+		//console.log(req.user);
+		var user = req.user
+		var name = user.firstName+" "+user.lastName
+		Task.find({taskOwner:{$regex : ".*"+name+".*"}}, function (err, docs) {
 			res.render('tasklist',{
 				tasks: docs
 			});
