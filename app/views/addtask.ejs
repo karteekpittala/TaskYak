@@ -10,11 +10,24 @@
     <script type="text/javascript">
       $(function () {
         $(".date").datepicker();
+      });
+
+      $(document).ready(function() {
+        $("button[name='add']").click(function () {
+          var name = document.getElementById("taskDoer").value
+        $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
+        $("#taskDoer").val('');
+        }); 
       });  
+      
+      function removeFriend(item) {
+        $(item).remove();
+      }
+         
     </script>
   </head>
   <body>
-    <div class="jumbotron text-center">
+    <div class="text-center">
       <h1><span class="fa fa-lock"></span>TaskYak</h1>
       <div class="container">
         <div class="col-sm-6 col-sm-offset-3">
@@ -31,7 +44,7 @@
             <div class="form-group">
                 <label>By When dude ?</label></br>
                 <div class="input-group date">
-                  <input type="text" class="form-control" Placeholder="How about 2020?" name="dueDate"/>
+                  <input type="text" class="form-control" placeholder="How about 2020?" name="dueDate"/>
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                   </span>
@@ -39,12 +52,26 @@
             </div>
             <div class="form-group">
               <label>Who's gonna do that shit?</label></br>
-                <% for(var i=0;i<users.length;i++){ %>
-                <input type="checkbox" name = "taskDoer" value = <%= users[i].firstName+" "+users[i].lastName %>>
-                <%= users[i].firstName+" "+users[i].lastName %></input></br>
-                <%}%>
+                <div class="col-md-9 col-xs-4">
+                <select class="form-control" name="taskDoer" id="taskDoer">
+                <%for (var i = 0;i<users.length;i++) {%>
+                  <option value= '<%= users[i].firstName+" "+users[i].lastName %>' /><%= users[i].firstName+" "+users[i].lastName %> </option>
+                  <% }%>                 
+                  </select>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                  <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add </button> 
+                </div>
+              </div>
+              <div id="break">
+                <br>
+              </div>
+              <div id="break">
+                <br>
+              </div>
+              <div id="doers"></div><br>
+              <button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  Add it </button>  
             </div>
-            <button id="btnsubmit" type="submit" class="btn btn-warning btn-lg">Add it </button>
           </form>
         </div>
       </div>
