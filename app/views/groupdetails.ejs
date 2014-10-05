@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1><span class="fa fa-lock"></span>TaskYak</h1>
+      <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+          <h2> Group Details</h2>
+          <br>
+            <%console.log(groups)%>
+            <% for(var i =0; i <groups.length; i++){%>
+              <table>
+                <tr>
+                  <td>Group Name</td>
+                  <td><%= groups[i].groupName%></td>
+                </tr>
+                <tr>
+                  <td>Group Members</td>
+                  <td><%= groups[i].groupMembers%></td>
+                </tr>
+              </table>
+              
+            <%}%>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>          

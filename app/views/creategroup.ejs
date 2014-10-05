@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1><span class="fa fa-lock"></span>TaskYak</h1>
+      <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+          <h2> Create New Group</h2>
+          <form name="creategroup" action="/creategroup" method="post">
+            <div class="form-group">
+              <label>Group Name</label>
+              <input id="inputGroupName" type="text" placeholder="Enter the name for your group" name="groupName" class="form-control">
+            <div class="form-group">
+              <label>Group Members</label></br>
+                <% for(var i=0;i<users.length;i++){ %>
+                <input type="checkbox" name = "groupMembers" value = '<%= users[i].firstName+" "+users[i].lastName %>'/>
+                <%= users[i].firstName+" "+users[i].lastName %></input></br>
+                <%}%>
+            </div>
+            <button id="btnsubmit" type="submit" class="btn btn-warning btn-lg">Create Group </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>          

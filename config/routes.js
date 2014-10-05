@@ -1,5 +1,6 @@
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
+var Group = require('../app/models/group');
 var Auth = require('./middlewares/authorization.js');
 
 module.exports = function(app, passport){
@@ -10,6 +11,54 @@ module.exports = function(app, passport){
 			res.render("home", { user : null});
 		}
 	});
+
+	/*Need to make changes and convert all the functionlity in one page-karteek*/
+	/* Get Groups Page*/
+	app.get('/groups', Auth.isAuthenticated, function(req, res){
+		res.render('groups', {});
+	});
+
+
+	/*Creates New group*/
+	app.post('/creategroup', Auth.isAuthenticated, function(req, res){
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		var groupOwner = name;
+		var groupMembers = groupOwner+","+req.body.groupMembers;
+		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
+			if(err) throw err;
+			res.redirect("profile");
+		});
+	});
+
+	/*Get Create Group Page*/
+	app.get('/creategroup', Auth.isAuthenticated, function(req, res){
+		User.find({}, function (err, docs) {
+			res.render('creategroup',{
+				users: docs
+			});
+		});		
+	});
+
+	/*Get group details for a user*/
+	app.get('/groupDetails', Auth.isAuthenticated, function(req, res){
+		var user = req.user
+		var name = user.firstName+" "+user.lastName
+		Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
+			//console.log(docs);
+			res.render('groupdetails',{
+				groups: docs
+			});
+  		// docs is an array
+		});
+	});
+
+	/*Edit members*/
+	//app.get('/editMembers', function(req, res){
+	//	res.render('editMembers', {});
+	//});
+
+	/*Revision changes till here*/
 
 	app.post('/addtask', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
