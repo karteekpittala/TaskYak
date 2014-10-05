@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 GroupSchema = mongoose.Schema({
 	groupName:  String,
 	groupOwner:   String,
-	groupMembers: String
+	groupMembers: Array
 });
 
 

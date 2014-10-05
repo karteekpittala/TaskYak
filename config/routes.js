@@ -24,7 +24,8 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupOwner = name;
-		var groupMembers = groupOwner+","+req.body.groupMembers;
+		var groupMembers = req.body.groupMembers;
+		groupMembers.push(groupOwner);
 		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");
