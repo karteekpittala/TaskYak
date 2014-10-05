@@ -2,14 +2,13 @@
 <html>
   <head>
     <title>TaskYak </title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <script src="http://bsdp-asset.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript">
       $(function () {
-        console.log("Inside function");
         $(".date").datepicker();
       });  
     </script>
@@ -28,6 +27,15 @@
             <div class="form-group">
               <label>How fast you wanna get done, lazy dawg?</label>
               <input id="inputTaskName" type="text" placeholder="1 is Fuck that shit, 10 is Now! Fucker" name="taskPriority" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>By When dude ?</label></br>
+                <div class="input-group date">
+                  <input type="text" class="form-control" Placeholder="How about 2020?" name="dueDate"/>
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
             </div>
             <div class="form-group">
               <label>Who's gonna do that shit?</label></br>

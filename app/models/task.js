@@ -4,17 +4,19 @@ TaskSchema = mongoose.Schema({
 	taskName:  String,
 	taskCreator: String,
 	taskPriority: Number,
+	dueDate: Date,
 	taskDoer:   String
 });
 
 
-TaskSchema.statics.addtask = function(taskName, taskCreator, taskPriority, taskDoer, done){
+TaskSchema.statics.addtask = function(taskName, taskCreator, taskPriority, dueDate, taskDoer, done){
 	var Task = this;
 	
 	Task.create({
 		taskName : taskName,
 		taskCreator : taskCreator,
-		taskPriority: taskPriority,
+		taskPriority: taskPriority, 
+		dueDate: dueDate,
 		taskDoer : taskDoer
 	}, function(err, user){
 		if(err) throw err;
