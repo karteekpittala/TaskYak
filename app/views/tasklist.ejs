@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1><span class="fa fa-lock"></span>TaskYak  </h1>
+    </div>
+    <ul>
+    <% for(var i=0; i<tasks.length; i++) {%>
+       <li><%= tasks[i].taskName %></li>
+    <% } %>
+    </ul>
+  </body>
+</html>      
