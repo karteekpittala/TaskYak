@@ -73,7 +73,9 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
-		//console.log(req.body.list);
+		console.log(req.body.list);
+		console.log(req.body.taskName);
+		console.log(req.body.taskPriority);
 		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
