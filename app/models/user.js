@@ -45,12 +45,12 @@ UserSchema.statics.isValidUserPassword = function(email, password, done) {
 	this.findOne({email : email}, function(err, user){
 		// if(err) throw err;
 		if(err) return done(err);
-		if(!user) return done(null, false, { message : 'Incorrect email.' });
+		if(!user) return done(null, false, { message : 'Invalid email' });
 		hash(password, user.salt, function(err, hash){
 			if(err) return done(err);
 			if(hash == user.hash) return done(null, user);
 			done(null, false, {
-				message : 'Incorrect password'
+				message : 'Oops ! Invalid password'
 			});
 		});
 	});
