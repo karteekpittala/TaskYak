@@ -15,7 +15,16 @@ module.exports = function(app, passport){
 	/*Need to make changes and convert all the functionlity in one page-karteek*/
 	/* Get Groups Page*/
 	app.get('/groups', Auth.isAuthenticated, function(req, res){
-		res.render('groups', {});
+		res.render('groups', { messages: 'Hello' });
+	});
+
+
+	app.get('/flash', function(req, res){
+		console.log("Inside Flash");
+	  // Set a flash message by passing the key, followed by the value, to req.flash().
+	  req.flash('info', 'Welcome to TaskYak');
+	  req.flash('loginMessage', 'Invalid Credentials')
+	  res.redirect('/');
 	});
 
 
@@ -46,11 +55,10 @@ module.exports = function(app, passport){
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
 		Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
-			//console.log(docs);
 			res.render('groupdetails',{
 				groups: docs
 			});
-  		// docs is an array
+
 		});
 	});
 
@@ -65,7 +73,7 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
-		console.log(req.body.list);
+		//console.log(req.body.list);
 		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
@@ -75,11 +83,11 @@ module.exports = function(app, passport){
 
  /* GET Task list page. */
 	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
-		//console.log(req.user);
+		
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
 		Task.find({taskDoer:{$regex : ".*"+name+".*"}}, function (err, docs) {
-			console.log(docs);
+			
 			res.render('tasklist',{
 				tasks: docs
 			});
@@ -99,13 +107,15 @@ module.exports = function(app, passport){
 
 
 	app.get("/login", function(req, res){ 
-		res.render("login");
+		res.render("login",{ message: req.flash('error') });
 	});
 
 	app.post("/login" 
 		,passport.authenticate('local',{
 			successRedirect : "/profile",
 			failureRedirect : "/login",
+			failureFlash: true,
+			successFlash: "Welcome"
 		})
 	);
 
