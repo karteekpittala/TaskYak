@@ -86,7 +86,7 @@ module.exports = function(app, passport){
 		
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
-		Task.find({taskDoer:{$regex : ".*"+name+".*"}}, function (err, docs) {
+		Task.find({taskDoer: name}, function (err, docs) {
 			
 			res.render('tasklist',{
 				tasks: docs
