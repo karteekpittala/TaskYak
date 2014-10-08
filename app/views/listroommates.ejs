@@ -16,9 +16,9 @@
 
       $(document).ready(function() {
         $("button[name='add']").click(function () {
-          var name = document.getElementById("taskDoer").value
+          var name = document.getElementById("roommates").value
         $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
-        $("#taskDoer").val('');
+        $("#roommates").val('');
         }); 
       });  
       
@@ -33,36 +33,20 @@
       <h1><span class="fa fa-lock"></span>TaskYak</h1>
       <div class="container">
         <div class="col-sm-6 col-sm-offset-3">
-          <h2> Add task</h2>
-          <form name="addtask" action="/addtask" method="post">
+          <h2> List your Roommates </h2>
+		  <br>
+          <form name="listroommates" action="/listroommates" method="post">
             <div class="form-group">
-              <input id="inputTaskName" type="text" placeholder="A short description of the task" name="taskName" class="form-control">
+			<label> Please specify a name for this list for our reference.</label>
+              <input id="inputGroupName" type="text" placeholder="Group Name" name="groupName" class="form-control">
             </div>
             <div class="form-group">
-              <input id="inputTaskName" type="text" placeholder="Points on a scale of 1 to 10" name="taskPriority" class="form-control">
-            </div>
-            <div class="form-group">
-                <div class="input-group date">
-                  <input type="text" class="form-control" placeholder="If needed, specify a deadline" name="dueDate"/>
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
-            </div>
-            <div class="form-group">
-			<label>List roommates responsible for this task</label>
+              <label>Type a name and click the 'Add to List' button to see it in the list below</label></br>
                 <div class="col-md-9 col-xs-4">
-				
-                <select class="form-control" name="taskDoer" id="taskDoer">
-                <%for (var i = 0;i<groups.length;i++) {%>				
-				<%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
-                  <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
-                  <% }%>                 
-				  <% }%>                 
-                  </select>
+					<input class="form-control" type="text" name="roommates" id="roommates" placeholder="First Name">
                 </div>
                 <div class="col-md-3 col-xs-4">
-                  <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add </button> 
+                  <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add to List</button> 
                 </div>
               </div>
               <div id="break">
@@ -72,7 +56,7 @@
                 <br>
               </div>
               <div id="doers"></div><br>
-              <button id="btnsubmit" type="submit" class="btn btn-warning btn-sm"> Submit Task </button>  
+              <button id="btnsubmit" type="submit" class="btn btn-warning btn-sm"> Create List </button>  
             </div>
           </form>
         </div>

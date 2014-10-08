@@ -19,24 +19,20 @@
       <h1><span class="fa fa-lock"></span>TaskYak  </h1>
     </div>
 	<div align="center">
-		<h2> All Tasks </h2>
+		<h2>Group List</h2>
 	</div>
     <ul>
 	<div align="center">
 	<table>
 		<tr>
-			<th>Task Name</th>
-			<th>Task Points</th>
-			<th>Task Duedate</th>
-			<th>Task Doers</th>
+			<th>Group Name</th>
+			<th>Group Members </th>
 		</tr>
-    <% for(var i=0; i<tasks.length; i++) {%>
+    <% for(var i=0; i<groups.length; i++) {%>
 		
 		<tr>
-			<td> <%= tasks[i].taskName %> </td>
-			<td> <%= tasks[i].taskPriority %> </td>
-			<td> <%= tasks[i].dueDate %> </td>
-			<td> <%= tasks[i].taskDoer %> </td>
+			<td> <%= groups[i].groupName %> </td>
+			<td> <%= groups[i].groupMembers %> </td>
 		</tr>
 		
 

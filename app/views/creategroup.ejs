@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
+  
     <title> TaskYak </title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="/js/bootstrapValidator.min.js"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+      $(function () {
+        $(".date").datepicker();
+      });
+
+      $(document).ready(function() {
+        $("button[name='add']").click(function () {
+          var name = document.getElementById("Roommates").value
+        $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
+        $("#Roommates").val('');
+        }); 
+      });  
+	  
+	  function removeFriend(item) {
+        $(item).remove();
+      }
+	  
+	  </script>
+   
   </head>
   <body>
     <div class="jumbotron text-center">
@@ -17,12 +42,15 @@
               <input id="inputGroupName" type="text" placeholder="Enter the name for your group" name="groupName" class="form-control">
             <div class="form-group">
               <label>Group Members</label></br>
-                <% for(var i=0;i<users.length;i++){ %>
-                <input type="checkbox" name = "groupMembers" value = '<%= users[i].firstName+" "+users[i].lastName %>'/>
-                <%= users[i].firstName+" "+users[i].lastName %></input></br>
-                <%}%>
+			    <div class="col-md-9 col-xs-4">
+					<input type="text" id="Roommates" name="Roommates" placeholder="Add new Roommate" class="form-control">
+				</div>
+				<div class="col-md-3 col-xs-4">
+                  <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add </button> 
+                </div>
             </div>
-            <button id="btnsubmit" type="submit" class="btn btn-warning btn-lg">Create Group </button>
+			<div id="doers"></div><br>
+			<button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  Create Group </button>  
           </form>
         </div>
       </div>

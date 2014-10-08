@@ -33,8 +33,8 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupOwner = name;
-		var groupMembers = req.body.groupMembers;
-		groupMembers.push(groupOwner);
+		var groupMembers = req.body.list;
+		//groupMembers.push(groupOwner);
 		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");
@@ -43,23 +43,33 @@ module.exports = function(app, passport){
 
 	/*Get Create Group Page*/
 	app.get('/creategroup', Auth.isAuthenticated, function(req, res){
+	
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		var taskCreator = name;
+		
 		User.find({}, function (err, docs) {
 			res.render('creategroup',{
 				users: docs
 			});
-		});		
+		});
 	});
 
 	/*Get group details for a user*/
 	app.get('/groupDetails', Auth.isAuthenticated, function(req, res){
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
-		Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
+		Group.find(function (err, docs) {
+			res.render('groupdetails',{
+				groups:docs
+			});
+		});
+		/*Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
 			res.render('groupdetails',{
 				groups: docs
-			});
+			});*/
 
-		});
+		
 	});
 
 	/*Edit members*/
@@ -78,7 +88,7 @@ module.exports = function(app, passport){
 		console.log(req.body.taskPriority);
 		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, function(err, user){
 			if(err) throw err;
-			res.redirect("profile");					
+			res.redirect("tasklist");					
 		});
 	});
 
@@ -87,8 +97,8 @@ module.exports = function(app, passport){
 	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
 		
 		var user = req.user
-		var name = user.firstName+" "+user.lastName
-		Task.find({taskDoer: name}, function (err, docs) {
+		var name = user.firstName
+		Task.find( function (err, docs) {
 			
 			res.render('tasklist',{
 				tasks: docs
@@ -98,16 +108,54 @@ module.exports = function(app, passport){
 	});
 
 	/* GET Add Task page. */
-	app.get('/addtask', function(req, res){
-		User.find({}, function (err, docs) {
+	app.get('/addtask', Auth.isAuthenticated, function(req, res){
+		var user = req.user
+		var name = user.firstName
+		Group.find({groupMembers: name}, function (err, docs) {
 			res.render('addtask',{
-				users: docs
+				groups: docs
 			});
 
 			});		
 	  });
 
 
+	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		var groupCreator = name;
+		console.log(req.body.list);
+		console.log(req.body.groupName);
+		Group.createGroup(req.body.groupName, groupCreator, req.body.list, function(err, user){
+			if(err) throw err;
+			res.redirect("testlist");					
+		});
+	});
+
+
+ /* GET Task list page. */
+	app.get('/testlist', Auth.isAuthenticated, function(req, res) {
+		
+		var user = req.user
+		var name = user.firstName
+		Group.find({groupMembers: name},function (err, docs) {			
+			res.render('testlist',{
+				groups: docs
+			});
+  		// docs is an array
+		});
+	});
+
+	/* GET Add Task page. */
+	app.get('/listroommates', function(req, res){
+		User.find({}, function (err, docs) {
+			res.render('listroommates',{
+				users: docs
+			});
+
+			});		
+	  });
+	  
 	app.get("/login", function(req, res){ 
 		res.render("login",{ message: req.flash('error') });
 	});
