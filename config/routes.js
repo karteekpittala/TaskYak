@@ -110,7 +110,7 @@ module.exports = function(app, passport){
 	/* GET Add Task page. */
 	app.get('/addtask', Auth.isAuthenticated, function(req, res){
 		var user = req.user
-		var name = user.firstName
+		var name = user.firstName+" "+user.lastName
 		Group.find({groupMembers: name}, function (err, docs) {
 			res.render('addtask',{
 				groups: docs
@@ -124,8 +124,8 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupCreator = name;
-		console.log(req.body.list);
-		console.log(req.body.groupName);
+		var groupMembers = req.body.list;
+		groupMembers.push(groupCreator);
 		Group.createGroup(req.body.groupName, groupCreator, req.body.list, function(err, user){
 			if(err) throw err;
 			res.redirect("testlist");					
@@ -137,7 +137,7 @@ module.exports = function(app, passport){
 	app.get('/testlist', Auth.isAuthenticated, function(req, res) {
 		
 		var user = req.user
-		var name = user.firstName
+		var name = user.firstName+" "+user.lastName
 		Group.find({groupMembers: name},function (err, docs) {			
 			res.render('testlist',{
 				groups: docs
