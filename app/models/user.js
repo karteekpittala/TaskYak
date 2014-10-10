@@ -45,7 +45,7 @@ UserSchema.statics.isValidUserPassword = function(email, password, done) {
 	this.findOne({email : email}, function(err, user){
 		// if(err) throw err;
 		if(err) return done(err);
-		if(!user) return done(null, false, { message : 'Invalid email' });
+		if(!user) return done(null, false, { message : 'User not found' });
 		hash(password, user.salt, function(err, hash){
 			if(err) return done(err);
 			if(hash == user.hash) return done(null, user);
