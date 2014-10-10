@@ -123,13 +123,14 @@
         <ul id="stickytask">
         <% if (tasks.length == 0) { %>
         	<li id = "stickytask">
-			      <a href="#">
+			      <a href="/addtask">
 			        <h4>No Tasks Found</h4>
 			        <p> Add some tasks</p>
 			      </a>
 			   </li>
 		   <% } else { %>
-		      <% for(var i=0; i<tasks.length; i++) {%>
+		      <% for(var i=0; i<tasks.length; i++) {
+		      	if (tasks[i].taskName.length != 0) {%>
 			    <li id = "stickytask">
 			      <a href="#">
 			        <h4><%= tasks[i].taskName %></h4>
@@ -137,9 +138,18 @@
 			        <p> <%= tasks[i].taskDoer %></p>
 			      </a>
 			    </li>
-		    <% } } %>
+		    <% } } } %>
 		    </ul>
 			
 		</div> 
+
+		<script type="text/javascript">
+		$(document).ready(function(){
+			if ($('#stickytask li').length == 0)
+			{
+				$('#stickytask').append("<li id = 'stickytask'><a href='/addtask'><h4>No Tasks Found</h4><p> Add some tasks</p></a></li>");
+			}
+		})
+		</script>
   </body>
 </html>      
