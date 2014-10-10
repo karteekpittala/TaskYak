@@ -30,7 +30,7 @@ casper.test.begin('TaskYak Login', 2, function suite(test) {
     });
 });
 
-casper.test.begin('TaskYak Login', 2, function suite(test) {
+casper.test.begin('TaskYak Add Task', 3, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         test.assertTitle("TaskYak", "TaskYak login page title is the one expected");
         test.assertExists('form[action="/login"]', "Login form is found");
@@ -40,9 +40,11 @@ casper.test.begin('TaskYak Login', 2, function suite(test) {
         this.fill('form[action="/login"]', {
             password: "maulik"
         }, true);
-        this.click('button[type="submit"]')
-        this.click('.newTask')
- 
+        this.click('button[type="submit"]');
+        this.evaluate(function() {
+            $('.newTask a')[0].click();     
+        });
+        test.assertTitle("TaskYak", "Add task page title is the one expected");       
     });
 
     casper.run(function() {
