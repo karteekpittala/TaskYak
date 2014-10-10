@@ -13,7 +13,7 @@
     }
     </style>   
   </head>
-  <body>
+  <body onload="signUpValidator();">
     <div class="jumbotron text-center">
       <h1><span class="fa fa-lock"></span>TaskYak</h1>
     </div>
@@ -54,75 +54,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>  
     <script src="/js/bootstrapValidator.min.js"/></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-            $('#signup').bootstrapValidator({
-              // container: '#messages',
-              message: 'This value is not valid',
-              fields: {
-                  email: {
-                      validators: {
-                          notEmpty: {
-                              message: 'Try harder, bub'
-                          }
-                      }
-                  },
-                  firstName: {
-                      validators: {
-                          notEmpty: {
-                              message: 'How about FNU !'
-                          }
-                      }
-                  },
-                  lastName: {
-                      validators: {
-                          notEmpty: {
-                              message: 'This is pretty pathetic'
-                          }
-                      }
-                  },
-                  password: {
-                    enabled: false,
-                      validators: {
-                          notEmpty: {
-                              message: 'Really, you call that! a password?'
-                          },
-                          identical: {
-                            field: 'confirm_password',
-                            message: 'The password and its confirm must be the same'
-                        }
-                      }
-                  },
-                  confirm_password: {
-                    enabled: false,
-                      validators: {
-                          notEmpty: {
-                              message: 'Really, you call that! a password?'
-                          },
-                          identical: {
-                            field: 'password',
-                            message: 'The password and its confirm must be the same'
-                        }
-                      }
-                  }
+    <script src="/js/formValidator.js"/></script>
 
-              }
-            })
-            // Enable the password/confirm password validators if the password is not empty
-                    .on('keyup', '[name="password"]', function() {
-                        var isEmpty = $(this).val() == '';
-                        $('#signup')
-                                .bootstrapValidator('enableFieldValidators', 'password', !isEmpty)
-                                .bootstrapValidator('enableFieldValidators', 'confirm_password', !isEmpty);
-
-                        // Revalidate the field when user start typing in the password field
-                        if ($(this).val().length == 1) {
-                            $('#signup').bootstrapValidator('validateField', 'password')
-                                            .bootstrapValidator('validateField', 'confirm_password');
-                        }
-                    });
-      });
     
-    </script>
   </body>
 </html>
