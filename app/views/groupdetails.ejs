@@ -12,7 +12,10 @@
         <div class="col-sm-6 col-sm-offset-3">
           <h2> Group Details</h2>
           <br>
-            <%console.log(groups)%>
+           <% console.log(groups)%>
+            <% if(groups.length < 1){%>
+            <h3> No Groups found</h3>
+            <% } else { %>
             <% for(var i =0; i <groups.length; i++){%>
               <table>
                 <tr>
@@ -25,7 +28,7 @@
                 </tr>
               </table>
               
-            <%}%>
+            <%}}%>
         </div>
       </div>
     </div>

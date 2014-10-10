@@ -48,9 +48,12 @@
      </nav>
  
     <div class="col-sm-6 col-sm-offset-1 content">
-  	<div align="center">
-		<h2>Group List</h2>
-	</div>
+   <% if(groups.length < 1){%>
+            <h3> No Groups found</h3>
+            <% } else { %>
+            <div align="center">
+      <h2>Group List</h2>
+    </div>
     <ul>
 	<div align="center">
 	<table>
@@ -66,7 +69,7 @@
 		</tr>
 		
 
-    <% } %>
+    <% } }%>
 	</table>
 	</div>
     </ul>
