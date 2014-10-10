@@ -97,14 +97,14 @@ module.exports = function(app, passport){
 	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
 		
 		var user = req.user
-		var name = user.firstName
-		Task.find( function (err, docs) {
+		var name = user.firstName+" "+user.lastName;
+		Task.find(function (err, docs) {
 			
 			res.render('tasklist',{
 				tasks: docs
 			});
   		// docs is an array
-		});
+		}).or[{'taskDoer': name},{'taskCreator': name}];
 	});
 
 	/* GET Add Task page. */

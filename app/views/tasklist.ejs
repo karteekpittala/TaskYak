@@ -9,17 +9,91 @@
      <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
       <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
       
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
-	<style>
-	table, th, td{
-		border: 1px solid black;
-		border-collapse: colapse;
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+    <link  href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css"> 
+    <link href="//fonts.googleapis.com/css?family=PT+Sans Narrow:400,700" rel="stylesheet" type="text/css">
+
+	<style type="text/css">
+
+	ul#stickytask,li#stickytask{
+	  list-style:none;
 	}
-	th, td{
-		padding: 5px;
+	ul#stickytask{
+	  overflow:hidden;
+	  padding:1em;
 	}
-  	</style>
+	ul#stickytask li#stickytask a{
+	  text-decoration:none;
+	  color:#000;
+	  background:#ffc;
+	  display:block;
+	  height:14em;
+	  width:11em;
+	  padding:1em;
+	  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+	  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+	  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+	  -moz-transition:-moz-transform .15s linear;
+	  -o-transition:-o-transform .15s linear;
+	  -webkit-transition:-webkit-transform .15s linear;
+	}
+	ul#stickytask li#stickytask{
+	  margin:1em;
+	  float:left;
+	}
+	ul#stickytask li#stickytask h2{
+	  font-size:100%;
+	  font-weight:bold;
+	  padding-bottom:1px;
+	}
+	ul#stickytask li#stickytask p{
+	  font-family:"PT Sans",arial,sans-serif;
+	  font-size:110%;
+	}
+	ul#stickytask li#stickytask a{
+	  -webkit-transform: rotate(-6deg);
+	  -o-transform: rotate(-6deg);
+	  -moz-transform:rotate(-6deg);
+	}
+	ul#stickytask li#stickytask:nth-child(even) a{
+	  -o-transform:rotate(4deg);
+	  -webkit-transform:rotate(4deg);
+	  -moz-transform:rotate(4deg);
+	  position:relative;
+	  top:5px;
+	  background:#cfc;
+	}
+	ul#stickytask li#stickytask:nth-child(3n) a{
+	  -o-transform:rotate(-3deg);
+	  -webkit-transform:rotate(-3deg);
+	  -moz-transform:rotate(-3deg);
+	  position:relative;
+	  top:-5px;
+	  background:#ccf;
+	}
+	ul#stickytask li#stickytask:nth-child(5n) a{
+	  -o-transform:rotate(5deg);
+	  -webkit-transform:rotate(5deg);
+	  -moz-transform:rotate(5deg);
+	  position:relative;
+	  top:-10px;
+	}
+	ul#stickytask li#stickytask a:hover,ul li a:focus{
+	  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+	  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+	  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+	  -webkit-transform: scale(1.25);
+	  -moz-transform: scale(1.25);
+	  -o-transform: scale(1.25);
+	  position:relative;
+	  z-index:5;
+	}
+	ol{text-align:center;}
+	ol li{display:inline;padding-right:1em;}
+	ol li a{color:#fff;}
+	</style>
+	
  </head>
   <body>
     <div class="container">
@@ -45,36 +119,27 @@
            </div>
      </nav>
  
-        <div class="col-sm-6 col-sm-offset-1 content">
-  
-    
-			<div align="center">
-				<h2> All Tasks </h2>
-			</div>
-		    <ul>
-			<div align="center">
-			<table>
-				<tr>
-					<th>Task Name</th>
-					<th>Task Points</th>
-					<th>Task Duedate</th>
-					<th>Task Doers</th>
-				</tr>
-		    <% for(var i=0; i<tasks.length; i++) {%>
-				
-				<tr>
-					<td> <%= tasks[i].taskName %> </td>
-					<td> <%= tasks[i].taskPriority %> </td>
-					<td> <%= tasks[i].dueDate %> </td>
-					<td> <%= tasks[i].taskDoer %> </td>
-				</tr>
-				
-
-		    <% } %>
-			</table>
-				 </ul>
-			</div>
-		  </div>
+        <div class="col-sm-8 col-sm-offset-1 content">
+        <ul id="stickytask">
+        <% if (tasks.length == 0) { %>
+        	<li id = "stickytask">
+			      <a href="#">
+			        <h4>No Tasks Found</h4>
+			        <p> Add some tasks</p>
+			      </a>
+			   </li>
+		   <% } else { %>
+		      <% for(var i=0; i<tasks.length; i++) {%>
+			    <li id = "stickytask">
+			      <a href="#">
+			        <h4><%= tasks[i].taskName %></h4>
+			        <p><%=tasks[i].taskPriority %></p>
+			        <p> <%= tasks[i].taskDoer %></p>
+			      </a>
+			    </li>
+		    <% } } %>
+		    </ul>
+			
 		</div> 
   </body>
 </html>      
