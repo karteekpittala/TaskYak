@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TaskYak </title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
-    <link rel="stylesheet" href="/js/bootstrapValidator.min.js"/>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript">
-      $(function () {
-        $(".date").datepicker();
-      });
-
-      $(document).ready(function() {
-        $("button[name='add']").click(function () {
-          var name = document.getElementById("roommates").value
-        $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
-        $("#roommates").val('');
-        }); 
-      });  
+  
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+     <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
+      <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
       
-      function removeFriend(item) {
-        $(item).remove();
-      }
-         
-    </script>
-  </head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+
+ </head>
   <body>
-    <div class="text-center">
-      <h1><span class="fa fa-lock"></span>TaskYak</h1>
-      <div class="container">
-        <div class="col-sm-6 col-sm-offset-3">
+    <div class="container">
+      <header>
+        <div class="jumbotron text-center">
+          <h1><span class="fa fa-lock"></span>TaskYak</h1>
+        </div>
+      </header>
+      
+
+      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid;padding: 0; ">
+              <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                <ul class="nav nav-pills nav-stacked">
+                  <li class="home"> <a href="/profile">Home</a> </li>
+                  <li class="newTask"> <a href="/addtask">Add Task</a> </li>
+                  <li class="taskList"> <a href="/tasklist">View Tasks</a> </li> 
+                  <li class="listRoommates active"> <a href="#">Add Group</a> </li>
+                   <li class="testList"> <a href="/testlist">View Groups</a> </li>
+                  <li> <a href='/logout'>Logout</a> </li>
+               </ul>
+             </div>
+           </div>
+     </nav>
+ 
+<div class="col-sm-6 col-sm-offset-1 content">
           <h2> List your Roommates </h2>
 		  <br>
           <form name="listroommates" action="/listroommates" method="post">
@@ -61,6 +65,26 @@
           </form>
         </div>
       </div>
-    </div>
+
+
+
+     <script type="text/javascript">
+      $(function () {
+        $(".date").datepicker();
+      });
+
+      $(document).ready(function() {
+        $("button[name='add']").click(function () {
+          var name = document.getElementById("roommates").value
+        $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
+        $("#roommates").val('');
+        }); 
+      });  
+      
+      function removeFriend(item) {
+        $(item).remove();
+      }
+         
+    </script>
   </body>
 </html>

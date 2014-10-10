@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <style>
+  
+
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+     <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
+      <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
+      
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+	<style>
 	table, th, td{
 		border: 1px solid black;
 		border-collapse: colapse;
@@ -9,40 +19,62 @@
 	th, td{
 		padding: 5px;
 	}
-  </style>
-    <title> TaskYak </title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-  </head>
+  	</style>
+ </head>
   <body>
-    <div class="jumbotron text-center">
-      <h1><span class="fa fa-lock"></span>TaskYak  </h1>
-    </div>
-	<div align="center">
-		<h2> All Tasks </h2>
-	</div>
-    <ul>
-	<div align="center">
-	<table>
-		<tr>
-			<th>Task Name</th>
-			<th>Task Points</th>
-			<th>Task Duedate</th>
-			<th>Task Doers</th>
-		</tr>
-    <% for(var i=0; i<tasks.length; i++) {%>
-		
-		<tr>
-			<td> <%= tasks[i].taskName %> </td>
-			<td> <%= tasks[i].taskPriority %> </td>
-			<td> <%= tasks[i].dueDate %> </td>
-			<td> <%= tasks[i].taskDoer %> </td>
-		</tr>
-		
+    <div class="container">
+      <header>
+        <div class="jumbotron text-center">
+          <h1><span class="fa fa-lock"></span>TaskYak</h1>
+        </div>
+      </header>
+      
 
-    <% } %>
-	</table>
-	</div>
-    </ul>
+      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid;padding: 0; ">
+              <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                <ul class="nav nav-pills nav-stacked">
+                  <li class="home"> <a href="/profile">Home</a> </li>
+                  <li class="newTask"> <a href="/addtask">Add Task</a> </li>
+                  <li class="taskList active"> <a href="#">View Tasks</a> </li>     
+                  <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
+                  <li class="testList"> <a href="/testlist">View Groups</a> </li>
+                  <li> <a href='/logout'>Logout</a> </li>
+               </ul>
+             </div>
+           </div>
+     </nav>
+ 
+        <div class="col-sm-6 col-sm-offset-1 content">
+  
+    
+			<div align="center">
+				<h2> All Tasks </h2>
+			</div>
+		    <ul>
+			<div align="center">
+			<table>
+				<tr>
+					<th>Task Name</th>
+					<th>Task Points</th>
+					<th>Task Duedate</th>
+					<th>Task Doers</th>
+				</tr>
+		    <% for(var i=0; i<tasks.length; i++) {%>
+				
+				<tr>
+					<td> <%= tasks[i].taskName %> </td>
+					<td> <%= tasks[i].taskPriority %> </td>
+					<td> <%= tasks[i].dueDate %> </td>
+					<td> <%= tasks[i].taskDoer %> </td>
+				</tr>
+				
+
+		    <% } %>
+			</table>
+				 </ul>
+			</div>
+		  </div>
+		</div> 
   </body>
 </html>      
