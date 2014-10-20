@@ -97,13 +97,11 @@ function addtaskValidator()
                                 notEmpty: {
                                     message: 'Please enter the task points'
                                 },
-                                numeric: {
-                                	message: 'Points must be numeric'
-                                },
+                                
                                 between: {
                         			min: 1,
                         			max: 10,
-                       				 message: 'Points must be numeric must be between %s and %s'
+                       				 message: 'Points must be numeric between 1 and 10'
                     			}
                             }
                         },
