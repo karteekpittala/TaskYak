@@ -116,14 +116,30 @@ module.exports = function(app, passport){
 
 	/*Revision changes till here*/
 
+
+
+	/* GET Add Task page. */
+	app.get('/addtask', Auth.isAuthenticated, function(req, res){
+		var user = req.user
+		var name = user.firstName+" "+user.lastName
+		Group.find({groupMembers: name}, function (err, docs) {
+			res.render('addtask',{
+				groups: docs
+			});
+
+			});		
+	  });
+
+
 	app.post('/addtask', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
+		var isComplete = 0;
 		console.log(req.body.list);
 		console.log(req.body.taskName);
 		console.log(req.body.taskPriority);
-		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, function(err, user){
+		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, isComplete, function(err, user){
 			if(err) throw err;
 			res.redirect("tasklist");					
 		});
@@ -143,19 +159,6 @@ module.exports = function(app, passport){
   		// docs is an array
 		});
 	});
-
-	/* GET Add Task page. */
-	app.get('/addtask', Auth.isAuthenticated, function(req, res){
-		var user = req.user
-		var name = user.firstName+" "+user.lastName
-		Group.find({groupMembers: name}, function (err, docs) {
-			res.render('addtask',{
-				groups: docs
-			});
-
-			});		
-	  });
-
 
 	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;

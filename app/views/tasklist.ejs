@@ -136,6 +136,8 @@
 			        <h4><%= tasks[i].taskName %></h4>
 			        <p>Points: <%=tasks[i].taskPriority %></p>
 			        <p> <%= tasks[i].taskDoer %></p>
+			        <p>Status: <% if (tasks[i].isComplete == true) { %> Complete <% } else { %> Incomplete <% } %> 
+			        </p>
 			      </a>
 			    </li>
 		    <% } } } %>
