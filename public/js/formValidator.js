@@ -108,7 +108,7 @@ function addtaskValidator()
                         doers:{
                         	validators: {
                                 notEmpty: {
-                                    message: 'Please enter the task name'
+                                    message: 'Please enter the task doers'
                                 }
                             }
                         }

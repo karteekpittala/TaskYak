@@ -99,13 +99,42 @@ module.exports = function(app, passport){
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
 		var isComplete = 0;
-		console.log(req.body.list);
-		console.log(req.body.taskName);
-		console.log(req.body.taskPriority);
-		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, isComplete, function(err, user){
-			if(err) throw err;
-			res.redirect("tasklist");					
-		});
+		var dueDate = new Date(req.body.dueDate);
+		var recurScore = req.body.recurScore;
+		var frequency = req.body.frequency;
+		var numMonth = 1;
+		var numDate = 7;
+		var dateList = []
+		dateList.push(new Date(req.body.dueDate));
+
+		for (var i=0;i<recurScore-1;i++){
+			
+			var nextDate = new Date();
+	
+			if(frequency==2)
+				{
+					nextDate.setMonth(dueDate.getMonth()+numMonth);
+					dateList.push(nextDate);
+					numMonth +=numMonth
+				}
+
+			else if(frequency==1)
+			{
+				nextDate.setDate(dueDate.getDate()+numDate);
+				dateList.push(nextDate);
+				numDate+=numDate
+			}
+		
+		}
+
+		for (var j in dateList){
+			Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dateList[j], req.body.list, isComplete, function(err, user){
+					if(err) throw err;				
+				});
+		}
+
+		res.redirect("tasklist");	
+		
 	});
 
 
@@ -114,7 +143,13 @@ module.exports = function(app, passport){
 		
 		var user = req.user
 		var name = user.firstName+" "+user.lastName;
-		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+		var start = new Date();
+		var end = new Date();
+		numMonths = 1;
+		end.setMonth(start.getMonth() + numMonths);
+		start.setMonth(start.getMonth() - numMonths);  
+
+		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}],"dueDate": {"$gte": start, "$lt": end}} ,function (err, docs) {
 			
 			res.render('tasklist',{
 				tasks: docs

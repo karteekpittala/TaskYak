@@ -6,7 +6,9 @@ TaskSchema = mongoose.Schema({
 	taskPriority: Number,
 	dueDate: Date,
 	taskDoer:   Array,
-	isComplete: Boolean
+	isComplete: Boolean,
+	isRecurring: Boolean,
+	
 });
 
 

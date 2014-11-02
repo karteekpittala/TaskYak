@@ -10,6 +10,12 @@ var express = require('express'),
   passport = require("passport"),
   flash = require("connect-flash");
 
+var debug = require('debug')('http')
+  , http = require('http')
+  , name = 'TaskYak';  
+
+debug('Hello');  
+
 var env = process.env.NODE_ENV || 'development',
   config = require('./config/config')[env];
 
