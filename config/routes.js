@@ -12,6 +12,43 @@ module.exports = function(app, passport){
 		}
 	});
 
+
+	//functinality to implement for load list of all users
+	app.get('/searchFriends', function(req, res){
+		//console.log("in search friends");
+		//Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) 
+		//User.find({firstName: regex});
+		var regex = new RegExp(req.query["term"], 'i');
+		var query = User.find({'firstName': regex});
+		//.sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
+		
+		// Execute query in a callback and return users list
+  		query.exec(function(err, users) {
+      		if (!err) {
+         // Method to construct the json result set
+         		var result = buildResultSet(users);
+         		res.send(result, {
+            	'Content-Type': 'application/json'
+         		}, 200);
+      		} else {
+         		res.send(JSON.stringify(err), {
+            	'Content-Type': 'application/json'
+        		}, 404);
+      		}
+   		});
+	});
+
+	function buildResultSet(data){
+		//console.log("in build Result set: Printing the data ", data);
+		var result = [];
+		for(var object in data){
+			console.log(" get control please");
+			result.push(data[object]);
+		}
+		//console.log("in buildResultSet func", result );
+		return result;
+	};
+
 	/*Need to make changes and convert all the functionlity in one page-karteek*/
 	/* Get Groups Page*/
 	app.get('/groups', Auth.isAuthenticated, function(req, res){
@@ -191,8 +228,8 @@ module.exports = function(app, passport){
 				users: docs
 			});
 
-			});		
-	  });
+		});		
+	});
 	  
 	app.get("/login", function(req, res){ 
 		res.render("login",{ message: req.flash('error') });
