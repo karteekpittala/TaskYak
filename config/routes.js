@@ -300,35 +300,6 @@ module.exports = function(app, passport){
 
 
 
-/*	app.post( '/tasklist/:id', routes.update );
-	exports.update = function ( req, res ){
-  Task.findById( req.params.id, function ( err, todo ){
-    todo.content    = req.body.content;
-    //todo.updated_at = Date.now();
-    todo.save( function ( err, todo, count ){
-      res.redirect( '/' );
-    });
-  });
-};*/
-/*
-	app.put('/tasklist', Auth.isAuthenticated, function(req, res) {
-    var tasks = req.tasks;
-    		console.log(req.body.taskName);
-
-    tasks = _.extend(tasks, req.body);
-
-    Task.save(function(err) {
-    if (err) {
-        return res.send("profile", {
-            errors: err.errors,
-            tasks: tasks
-        });
-    } else {
-        res.jsonp(tasks);
-    }
-});
-}); */
-
 	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
