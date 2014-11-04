@@ -12,6 +12,28 @@
       <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
       <script src="/js/bootstrapValidator.min.js"/></script>
       <script src="/js/formValidator.js"/></script>
+       <script src="/js/spinner.js"/></script>
+      <style type="text/css">
+        select.frecuency {
+            border: none;
+            font-style: italic;
+            background-color: transparent;
+            cursor: pointer;
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            -webkit-transition: -webkit-transform .35s ease-in;
+            transition: -webkit-transform .35s ease-in;
+            border-bottom: none;
+        }
+        select.frecuency:focus {
+            outline: none;
+            border-bottom: 5px solid #39b3d7;
+            -webkit-transform: translateY(-5px);
+            transform: translateY(-5px);
+            -webkit-transition: -webkit-transform .35s ease-in;
+            transition: -webkit-transform .35s ease-in;
+        }
+      </style>
  </head>
   <body onload="addtaskValidator();">
     <div class="container">
@@ -56,12 +78,37 @@
                 </div>
             </div>
             <div class="form-group">
-			   <label>List roommates responsible for this task</label>
+            <hgroup>
+          <h4>
+            Recur this task
+             <select id="frequency" name="frequency" class="frecuency" class="form-control"> 
+                 <option value="0" selected="">No</option>
+                 <option value="1">weekly</option>
+                 <option value="2">monthly</option>
+             </select>
+          </h4>
+         </hgroup>
+            </div>
+             <div class="form-group">
+            <h4>How many times do you want to recur this?</h4>
+              <div class="input-group number-spinner">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="dwn"><span class="glyphicon glyphicon-minus"></span></button>
+                </span>
+                <input id ="recurScore" name="recurScore" type="text" class="form-control text-center" value="1">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="up"><span class="glyphicon glyphicon-plus"></span></button>
+                </span>
+              </div>
+              </div>
+        
+            <div class="form-group">
+			       <h4>List roommates responsible for this task</h4>
                 <div class="col-md-9 col-xs-4">
 				
                 <select class="form-control" name="taskDoer" id="taskDoer">
                 <%for (var i = 0;i<groups.length;i++) {%>				
-				<%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
+				        <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
                   <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
                   <% }%>                 
 				  <% }%>                 

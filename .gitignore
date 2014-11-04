@@ -19,3 +19,4 @@ node_modules
 config/secretDatabase.js
 config/secretAuth.js
 
+test/test1.js

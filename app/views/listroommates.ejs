@@ -5,13 +5,16 @@
     <title> TaskYak </title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-     <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
-      <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-       <script src="/js/bootstrapValidator.min.js"/></script>
-      <script src="/js/formValidator.js"/></script>
-    
-      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">s
+    <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/bootstrapValidator.min.js"/></script>
+    <script src="/js/formValidator.js"/></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src= "/js/autocomp.js"></script> 
+    <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
 
  </head>
   <body onload="listroommatesValidator();">
@@ -31,7 +34,8 @@
                   <li class="newTask"> <a href="/addtask">Add Task</a> </li>
                   <li class="taskList"> <a href="/tasklist">View Tasks</a> </li> 
                   <li class="listRoommates active"> <a href="#">Add Group</a> </li>
-                   <li class="testList"> <a href="/testlist">View Groups</a> </li>
+                  <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
+                  <li class="testList"> <a href="/testlist">View Groups</a> </li>
                   <li> <a href='/logout'>Logout</a> </li>
                </ul>
              </div>
@@ -47,9 +51,11 @@
               <input id="inputGroupName" type="text" placeholder="Group Name" name="groupName" class="form-control">
             </div>
             <div class="form-group">
-              <label>Type a name and click the 'Add to List' button to see it in the list below</label></br>
+              <label for="listRoomMates1">Type a name and click the 'Add to List' button to see it in the list below</label>
+            <input class="form-control" id="listRoomMates1" placeholder="First Name and Last Name"></br>
                 <div class="col-md-9 col-xs-4">
-					<input class="form-control" type="text" name="roommates" id="roommates" placeholder="First Name and Last Name">
+
+					
                 </div>
                 <div class="col-md-3 col-xs-4">
                   <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add to List</button> 
@@ -77,9 +83,9 @@
 
       $(document).ready(function() {
         $("button[name='add']").click(function () {
-          var name = document.getElementById("roommates").value
+          var name = document.getElementById("listRoomMates1").value
         $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
-        $("#roommates").val('');
+        $("#listRoomMates1").val('');
         }); 
 
 
@@ -104,6 +110,46 @@
       function removeFriend(item) {
         $(item).remove();
       }
+
+      $( "#listRoomMates1" ).autocomplete({
+        source: function (request, response) {
+         $.ajax({
+            url: "/searchFriends",
+            type: "GET",
+            data: request,  // request is the value of search input
+            success: function (data) {
+              // Map response values to fiedl label and value
+               response($.map(data, function (el) {
+                  //console.log("auto", el.firstName);
+                  return {
+                     label: el.firstName+" "+el.lastName,
+                     value: el.firstName+" "+el.lastName
+                  };
+                  }));
+               }
+            });
+         },
+         
+         // The minimum number of characters a user must type before a search is performed.
+         minLength: 1, 
+         
+         // set an onFocus event to show the result on input field when result is focused
+         focus: function (event, ui) { 
+            this.value = ui.item.label; 
+            // Prevent other event from not being execute
+            event.preventDefault();
+         },
+         select: function (event, ui) {
+            // Prevent value from being put in the input:
+            this.value = ui.item.label;
+            // Set the id to the next input hidden field
+            $(this).next("input").val(ui.item.value); 
+            // Prevent other event from not being execute            
+            event.preventDefault();
+            // optionnal: submit the form after field has been filled up
+            $('#quicksearch').submit();
+         }
+  });
          
     </script>
   </body>

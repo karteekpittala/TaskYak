@@ -1,6 +1,7 @@
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
 var Group = require('../app/models/group');
+var UserPoints = require('../app/models/userPoints');
 var Auth = require('./middlewares/authorization.js');
 
 module.exports = function(app, passport){
@@ -11,6 +12,44 @@ module.exports = function(app, passport){
 			res.render("home", { user : null});
 		}
 	});
+
+
+	//functinality to implement for load list of all users
+	app.get('/searchFriends', function(req, res){
+		//console.log("in search friends");
+		//Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) 
+		//User.find({firstName: regex});
+		var regex = new RegExp(req.query["term"], 'i');
+		var query = User.find({'firstName': regex});
+		console.log("in searchFriends");
+		//.sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
+		
+		// Execute query in a callback and return users list
+  		query.exec(function(err, users) {
+      		if (!err) {
+         // Method to construct the json result set
+         		var result = buildResultSet(users);
+         		res.send(result, {
+            	'Content-Type': 'application/json'
+         		}, 200);
+      		} else {
+         		res.send(JSON.stringify(err), {
+            	'Content-Type': 'application/json'
+        		}, 404);
+      		}
+   		});
+	});
+
+	function buildResultSet(data){
+		//console.log("in build Result set: Printing the data ", data);
+		var result = [];
+		for(var object in data){
+			console.log(" get control please");
+			result.push(data[object]);
+		}
+		//console.log("in buildResultSet func", result );
+		return result;
+	};
 
 	/*Need to make changes and convert all the functionlity in one page-karteek*/
 	/* Get Groups Page*/
@@ -34,6 +73,15 @@ module.exports = function(app, passport){
 		var name = user.firstName+" "+user.lastName;
 		var groupOwner = name;
 		var groupMembers = req.body.list;
+		var start_score = 0;
+		var userSet = [];
+		var groupset = [];
+		console.log(groupMember.length);
+		for(var i = 0; i < groupMembers.length; i++){
+			userSet = [groupMembers[i], start_score];
+			groupset.push(userSet);
+		}
+		console.log(groupset);
 		//groupMembers.push(groupOwner);
 		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
 			if(err) throw err;
@@ -41,13 +89,13 @@ module.exports = function(app, passport){
 		});
 	});
 
+
 	/*Get Create Group Page*/
 	app.get('/creategroup', Auth.isAuthenticated, function(req, res){
 	
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
-		
 		User.find({}, function (err, docs) {
 			res.render('creategroup',{
 				users: docs
@@ -57,27 +105,92 @@ module.exports = function(app, passport){
 
 	/*Get group details for a user*/
 	app.get('/groupDetails', Auth.isAuthenticated, function(req, res){
-		var user = req.user
-		var name = user.firstName+" "+user.lastName
-		Group.find(function (err, docs) {
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		var GroupsetData = [];
+		Group.find({groupMembers: name},function (err, docs) {			
+			console.log(docs.length);
+			console.log(docs[0].groupMembers);
+			updateUserScore(docs[0], name, 10);
+			/*GroupSetData = buildGroupSet(docs);
+			
+			console.log(GroupSetData);
+			*/
 			res.render('groupdetails',{
-				groups:docs
+			groups:docs,
+			//GroupsetData: GroupsetData
 			});
 		});
 		/*Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
 			res.render('groupdetails',{
 				groups: docs
-			});*/
-
-		
+			});*/	
 	});
 
+	function updateUserScore(group, name, taskpoints){
+		console.log("Group details"+group);
+		console.log("Name to update"+name);
+		console.log("taskpoints: "+taskpoints);
+		console.log("Intial user points Set"+group.userpoints);
+		userSet = [];
+		var insertSet = [];
+		var points = taskpoints;
+		for(var i = 0; i < group.groupMembers.length; i++){
+			if(group.groupMembers[i] == name){
+				insertSet.push(group.groupMembers[i]);
+				insertSet.push(group.userpoints[i][1] + points);
+				userSet.push(insertSet);
+				console.log("Name found"+insertSet);
+			}
+			else{
+				console.log("Pushing set"+group.userpoints[i] );
+				userSet.push(group.userpoints[i]);
+				
+			}
+		}
+		console.log(userSet);
+		Group.update({groupName: group.groupName}, {$set: {userpoints: userSet}}, function(err, updated) {
+  			if( err || !updated ) console.log("User not updated");
+  			else console.log("User updated");
+		});
+	};
+
+	function buildGroupSet(docs){
+		//console.log("in build Result set: Printing the data ", data);
+		var result = [];
+		for(i = 0; i< docs.length; i++)
+		{
+			//console.log(docs[i].groupName);
+			//console.log(docs[i].groupMembers);
+			UserPoints.find({groupName: docs[i].groupName}, function(err, data){
+				for(var object in data){
+				userpointsData.push(data[object].points);
+				console.log(userpointsData);
+				return userpointsData;
+				}
+			});
+		}
+		//console.log("in buildResultSet func", result );
+		return result;
+	};
 	/*Edit members*/
 	//app.get('/editMembers', function(req, res){
 	//	res.render('editMembers', {});
 	//});
 
 	/*Revision changes till here*/
+
+	/* testing the application for autocomplete
+	 of the text box for the user groups
+ 	testkar.ejs page used by Karteek*/
+ 	app.get('/testkar', Auth.isAuthenticated, function(req, res){
+ 		User.find({}, function (err, docs) {
+			res.render('testkar',{
+				users: docs
+			});
+
+		});		
+ 	});
 
 
 
@@ -99,13 +212,44 @@ module.exports = function(app, passport){
 		var name = user.firstName+" "+user.lastName;
 		var taskCreator = name;
 		var isComplete = 0;
-		console.log(req.body.list);
-		console.log(req.body.taskName);
-		console.log(req.body.taskPriority);
-		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, req.body.dueDate, req.body.list, isComplete, function(err, user){
-			if(err) throw err;
-			res.redirect("tasklist");					
-		});
+		var dueDate = new Date(req.body.dueDate);
+		var recurScore = req.body.recurScore;
+		var frequency = req.body.frequency;
+		var numMonth = 1;
+		var numDate = 7;
+		var dateList = []
+		dateList.push(new Date(req.body.dueDate));
+
+		for (var i=0;i<recurScore-1;i++){
+
+			if (frequency==0) break;
+			
+			var nextDate = new Date();
+	
+			if(frequency==2)
+				{
+					nextDate.setMonth(dueDate.getMonth()+numMonth);
+					dateList.push(nextDate);
+					numMonth +=numMonth
+				}
+
+			else if(frequency==1)
+			{
+				nextDate.setDate(dueDate.getDate()+numDate);
+				dateList.push(nextDate);
+				numDate+=numDate
+			}
+		
+		}
+
+		for (var j in dateList){
+			Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dateList[j], req.body.list, isComplete, function(err, user){
+					if(err) throw err;				
+				});
+		}
+
+		res.redirect("tasklist");	
+		
 	});
 
 
@@ -139,7 +283,13 @@ module.exports = function(app, passport){
 		 console.log("Welcome");
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
-		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+		var start = new Date();
+		var end = new Date();
+		numMonths = 1;
+		end.setMonth(start.getMonth() + numMonths);
+		start.setMonth(start.getMonth() - numMonths);  
+
+		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}],"dueDate": {"$gte": start, "$lt": end}} ,function (err, docs) {
 			
 			res.render('tasklist',{
 				tasks: docs
@@ -183,11 +333,27 @@ module.exports = function(app, passport){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupCreator = name;
+		//console.log(name);
 		var groupMembers = req.body.list;
 		groupMembers.push(groupCreator);
-		Group.createGroup(req.body.groupName, groupCreator, req.body.list, function(err, user){
+		var start_score = 0;
+		var userSet = [];
+		var groupset = [];
+		console.log(groupMembers.length);
+		for(var i = 0; i < groupMembers.length; i++){
+			userSet = [groupMembers[i], start_score];
+			groupset.push(userSet);
+		}
+		console.log(groupset);		/*
+		for (var i = 0; i < groupMembers.length; i++) {
+				UserPoints.createUserPoints(req.body.groupName, groupMembers[i], function(err, user){
+					if(err) throw err;
+				});
+				console.log("GroupMeber"+i+groupMembers[i]);
+			};*/
+		Group.createGroup(req.body.groupName, groupCreator,groupMembers, groupset, function(err, user){
 			if(err) throw err;
-			res.redirect("testlist");					
+			res.redirect("profile");					
 		});
 	});
 
@@ -205,15 +371,15 @@ module.exports = function(app, passport){
 		});
 	});
 
-	/* GET Add Task page. */
+	/*new group page. */
 	app.get('/listroommates', function(req, res){
 		User.find({}, function (err, docs) {
 			res.render('listroommates',{
 				users: docs
 			});
 
-			});		
-	  });
+		});	
+	});
 	  
 	app.get("/login", function(req, res){ 
 		res.render("login",{ message: req.flash('error') });
