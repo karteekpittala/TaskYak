@@ -221,6 +221,8 @@ module.exports = function(app, passport){
 		dateList.push(new Date(req.body.dueDate));
 
 		for (var i=0;i<recurScore-1;i++){
+
+			if (frequency==0) break;
 			
 			var nextDate = new Date();
 	
