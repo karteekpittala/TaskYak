@@ -27,5 +27,29 @@ TaskSchema.statics.addtask = function(taskName, taskCreator, taskPriority, dueDa
 }
 
 
+
+TaskSchema.statics.saveTask = function(_id, isComplete,  done){
+	console.log("Welcome" + _id);
+	var Task = this;
+	var ObjectID = require('mongodb').ObjectID;
+	var mongoose = require('mongoose');
+	var id = mongoose.Types.ObjectId(_id);
+	
+	Task.update(
+		{_id : id},
+		{
+			$set:
+			{
+				isComplete : isComplete
+			}
+		
+		}, function(err, user){
+		if(err) throw err;
+		// if (err) return done(err);
+		done(null, user);
+	});	
+}
+
+
 var Task = mongoose.model("Task", TaskSchema);
 module.exports = Task;

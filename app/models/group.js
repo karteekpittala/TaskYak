@@ -20,5 +20,7 @@ GroupSchema.statics.createGroup = function(groupName, groupOwner, groupMembers, 
 	});	
 }
 
+
+
 var Group = mongoose.model("Group", GroupSchema);
 module.exports = Group;
