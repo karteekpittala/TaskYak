@@ -3,16 +3,18 @@ var mongoose = require('mongoose');
 GroupSchema = mongoose.Schema({
 	groupName:  String,
 	groupOwner:   String,
-	groupMembers: Array
+	groupMembers: Array,
+	userpoints: Array
 });
 
 
-GroupSchema.statics.createGroup = function(groupName, groupOwner, groupMembers, done){
+GroupSchema.statics.createGroup = function(groupName, groupOwner, groupMembers, userpoints, done){
 	var Group = this;
 	Group.create({
 		groupName : groupName,
 		groupOwner : groupOwner,
-		groupMembers : groupMembers
+		groupMembers : groupMembers, 
+		userpoints : userpoints
 	}, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);

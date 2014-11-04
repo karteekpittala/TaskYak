@@ -44,3 +44,6 @@ $( "#autocomp" ).autocomplete({
 	source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
 });
 
+$( "#autocomptest" ).autocomplete({
+   source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
+});
