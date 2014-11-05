@@ -4,15 +4,8 @@
     <title> TaskYak </title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <style>
-    table, th, td{
-      border: 1px solid black;
-      border-collapse: colapse;
-    }
-    th, td{
-      padding: 5px;
-    }
-    </style>
+    <link rel="stylesheet" href="/css/bootstrap-group-theme.css"/>
+    
   </head>
 
   <body>
@@ -38,28 +31,51 @@
            </div>
       </nav>
       <div class="col-sm-6 col-sm-offset-1 content">
-      <% if(groups.length < 1){%>
-        <h3> No Groups found</h3>
-      <% } else { %>
-        <div align="center">
-          <h2>Groups List</h2>
-        </div>
-      <ul>
-        <div align="center">
-          <% for(var i=0; i<groups.length; i++) {%>
-            <li></br><%= groups[i].groupName %></li>
-            <table>
-              <% for(var j=0; j<groups[i].groupMembers.length; j++){%>
-                  <tr>
-                    <td><%= groups[i].userpoints[j][0] %> </td>
-                    <td><%= groups[i].userpoints[j][1] %></td>
-                  </tr>
-              <%}%>
-            </table>
-          <%}%>
-        </div>
-      </ul>
+      <%if(groups.length < 1){%>
+        <h3>No Groups found</h3>
+      <%} else { %>
+        <% for(var i=0; i<groups.length; i++){%>
+          <div class="container">
+        <div class="row">
+        <div class="col-xs-12 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="the-price">
+                        <h1>
+                          <span class="subscript"><%= groups[i].groupName %></span></h1>
+                        <small></small>
+                    </div>
+                    <table class="table">
+                    <% for(var j=0; j<groups[i].groupMembers.length; j++){%>
+                      <%if((j%2) == 0){%>
+                        <tr>
+                            <td>
+                                <%= groups[i].userpoints[j][0] %>
+                                <%= groups[i].userpoints[j][1] %>
+                            </td>
+                        </tr>
+                      <%}else{%>
+                        <tr class="active">
+                            <td>
+                                <%= groups[i].userpoints[j][0] %>
+                                <%= groups[i].userpoints[j][1] %>
+                            </td>
+                        </tr>  
+                      <%}%>
+                    <%}%>
+                    </table>
+                </div>
+            </div>
+         </div>
+         </div>
+         </div>
+        <%}%>   
       <%}%>
+      
 </div>
 </div>
   </body>

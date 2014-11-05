@@ -405,6 +405,7 @@ module.exports = function(app, passport){
 	  });
 
 	app.get("/profile", Auth.isAuthenticated , function(req, res){ 
+		/*Group.find()*/
 		res.render("profile",{ user : req.user});
 	});
 
