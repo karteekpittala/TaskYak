@@ -7,7 +7,7 @@
     
     body {
         background-color: #444;
-        background: url(http://s18.postimg.org/l7yq0ir3t/pick8_1.jpg);
+        background: url(http://mymaplist.com/img/parallax/pinlayer2.png),url(http://mymaplist.com/img/parallax/pinlayer1.png),url(http://mymaplist.com/img/parallax/back.png);
         
     }
     .form-signin input[type="text"] {
