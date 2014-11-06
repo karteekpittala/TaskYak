@@ -29,7 +29,7 @@
 	  color:#000;
 	  background:#ffc;
 	  display:block;
-	  height:20em;
+	  height:18em;
 	  width:11em;
 	  padding:1em;
 	  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
@@ -111,7 +111,7 @@
                 <ul class="nav nav-pills nav-stacked">
                   <li class="home"> <a href="/profile">Home</a> </li>
                   <li class="newTask"> <a href="/addtask">Add Task</a> </li>
-                  <li class="taskList active"> <a href="#">View Tasks</a> </li>  
+                  <li class="taskList active"> <a href="#">View Tasks</a> </li>     
                   <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
                   <li class="testList"> <a href="/testlist">View Groups</a> </li>
@@ -134,15 +134,14 @@
 			   </li>
 		   <% } else { %>
 		      <% for(var i=0; i<tasks.length; i++) { 
-		      	if (tasks[i].taskName.length != 0) { %>
+		      	if (tasks[i].taskName.length != 0 && tasks[i].isComplete == false) { %>
 		      		 <% l = l+1 %>
 			   		 <li id = "stickytask">
 			     	 <a href="#">
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority %></p>
 				         <p> <%= tasks[i].taskDoer %></p>
-				        	<p> <% var date =  new Date(tasks[i].dueDate) %>
-				        	<%= date.toDateString() %></p>
+				         <p> Status :
 				        	<div class="form-group onoffswitch">
 				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox">
 				        		<label class="onoffswitch-label" for="isComplete_<%=l%>">
@@ -154,7 +153,7 @@
 					        	<input type="hidden" name="primary_<%=l%>" id="primary primary_<%=l%>" value=<%= tasks[i]._id %> >
 					        </div>
 					
-						
+						 </p>
 			        </a>
 			      </li>
 		    <% } } } %>
@@ -164,8 +163,9 @@
 			</div>
 			<button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  Save Tasks </button>  
 		</form>
-		<form action="/incomplete" method="get">
-			<button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  View Incomplete Tasks </button>  
+		
+		<form action="/tasklist">
+			<button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  View Full Task-list </button>  
 		</form>
 		</div> 
 
