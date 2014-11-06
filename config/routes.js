@@ -297,6 +297,19 @@ module.exports = function(app, passport){
   		// docs is an array
 		});
 	});
+	
+	app.get('/incomplete', Auth.isAuthenticated, function(req, res) {
+		
+		var user = req.user
+		var name = user.firstName+" "+user.lastName;
+		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+			
+			res.render('incomplete',{
+				tasks: docs
+			});
+  		// docs is an array
+		});
+	});
 
 
 
