@@ -248,20 +248,19 @@ module.exports = function(app, passport){
     	var tasks = req.tasks;
     	console.log("Welcome");
     	var l = req.body.taskslength;
-    	console.log("Length"+l);
    		
    		if(l > 0)
    		{
    			for(var i=1;i<=l;i++)
    			{
-   				console.log("i"+i);
-   				// console.log("Primary " + i + " is " + req.body['primary_' + i]);
-   				// console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
-
+   				(function(j) {
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
+   				console.log("=====Finding Task"+i);
+   				}(i));
    			}
    			for(var i=1;i<=l;i++)
    			{
+   				console.log("=====Saving Task"+i);
    				Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
 					if(err) throw err;
 					
@@ -285,7 +284,7 @@ module.exports = function(app, passport){
 			var taskName = docs[0].taskName;
 			var taskDoer = docs[0].taskDoer;
 			var taskPoints = docs[0].taskPriority;
-			// var prevStatus = docs[0].isComplete;
+			var prevStatus = docs[0].isComplete;
 
 
 			// console.log("***************");
@@ -294,9 +293,19 @@ module.exports = function(app, passport){
 			// console.log("Task Points: "+taskPoints);
 			  // console.log("New Status: "+newStatus);
 
-			if((newStatus == "on")){
+			if((prevStatus == true) && (newStatus == "on")){
+				console.log("User points not updated, task complete before only");
+			}
+			if((prevStatus == true) && (newStatus == undefined)){
+				console.log("User points will be reduced"+(taskPoints + (-2)* taskPoints));
+				updateUserPoints(taskDoer, (taskPoints + (-2)* taskPoints));
+			}
+			if((prevStatus == false) && (newStatus == "on")){
 				console.log("User points will be added"+taskPoints);
 				updateUserPoints(taskDoer, taskPoints);
+			}
+			if((prevStatus == false) && (newStatus == undefined)){
+				console.log("User points not updated, still incomplete");	
 			}
 		
 		});
