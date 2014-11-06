@@ -334,7 +334,7 @@ module.exports = function(app, passport){
 		//var Task = this;
 		for(var i = 0; i < doer.length; i++){
 			console.log("uup"+doer[i]);
-			UserPoints.find({taskDoer: doer}, function(err, docs){
+			UserPoints.find({taskDoer: doer[i]}, function(err, docs){
 				var userPoints = taskPoints + docs[0].points;
 				console.log("New updated user points"+userPoints);
 				UserPoints.update({user: docs[0].user}, {$set: {points: userPoints}}, function(err, updated) {
