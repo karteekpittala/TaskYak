@@ -187,7 +187,7 @@ module.exports = function(app, passport){
 	/* testing the application for autocomplete
 	 of the text box for the user groups
  	testkar.ejs page used by Karteek*/
-<<<<<<< HEAD
+
  	app.get('/testkar', Auth.isAuthenticated, function(req, res){
  		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
@@ -196,12 +196,11 @@ module.exports = function(app, passport){
  			console.log(docs);
 			res.render('testkar',{
 				groups: docs
-=======
+
  	app.get('/testing', Auth.isAuthenticated, function(req, res){
  		User.find({}, function (err, docs) {
 			res.render('testing',{
 				users: docs
->>>>>>> 5ea49a28ffef3d34cfc8796ba551bbf04bc5629a
 			});
 
 		});		
