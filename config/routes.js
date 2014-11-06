@@ -247,13 +247,15 @@ module.exports = function(app, passport){
     	var tasks = req.tasks;
     	console.log("Welcome");
     	var l = req.body.taskslength;
+    	console.log("Length"+l);
    		
    		if(l > 0)
    		{
    			for(var i=1;i<=l;i++)
    			{
-   				console.log("Primary " + i + " is " + req.body['primary_' + i]);
-   				console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
+   				console.log("i"+i);
+   				// console.log("Primary " + i + " is " + req.body['primary_' + i]);
+   				// console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
    				Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
 					if(err) throw err;
@@ -267,6 +269,7 @@ module.exports = function(app, passport){
 	}); 
 
 	function findTaskDetails(taskId, status){
+		console.log("==========Inside find task========");
 		var ObjectID = require('mongodb').ObjectID;
 		var mongoose = require('mongoose');
 		var id = mongoose.Types.ObjectId(taskId);
@@ -278,12 +281,12 @@ module.exports = function(app, passport){
 			var taskPoints = docs[0].taskPriority;
 			var prevStatus = docs[0].isComplete;
 
-			console.log("***************");
-			console.log("Task Name: "+taskName);
-			console.log("Task Doer: "+taskDoer);
-			console.log("Task Points: "+taskPoints);
-			console.log("Prev Status: "+prevStatus);
-			console.log("New Status: "+newStatus);
+			// console.log("***************");
+			// console.log("Task Name: "+taskName);
+			// console.log("Task Doer: "+taskDoer);
+			// console.log("Task Points: "+taskPoints);
+			// console.log("Prev Status: "+prevStatus);
+			// console.log("New Status: "+newStatus);
 
 			if((prevStatus == true) && (newStatus == "on")){
 				console.log("User points not updated, task complete before only");
@@ -300,15 +303,16 @@ module.exports = function(app, passport){
 				console.log("User points not updated, still incomplete");	
 			}
 		});
-		
+	}	
 
 
 
 	function updateUserPoints(doer, taskPoints){
 		//var Task = this;
 		for(var i = 0; i < doer.length; i++){
-			console.log("uup"+doer[i]);
-			UserPoints.find({taskDoer: doer[i]}, function(err, docs){
+			console.log("================"+doer[i]+"================");
+			UserPoints.find({user: doer[i]}, function(err, docs){
+				console.log("Docs:"+docs);
 				var userPoints = taskPoints + docs[0].points;
 				console.log("New updated user points"+userPoints);
 				UserPoints.update({user: docs[0].user}, {$set: {points: userPoints}}, function(err, updated) {
@@ -374,33 +378,6 @@ module.exports = function(app, passport){
 			console.log("group Length: "+groupMembers.length);
 			res.redirect("profile");
 		});
-
-		/*var user = req.user;
-		var name = user.firstName+" "+user.lastName;
-		var groupCreator = name;
-		//console.log(name);
-		var groupMembers = req.body.list;
-		groupMembers.push(groupCreator);
-		var start_score = 0;
-		var userSet = [];
-		var groupset = [];
-		console.log(groupMembers.length);
-		for(var i = 0; i < groupMembers.length; i++){
-			userSet = [groupMembers[i], start_score];
-			groupset.push(userSet);
-		}
-		console.log(groupset);		/*
-		for (var i = 0; i < groupMembers.length; i++) {
-				UserPoints.createUserPoints(req.body.groupName, groupMembers[i], function(err, user){
-					if(err) throw err;
-				});
-				console.log("GroupMeber"+i+groupMembers[i]);
-			};*/
-			/*
-		Group.createGroup(req.body.groupName, groupCreator,groupMembers, function(err, user){
-			if(err) throw err;
-			res.redirect("profile");					
-		});*/
 	});
 
 
@@ -489,3 +466,12 @@ module.exports = function(app, passport){
 		res.redirect('/login');
 	});
 }
+
+
+
+
+
+
+
+
+
