@@ -101,18 +101,24 @@
                 </span>
               </div>
               </div>
+
+            </br>
+            <div>
+              <h4>Add this task to 
+                <select name="groupName" id="groupName" onchange="updateTaskDoer(this.selectedIndex)">
+                  <%for (var i = 0;i<groups.length;i++) {%>
+                    <option value='<%= groups[0].groupName %>'><%= groups[i].groupName%></option>
+                  <%}%>
+                </select>
+              </h4>
+            </div>
+          </br>
         
             <div class="form-group">
 			       <h4>List roommates responsible for this task</h4>
                 <div class="col-md-9 col-xs-4">
-				
-                <select class="form-control" name="taskDoer" id="taskDoer">
-                <%for (var i = 0;i<groups.length;i++) {%>				
-				        <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
-                  <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
-                  <% }%>                 
-				  <% }%>                 
-                  </select>
+                <select class="form-control" name="taskDoer" id="taskDoer">                 
+                </select>
                 </div>
                 <div class="col-md-3 col-xs-4">
                   <button name="add" id="add" type="button" class="btn btn-info btn-sm" > Add </button> 
@@ -132,6 +138,23 @@
       </div>
       
     <script type="text/javascript">
+      var groupsList = document.addtask.groupName;
+
+      var taskDoerList = document.addtask.taskDoer;
+      
+      function updateTaskDoer(selectedGroup){
+        taskDoerList.options.length = 0;
+        if(selectedGroup > 0)
+        {
+          for(var i = 0; i < groups[selectedGroup].groupMembers.length; i++){
+            taskDoerList.options[taskDoerList.options.length] = new Option(groups[selectedGroup].groupMembers[i], groups[selectedGroup].groupMembers[i]);
+          }
+        }
+        else{
+          taskDoerList.options[0] = new Option("None", "None");
+        }
+      }
+
       $(function () {
         $(".date").datepicker();
       });
@@ -141,6 +164,7 @@
           var name = document.getElementById("taskDoer").value
         $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
         $("#taskDoer").val('');
+        console.log("groupsList length"+document.addtask.groupName.options.length);
         }); 
 
         $("#btnsubmit").click(function () {

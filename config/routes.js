@@ -69,7 +69,10 @@ module.exports = function(app, passport){
 
 	/*Creates New group*/
 	app.post('/creategroup', Auth.isAuthenticated, function(req, res){
-		var user = req.user;
+
+
+		//please do not delete this code
+		/*var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupOwner = name;
 		var groupMembers = req.body.list;
@@ -86,7 +89,7 @@ module.exports = function(app, passport){
 		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");
-		});
+		});*/
 	});
 
 
@@ -111,7 +114,7 @@ module.exports = function(app, passport){
 		Group.find({groupMembers: name},function (err, docs) {			
 			console.log(docs.length);
 			console.log(docs[0].groupMembers);
-			updateUserScore(docs[0], name, 10);
+			//updateUserScore(docs[0], name, 10);
 			/*GroupSetData = buildGroupSet(docs);
 			
 			console.log(GroupSetData);
@@ -184,14 +187,30 @@ module.exports = function(app, passport){
 	 of the text box for the user groups
  	testkar.ejs page used by Karteek*/
  	app.get('/testkar', Auth.isAuthenticated, function(req, res){
- 		User.find({}, function (err, docs) {
+ 		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		console.log(name);
+ 		Group.find({groupMembers: name}, function (err, docs) {
+ 			console.log(docs);
 			res.render('testkar',{
-				users: docs
+				groups: docs
 			});
 
 		});		
  	});
 
+ 	app.get('/testingkp', Auth.isAuthenticated, function(req, res){
+ 		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		console.log(name);
+ 		Group.find({groupMembers: name}, function (err, docs) {
+ 			console.log(docs);
+			res.render('testkar',{
+				groups: docs
+			});
+
+		});		
+ 	});
 
 
 	/* GET Add Task page. */
@@ -252,35 +271,85 @@ module.exports = function(app, passport){
 		
 	});
 
-
-
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
-    var tasks = req.tasks;
-    console.log("Welcome");
-    var l = req.body.taskslength;
-    
+    	var tasks = req.tasks;
+    	console.log("Welcome");
+    	var l = req.body.taskslength;
    		
-   		
-   	if(l > 0)
-   	{
-   	for(var i=1;i<=l;i++) 
+   		if(l > 0)
    		{
-   			console.log("Primary " + i + " is " + req.body['primary_' + i]);
-   			console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
-   			Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
-				if(err) throw err;
-							
-			});
-   		}
+   			for(var i=1;i<=l;i++)
+   			{
+   				console.log("Primary " + i + " is " + req.body['primary_' + i]);
+   				console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
+   				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
+   				Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
+					if(err) throw err;
+					
+				});
+   			}
 		res.redirect("tasklist");	
 
+		}
+	}); 
+
+	function findTaskDetails(taskId, status){
+		var ObjectID = require('mongodb').ObjectID;
+		var mongoose = require('mongoose');
+		var id = mongoose.Types.ObjectId(taskId);
+		var newStatus = status;
+
+		Task.find({_id: id}, function(err, docs){
+			var taskName = docs[0].taskName;
+			var taskDoer = docs[0].taskDoer;
+			var taskPoints = docs[0].taskPriority;
+			var prevStatus = docs[0].isComplete;
+
+			console.log("***************");
+			console.log("Task Name: "+taskName);
+			console.log("Task Doer: "+taskDoer);
+			console.log("Task Points: "+taskPoints);
+			console.log("Prev Status: "+prevStatus);
+			console.log("New Status: "+newStatus);
+
+			if((prevStatus == true) && (newStatus == "on")){
+				console.log("User points not updated, task complete before only");
+			}
+			if((prevStatus == true) && (newStatus == undefined)){
+				console.log("User points will be reduced"+(taskPoints + (-2)* taskPoints));
+				updateUserPoints(taskDoer, (taskPoints + (-2)* taskPoints));
+			}
+			if((prevStatus == false) && (newStatus == "on")){
+				console.log("User points will be added"+taskPoints);
+				updateUserPoints(taskDoer, taskPoints);
+			}
+			if((prevStatus == false) && (newStatus == undefined)){
+				console.log("User points not updated, still incomplete");	
+			}
+		});
+		
 	}
-}); 
+
+	function updateUserPoints(doer, taskPoints){
+		//var Task = this;
+		for(var i = 0; i < doer.length; i++){
+			console.log("uup"+doer[i]);
+			UserPoints.find({taskDoer: doer}, function(err, docs){
+				var userPoints = taskPoints + docs[0].points;
+				console.log("New updated user points"+userPoints);
+				UserPoints.update({user: docs[0].user}, {$set: {points: userPoints}}, function(err, updated) {
+  					if( err || !updated ) console.log("User not updated");
+  					else console.log("User updated");
+				});
+			});
+		}
+
+	}
+
 
 
  /* GET Task list page. */
 	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
-		 console.log("Welcome");
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var start = new Date();
@@ -298,10 +367,28 @@ module.exports = function(app, passport){
 		});
 	});
 
-
-
 	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
+		var name = user.firstName+" "+user.lastName
+		var groupCreator = name;
+		var groupMembers = req.body.list;
+		groupMembers.push(groupCreator);
+
+
+		for(var i = 0; i < groupMembers.length; i++){
+				UserPoints.createUserPoints(req.body.groupName, groupMembers[i], function(err, user){
+					if(err) throw err;
+				});
+				console.log("GroupMember"+i+groupMembers[i]);
+		}
+
+		Group.createGroup(req.body.groupName, groupCreator, groupMembers, function(err, user){
+			if(err) throw err;
+			console.log("group Length: "+groupMembers.length);
+			res.redirect("profile");
+		});
+
+		/*var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var groupCreator = name;
 		//console.log(name);
@@ -322,10 +409,11 @@ module.exports = function(app, passport){
 				});
 				console.log("GroupMeber"+i+groupMembers[i]);
 			};*/
-		Group.createGroup(req.body.groupName, groupCreator,groupMembers, groupset, function(err, user){
+			/*
+		Group.createGroup(req.body.groupName, groupCreator,groupMembers, function(err, user){
 			if(err) throw err;
 			res.redirect("profile");					
-		});
+		});*/
 	});
 
 

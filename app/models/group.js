@@ -4,17 +4,17 @@ GroupSchema = mongoose.Schema({
 	groupName:  String,
 	groupOwner:   String,
 	groupMembers: Array,
-	userpoints: Array
+	//userpoints: Array
 });
 
 
-GroupSchema.statics.createGroup = function(groupName, groupOwner, groupMembers, userpoints, done){
+GroupSchema.statics.createGroup = function(groupName, groupOwner, groupMembers, done){
 	var Group = this;
 	Group.create({
 		groupName : groupName,
 		groupOwner : groupOwner,
 		groupMembers : groupMembers, 
-		userpoints : userpoints
+		//userpoints : userpoints
 	}, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);

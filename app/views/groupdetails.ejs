@@ -22,8 +22,8 @@
                   <li class="home"><a href="/profile">Home</a> </li>
                   <li class="newTask"><a href="/addtask">Add Task</a> </li>
                   <li class="taskList"><a href="/tasklist">View Tasks</a> </li> 
-                  <li class="listRoommates active"><a href="#">Add Group</a> </li>
-                  <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
+                  <li class="listRoommates"><a href="/listroommates">Add Group</a> </li>
+                  <li class="groupDetails active" ><a href="/groupdetails">My Groups</a></li>
                   <li class="testList"><a href="/testlist">View Groups</a> </li>
                   <li><a href='/logout'>Logout</a></li>
                </ul>
@@ -31,7 +31,7 @@
            </div>
       </nav>
       <div class="col-sm-6 col-sm-offset-1 content">
-      <%if(groups.length < 1){%>
+      <%if(!groups.length){%>
         <h3>No Groups found</h3>
       <%} else { %>
         <% for(var i=0; i<groups.length; i++){%>
@@ -54,15 +54,13 @@
                       <%if((j%2) == 0){%>
                         <tr>
                             <td>
-                                <%= groups[i].userpoints[j][0] %>
-                                <%= groups[i].userpoints[j][1] %>
+                                <%= groups[i].groupMembers[j]%>
                             </td>
                         </tr>
                       <%}else{%>
                         <tr class="active">
                             <td>
-                                <%= groups[i].userpoints[j][0] %>
-                                <%= groups[i].userpoints[j][1] %>
+                                <%= groups[i].groupMembers[j]%>
                             </td>
                         </tr>  
                       <%}%>
