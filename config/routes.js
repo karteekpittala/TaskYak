@@ -3,6 +3,7 @@ var Task = require('../app/models/task');
 var Group = require('../app/models/group');
 var UserPoints = require('../app/models/userPoints');
 var Auth = require('./middlewares/authorization.js');
+var growl = require('growl');
 
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
@@ -183,9 +184,9 @@ module.exports = function(app, passport){
 	/* testing the application for autocomplete
 	 of the text box for the user groups
  	testkar.ejs page used by Karteek*/
- 	app.get('/testkar', Auth.isAuthenticated, function(req, res){
+ 	app.get('/testing', Auth.isAuthenticated, function(req, res){
  		User.find({}, function (err, docs) {
-			res.render('testkar',{
+			res.render('testing',{
 				users: docs
 			});
 
@@ -253,26 +254,24 @@ module.exports = function(app, passport){
 	});
 
 
-
+	//Post status of task
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
     var tasks = req.tasks;
     console.log("Welcome");
     var l = req.body.taskslength;
-    
-   		
    		
    	if(l > 0)
    	{
    	for(var i=1;i<=l;i++) 
    		{
-   			console.log("Primary " + i + " is " + req.body['primary_' + i]);
-   			console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
    			Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
 				if(err) throw err;
 							
 			});
    		}
+   			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
 		res.redirect("tasklist");	
+
 
 	}
 }); 
