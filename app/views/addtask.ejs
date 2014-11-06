@@ -109,10 +109,10 @@
                 <div class="col-md-9 col-xs-4">
                 <select class="form-control" name="taskDoer" id="taskDoer">
                 <%for (var i = 0;i<groups.length;i++) {%>       
-        <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
-                  <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
+                  <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
+                    <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
                   <% }%>                 
-          <% }%>              
+                <% }%>              
                 </select>
                 </div>
                 <div class="col-md-3 col-xs-4">

@@ -253,12 +253,10 @@ module.exports = function(app, passport){
    		if(l > 0)
    		{
    			for(var i=1;i<=l;i++)
-   			{
+   			{	findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
    				console.log("i"+i);
    				// console.log("Primary " + i + " is " + req.body['primary_' + i]);
-   				// console.log("Complete " + i + " is " + req.body['isComplete_' + i]);
-
-   				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
+   				// console.log("Complete " + i + " is " + req.body['isComplete_' + i]);   				
    			}
    			for(var i=1;i<=l;i++)
    			{
@@ -268,8 +266,7 @@ module.exports = function(app, passport){
 				});
    			}
    			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
-		res.redirect("tasklist");	
-
+			res.redirect("tasklist");
 		}
 	}); 
 
@@ -285,7 +282,7 @@ module.exports = function(app, passport){
 			var taskName = docs[0].taskName;
 			var taskDoer = docs[0].taskDoer;
 			var taskPoints = docs[0].taskPriority;
-			// var prevStatus = docs[0].isComplete;
+			var prevStatus = docs[0].isComplete;
 
 
 			// console.log("***************");
@@ -294,9 +291,19 @@ module.exports = function(app, passport){
 			// console.log("Task Points: "+taskPoints);
 			  // console.log("New Status: "+newStatus);
 
-			if((newStatus == "on")){
+			if((prevStatus == true) && (newStatus == "on")){
+				console.log("User points not updated, task complete before only");
+			}
+			if((prevStatus == true) && (newStatus == undefined)){
+				console.log("User points will be reduced"+(taskPoints + (-2)* taskPoints));
+				updateUserPoints(taskDoer, (taskPoints + (-2)* taskPoints));
+			}
+			if((prevStatus == false) && (newStatus == "on")){
 				console.log("User points will be added"+taskPoints);
 				updateUserPoints(taskDoer, taskPoints);
+			}
+			if((prevStatus == false) && (newStatus == undefined)){
+				console.log("User points not updated, still incomplete");	
 			}
 		
 		});
