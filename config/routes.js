@@ -182,42 +182,6 @@ module.exports = function(app, passport){
 	//	res.render('editMembers', {});
 	//});
 
-	/*Revision changes till here*/
-
-	/* testing the application for autocomplete
-	 of the text box for the user groups
- 	testkar.ejs page used by Karteek*/
-
- 	app.get('/testkar', Auth.isAuthenticated, function(req, res){
- 		var user = req.user;
-		var name = user.firstName+" "+user.lastName;
-		console.log(name);
- 		Group.find({groupMembers: name}, function (err, docs) {
- 			console.log(docs);
-			res.render('testkar',{
-				groups: docs
-
- 	app.get('/testing', Auth.isAuthenticated, function(req, res){
- 		User.find({}, function (err, docs) {
-			res.render('testing',{
-				users: docs
-			});
-
-		});		
- 	});
-
- 	app.get('/testingkp', Auth.isAuthenticated, function(req, res){
- 		var user = req.user;
-		var name = user.firstName+" "+user.lastName;
-		console.log(name);
- 		Group.find({groupMembers: name}, function (err, docs) {
- 			console.log(docs);
-			res.render('testkar',{
-				groups: docs
-			});
-
-		});		
- 	});
 
 
 	/* GET Add Task page. */
