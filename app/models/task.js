@@ -12,11 +12,11 @@ TaskSchema = mongoose.Schema({
 });
 
 
-TaskSchema.statics.addtask = function(taskName, groupName, taskCreator, taskPriority, dueDate, taskDoer, isComplete, done){
+TaskSchema.statics.addtask = function(taskName,taskCreator, taskPriority, dueDate, taskDoer, isComplete, done){
 	var Task = this;
 	Task.create({
 		taskName : taskName,
-		groupName: groupName,
+		// groupName: groupName,
 		taskCreator : taskCreator,
 		taskPriority: taskPriority, 
 		dueDate: dueDate,

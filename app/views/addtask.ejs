@@ -103,21 +103,16 @@
               </div>
 
             </br>
-            <div>
-              <h4>Add this task to 
-                <select name="groupName" id="groupName" onchange="updateTaskDoer(this.selectedIndex)">
-                  <%for (var i = 0;i<groups.length;i++) {%>
-                    <option value='<%= groups[0].groupName %>'><%= groups[i].groupName%></option>
-                  <%}%>
-                </select>
-              </h4>
-            </div>
-          </br>
         
             <div class="form-group">
 			       <h4>List roommates responsible for this task</h4>
                 <div class="col-md-9 col-xs-4">
-                <select class="form-control" name="taskDoer" id="taskDoer">                 
+                <select class="form-control" name="taskDoer" id="taskDoer">
+                <%for (var i = 0;i<groups.length;i++) {%>       
+        <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
+                  <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
+                  <% }%>                 
+          <% }%>              
                 </select>
                 </div>
                 <div class="col-md-3 col-xs-4">
@@ -133,9 +128,16 @@
               <div id="doers"></div><br>
               <button id="btnsubmit" type="submit" class="btn btn-warning btn-sm"> Submit Task </button>  
             </div>
-          </form>
-        </div>
+            </div>
       </div>
+          </form>
+          <div id="break">
+                <br>
+              </div>
+              <div id="break">
+                <br>
+              </div>
+        
       
     <script type="text/javascript">
       var groupsList = document.addtask.groupName;
