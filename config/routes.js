@@ -257,6 +257,7 @@ module.exports = function(app, passport){
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
    				console.log("=====Finding Task"+i);
    				}(i));
+
    			}
    			for(var i=1;i<=l;i++)
    			{
@@ -267,8 +268,7 @@ module.exports = function(app, passport){
 				});
    			}
    			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
-		res.redirect("tasklist");	
-
+			res.redirect("tasklist");
 		}
 	}); 
 
