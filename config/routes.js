@@ -3,6 +3,7 @@ var Task = require('../app/models/task');
 var Group = require('../app/models/group');
 var UserPoints = require('../app/models/userPoints');
 var Auth = require('./middlewares/authorization.js');
+var growl = require('growl');
 
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
@@ -186,6 +187,7 @@ module.exports = function(app, passport){
 	/* testing the application for autocomplete
 	 of the text box for the user groups
  	testkar.ejs page used by Karteek*/
+<<<<<<< HEAD
  	app.get('/testkar', Auth.isAuthenticated, function(req, res){
  		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
@@ -194,6 +196,12 @@ module.exports = function(app, passport){
  			console.log(docs);
 			res.render('testkar',{
 				groups: docs
+=======
+ 	app.get('/testing', Auth.isAuthenticated, function(req, res){
+ 		User.find({}, function (err, docs) {
+			res.render('testing',{
+				users: docs
+>>>>>>> 5ea49a28ffef3d34cfc8796ba551bbf04bc5629a
 			});
 
 		});		
@@ -271,6 +279,7 @@ module.exports = function(app, passport){
 		
 	});
 
+
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
     	var tasks = req.tasks;
     	console.log("Welcome");
@@ -288,6 +297,7 @@ module.exports = function(app, passport){
 					
 				});
    			}
+   			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
 		res.redirect("tasklist");	
 
 		}
@@ -328,7 +338,8 @@ module.exports = function(app, passport){
 			}
 		});
 		
-	}
+
+
 
 	function updateUserPoints(doer, taskPoints){
 		//var Task = this;
@@ -361,6 +372,19 @@ module.exports = function(app, passport){
 		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}],"dueDate": {"$gte": start, "$lt": end}} ,function (err, docs) {
 			
 			res.render('tasklist',{
+				tasks: docs
+			});
+  		// docs is an array
+		});
+	});
+	
+	app.get('/incomplete', Auth.isAuthenticated, function(req, res) {
+		
+		var user = req.user
+		var name = user.firstName+" "+user.lastName;
+		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+			
+			res.render('incomplete',{
 				tasks: docs
 			});
   		// docs is an array

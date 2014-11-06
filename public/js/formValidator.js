@@ -1,7 +1,7 @@
 function signUpValidator()
 {
 	 $('#signup').bootstrapValidator({
-              // container: '#messages',
+               container: '#messages',
              
               fields: {
                   email: {
@@ -32,7 +32,7 @@ function signUpValidator()
                    
                       validators: {
                           notEmpty: {
-                              message: 'Passsword is required and cannot be empty'
+                              message: 'Password is required and cannot be empty'
                           },
                           
                       }
