@@ -1,4 +1,4 @@
-// googletesting.js
+cd// googletesting.js
 casper.test.begin('TaskYak Login', 2, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         test.assertTitle("TaskYak", "TaskYak login page title is the one expected");
@@ -13,6 +13,7 @@ casper.test.begin('TaskYak Login', 2, function suite(test) {
     });
 
     casper.run(function() {
+        
         test.done();
     });
 });
