@@ -17,18 +17,14 @@ module.exports = function(app, passport){
 
 	//functinality to implement for load list of all users
 	app.get('/searchFriends', function(req, res){
-		//console.log("in search friends");
-		//Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) 
-		//User.find({firstName: regex});
 		var regex = new RegExp(req.query["term"], 'i');
 		var query = User.find({'firstName': regex});
 		console.log("in searchFriends");
-		//.sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
-		
 		// Execute query in a callback and return users list
   		query.exec(function(err, users) {
       		if (!err) {
-         // Method to construct the json result set
+         		// Method to construct the json result set
+         		console.log("Error while performing search for users. Function: /searchFriends");
          		var result = buildResultSet(users);
          		res.send(result, {
             	'Content-Type': 'application/json'
@@ -41,8 +37,10 @@ module.exports = function(app, passport){
    		});
 	});
 
+	/*function builds the result sets for all the users that match the requirement for query
+	expression
+	*/
 	function buildResultSet(data){
-		//console.log("in build Result set: Printing the data ", data);
 		var result = [];
 		for(var object in data){
 			console.log(" get control please");
