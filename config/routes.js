@@ -50,13 +50,7 @@ module.exports = function(app, passport){
 		return result;
 	};
 
-	/*Need to make changes and convert all the functionlity in one page-karteek*/
-	/* Get Groups Page*/
-	app.get('/groups', Auth.isAuthenticated, function(req, res){
-		res.render('groups', { messages: 'Hello' });
-	});
-
-
+	//User login functionality
 	app.get('/flash', function(req, res){
 		console.log("Inside Flash");
 	  // Set a flash message by passing the key, followed by the value, to req.flash().
@@ -65,62 +59,15 @@ module.exports = function(app, passport){
 	  res.redirect('/');
 	});
 
-
-	/*Creates New group*/
-	app.post('/creategroup', Auth.isAuthenticated, function(req, res){
-
-
-		//please do not delete this code
-		/*var user = req.user;
-		var name = user.firstName+" "+user.lastName;
-		var groupOwner = name;
-		var groupMembers = req.body.list;
-		var start_score = 0;
-		var userSet = [];
-		var groupset = [];
-		console.log(groupMember.length);
-		for(var i = 0; i < groupMembers.length; i++){
-			userSet = [groupMembers[i], start_score];
-			groupset.push(userSet);
-		}
-		console.log(groupset);
-		//groupMembers.push(groupOwner);
-		Group.createGroup(req.body.groupName, groupOwner, groupMembers, function(err, user){
-			if(err) throw err;
-			res.redirect("profile");
-		});*/
-	});
-
-
-	/*Get Create Group Page*/
-	app.get('/creategroup', Auth.isAuthenticated, function(req, res){
 	
-		var user = req.user;
-		var name = user.firstName+" "+user.lastName;
-		var taskCreator = name;
-		User.find({}, function (err, docs) {
-			res.render('creategroup',{
-				users: docs
-			});
-		});
-	});
-
 	/*Get group details for a user*/
 	app.get('/groupDetails', Auth.isAuthenticated, function(req, res){
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		var GroupsetData = [];
 		Group.find({groupMembers: name},function (err, docs) {			
-			console.log(docs.length);
-			console.log(docs[0].groupMembers);
-			//updateUserScore(docs[0], name, 10);
-			/*GroupSetData = buildGroupSet(docs);
-			
-			console.log(GroupSetData);
-			*/
 			res.render('groupdetails',{
 			groups:docs,
-			//GroupsetData: GroupsetData
 			});
 		});
 		/*Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
@@ -128,59 +75,6 @@ module.exports = function(app, passport){
 				groups: docs
 			});*/	
 	});
-
-	function updateUserScore(group, name, taskpoints){
-		console.log("Group details"+group);
-		console.log("Name to update"+name);
-		console.log("taskpoints: "+taskpoints);
-		console.log("Intial user points Set"+group.userpoints);
-		userSet = [];
-		var insertSet = [];
-		var points = taskpoints;
-		for(var i = 0; i < group.groupMembers.length; i++){
-			if(group.groupMembers[i] == name){
-				insertSet.push(group.groupMembers[i]);
-				insertSet.push(group.userpoints[i][1] + points);
-				userSet.push(insertSet);
-				console.log("Name found"+insertSet);
-			}
-			else{
-				console.log("Pushing set"+group.userpoints[i] );
-				userSet.push(group.userpoints[i]);
-				
-			}
-		}
-		console.log(userSet);
-		Group.update({groupName: group.groupName}, {$set: {userpoints: userSet}}, function(err, updated) {
-  			if( err || !updated ) console.log("User not updated");
-  			else console.log("User updated");
-		});
-	};
-
-	function buildGroupSet(docs){
-		//console.log("in build Result set: Printing the data ", data);
-		var result = [];
-		for(i = 0; i< docs.length; i++)
-		{
-			//console.log(docs[i].groupName);
-			//console.log(docs[i].groupMembers);
-			UserPoints.find({groupName: docs[i].groupName}, function(err, data){
-				for(var object in data){
-				userpointsData.push(data[object].points);
-				console.log(userpointsData);
-				return userpointsData;
-				}
-			});
-		}
-		//console.log("in buildResultSet func", result );
-		return result;
-	};
-	/*Edit members*/
-	//app.get('/editMembers', function(req, res){
-	//	res.render('editMembers', {});
-	//});
-
-
 
 	/* GET Add Task page. */
 	app.get('/addtask', Auth.isAuthenticated, function(req, res){
@@ -194,7 +88,7 @@ module.exports = function(app, passport){
 			});		
 	  });
 
-
+	/*Functionality to post the task added*/
 	app.post('/addtask', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
@@ -241,7 +135,7 @@ module.exports = function(app, passport){
 		
 	});
 
-
+	/*Functionality to post the changes to the tasks*/
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
     	var tasks = req.tasks;
     	console.log("Welcome");
@@ -260,6 +154,7 @@ module.exports = function(app, passport){
 		}
 	}); 
 
+	/*Code will update the userpoints for the tasks done*/
 	function findTaskDetails(taskId, status){
 		console.log("==========Inside find task========");
 		var ObjectID = require('mongodb').ObjectID;
@@ -308,7 +203,7 @@ module.exports = function(app, passport){
 	}	
 
 
-
+	/*Code perfomring the update the operation*/
 	function updateUserPoints(doer, taskPoints){
 		//var Task = this;
 		for(var i = 0; i < doer.length; i++){
@@ -329,7 +224,7 @@ module.exports = function(app, passport){
 
 
 
- /* GET Task list page. */
+ 	/* GET Task list page. */
 	app.get('/tasklist', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
@@ -348,6 +243,7 @@ module.exports = function(app, passport){
 		});
 	});
 	
+	/*Code to render the page for incomplete tasks*/
 	app.get('/incomplete', Auth.isAuthenticated, function(req, res) {
 		
 		var user = req.user
@@ -361,6 +257,7 @@ module.exports = function(app, passport){
 		});
 	});
 
+	/*Code to post the new group*/
 	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName
@@ -384,7 +281,7 @@ module.exports = function(app, passport){
 	});
 
 
- /* GET Task list page. */
+	 /* GET Task list page. */
 	app.get('/testlist', Auth.isAuthenticated, function(req, res) {
 		
 		var user = req.user
@@ -397,7 +294,7 @@ module.exports = function(app, passport){
 		});
 	});
 
-	/*new group page. */
+	/*code renders the page to create a new group page. */
 	app.get('/listroommates', function(req, res){
 		User.find({}, function (err, docs) {
 			res.render('listroommates',{
