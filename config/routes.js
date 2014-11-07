@@ -360,7 +360,10 @@ module.exports = function(app, passport){
 		/*Group.find()*/
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
-		Group.findOne({groupMembers: name}, function (err, group) {			
+		Group.findOne({groupMembers: name}, function (err, group) {	
+	
+		
+			if(group!=null){
 			console.log("GroupName: "+group.groupName);
 			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
 				console.log("userpoints docs: "+userpointsDocs);
@@ -368,6 +371,7 @@ module.exports = function(app, passport){
 				var avgPoints = 0;
 				var userDataSet = [];
 				var userData = [];
+				var myPoints = 0;
 				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
 					totalPoints = totalPoints + userpointsDocs[i].points;
@@ -377,11 +381,18 @@ module.exports = function(app, passport){
 				{
 					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
 					percentScore = parseInt(percentScore, 10);
+					if(name == userpointsDocs[j].user)
+						myPoints = userpointsDocs[j].points;
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints});
+				console.log(myPoints);
+			
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints});
+			
 			});
+		}
+		res.render("profile",{ user : req.user, userDataSet: null, groupName: null});
 		});
 	});
 
