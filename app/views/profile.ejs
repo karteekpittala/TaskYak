@@ -32,7 +32,7 @@
                 <ul class="nav nav-pills nav-stacked">
                   <li class="home active"> <a href="#" onclick="changeText('#','home');">Home</a> </li>
                   <li class="newTask"> <a href="/addtask" onclick="changeText('/addtask','newTask');">Add Task</a> </li>
-                  <li class="taskList"> <a href="/tasklist" onclick="changeText('/tasklist','taskList');">View Tasks</a> </li>     
+                  <li class="taskList" id="tasklist"> <a href="/tasklist" onclick="changeText('/tasklist','taskList');">View Tasks</a> </li>     
                   <li class="listRoommates"><a href="/listroommates" onclick="changeText('/listroommates','listRoommates');">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails" onclick="changeText('/groupdetails', 'groupdetails');">My Groups</a></li>
                   <li> <a href='/logout'>Logout</a> </li>
@@ -46,7 +46,7 @@
             <span class="fa fa-sign-in"></span> Profile
           </h2-->
             <% if(user.firstName) { %>
-              <h3>Hi, <%= user.firstName %></h3>
+              <h3 class="hi">Hi, <%= user.firstName %></h3>
                <% } else { %>
               <h3>Hi, <%= user.email %></h3>
             <% } %>
