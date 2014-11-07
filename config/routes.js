@@ -392,7 +392,10 @@ module.exports = function(app, passport){
 			
 			});
 		}
-		res.render("profile",{ user : req.user, userDataSet: null, groupName: null});
+		else{
+			res.render("profile",{ user : req.user, userDataSet: null, groupName: null});	
+		}
+		
 		});
 	});
 
