@@ -15,7 +15,7 @@ module.exports = function(app, passport){
 	});
 
 
-	//functinality to implement for load list of all users
+	//functionality to implement for load list of all users
 	app.get('/searchFriends', function(req, res){
 		var regex = new RegExp(req.query["term"], 'i');
 		var query = User.find({'firstName': regex});
@@ -368,7 +368,7 @@ module.exports = function(app, passport){
 				var avgPoints = 0;
 				var userDataSet = [];
 				var userData = [];
-				//for commuting
+				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
 					totalPoints = totalPoints + userpointsDocs[i].points;
 				}
@@ -376,13 +376,10 @@ module.exports = function(app, passport){
 				for(var j=0; j< userpointsDocs.length; j++)
 				{
 					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
-					console.log("percentScore: "+percentScore);
 					percentScore = parseInt(percentScore, 10);
-					console.log("percentScore: "+percentScore);
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				console.log(userDataSet);
 				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints});
 			});
 		});
