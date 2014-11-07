@@ -145,6 +145,8 @@
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority %></p>
 				         <p> <%= tasks[i].taskDoer %></p>
+				         <p> <% var date =  new Date(tasks[i].dueDate) %>
+				        	<%= date.toDateString() %></p>
 				        	<div class="form-group onoffswitch">
 				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox">
 				        		<label class="onoffswitch-label" for="isComplete_<%=l%>">
