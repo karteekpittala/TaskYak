@@ -253,19 +253,9 @@ module.exports = function(app, passport){
    		{
    			for(var i=1;i<=l;i++)
    			{
-   				(function(j) {
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
-   				console.log("=====Finding Task"+i);
-   				}(i));
+   				console.log("=====Finding Task"+i); 				
 
-   			}
-   			for(var i=1;i<=l;i++)
-   			{
-   				console.log("=====Saving Task"+i);
-   				Task.saveTask(req.body['primary_' + i], req.body['isComplete_' + i], function(err, user){
-					if(err) throw err;
-					
-				});
    			}
    			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
 			res.redirect("tasklist");
@@ -278,36 +268,44 @@ module.exports = function(app, passport){
 		var mongoose = require('mongoose');
 		var id = mongoose.Types.ObjectId(taskId);
 		var newStatus = status;
+		var karstatus = true;
+		console.log("Status type: of my var"+karstatus.type);
 		
 
 		Task.find({_id: id}, function(err, docs){
+			//var taskId = id;
 			var taskName = docs[0].taskName;
 			var taskDoer = docs[0].taskDoer;
 			var taskPoints = docs[0].taskPriority;
 			var prevStatus = docs[0].isComplete;
 
-
-			// console.log("***************");
-			// console.log("Task Name: "+taskName);
-			// console.log("Task Doer: "+taskDoer);
-			// console.log("Task Points: "+taskPoints);
-			  // console.log("New Status: "+newStatus);
+			console.log("***************In Find Task Details*******************");
+			console.log("Task Id: "+id);
+			console.log("Task Name: "+taskName);
+			console.log("Task Doer: "+taskDoer);
+			console.log("Task Points: "+taskPoints);
+			console.log("New Status: "+newStatus);
 
 			if((prevStatus == true) && (newStatus == "on")){
 				console.log("User points not updated, task complete before only");
 			}
 			if((prevStatus == true) && (newStatus == undefined)){
 				console.log("User points will be reduced"+(taskPoints + (-2)* taskPoints));
-				updateUserPoints(taskDoer, (taskPoints + (-2)* taskPoints));
+				Task.saveTask(taskId, newStatus, function(err, user){
+					updateUserPoints(taskDoer, (taskPoints + (-2)* taskPoints));
+					if(err) throw err;
+				});
 			}
 			if((prevStatus == false) && (newStatus == "on")){
 				console.log("User points will be added"+taskPoints);
-				updateUserPoints(taskDoer, taskPoints);
+				Task.saveTask(taskId, newStatus, function(err, user){
+					updateUserPoints(taskDoer, taskPoints);
+					if(err) throw err;
+				});
 			}
 			if((prevStatus == false) && (newStatus == undefined)){
 				console.log("User points not updated, still incomplete");	
 			}
-		
 		});
 	}	
 
@@ -317,8 +315,7 @@ module.exports = function(app, passport){
 		//var Task = this;
 		for(var i = 0; i < doer.length; i++){
 			// console.log("================"+doer[i]+"================");
-			(function(j) {
-				var userPoints;
+			var userPoints;
 			UserPoints.find({user: doer[i]}, function(err, docs){
 				// console.log("Docs:"+docs);
 				var userPoints = taskPoints + docs[0].points;
@@ -329,10 +326,7 @@ module.exports = function(app, passport){
   					else console.log("User updated");
 				});
 			});
-
-			}(i));
 		}
-
 	}
 
 
@@ -469,7 +463,34 @@ module.exports = function(app, passport){
 
 	app.get("/profile", Auth.isAuthenticated , function(req, res){ 
 		/*Group.find()*/
-		res.render("profile",{ user : req.user});
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		Group.findOne({groupMembers: name}, function (err, group) {			
+			console.log("GroupName: "+group.groupName);
+			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
+				console.log("userpoints docs: "+userpointsDocs);
+				var totalPoints = 0;
+				var avgPoints = 0;
+				var userDataSet = [];
+				var userData = [];
+				//for commuting
+				for(var i = 0; i < userpointsDocs.length; i++){
+					totalPoints = totalPoints + userpointsDocs[i].points;
+				}
+				avgPoints = totalPoints/userpointsDocs.length;
+				for(var j=0; j< userpointsDocs.length; j++)
+				{
+					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
+					console.log("percentScore: "+percentScore);
+					percentScore = parseInt(percentScore, 10);
+					console.log("percentScore: "+percentScore);
+					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
+					userDataSet.push(userData);
+				}
+				console.log(userDataSet);
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints});
+			});
+		});
 	});
 
 	app.get('/logout', function(req, res){

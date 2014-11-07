@@ -37,13 +37,16 @@ TaskSchema.statics.saveTask = function(_id, isComplete,  done){
 	var ObjectID = require('mongodb').ObjectID;
 	var mongoose = require('mongoose');
 	var id = mongoose.Types.ObjectId(_id);
-	
+	var status=false;
+	if(isComplete == "on"){
+		status = true;
+	}
 	Task.update(
 		{_id : id},
 		{
 			$set:
 			{
-				isComplete : isComplete
+				isComplete : status
 			}
 		
 		}, function(err, user){
