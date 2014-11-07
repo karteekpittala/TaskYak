@@ -164,9 +164,9 @@ casper.test.begin('TaskYak recurring tasks', 8, function suite(test) {
         }, true);
         this.click('#login');
 		this.evaluate(function() {
-            $('.tasklist a')[0].click();     
+            $('.newTask a')[0].click();     
         });
-		test.assertTitle("TaskYak", "Task List page title is the one expected");    
+		test.assertTitle("TaskYak", "Recurring tasks dropdown found");    
     });
 	
 	
