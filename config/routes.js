@@ -205,20 +205,13 @@ module.exports = function(app, passport){
 
 	/*Code perfomring the update the operation*/
 	function updateUserPoints(doer, taskPoints){
-		//var Task = this;
-		for(var i = 0; i < doer.length; i++){
-			// console.log("================"+doer[i]+"================");
-			var userPoints;
-			UserPoints.find({user: doer[i]}, function(err, docs){
-				// console.log("Docs:"+docs);
-				var userPoints = taskPoints + docs[0].points;
-				console.log("Points in database"+docs[0].points)
-				console.log("New updated user points"+userPoints);
-				UserPoints.update({user: docs[0].user}, {$set: {points: userPoints}}, function(err, updated) {
-  					if( err || !updated ) console.log("User not updated");
-  					else console.log("User updated");
-				});
+
+		for(var i = 0; i < doer.length; i++){	
+			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints}}, function(err, updated) {
+					if( err || !updated ) console.log("User not updated");
+					else console.log("User updated");
 			});
+			
 		}
 	}
 
