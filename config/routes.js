@@ -8,9 +8,9 @@ var growl = require('growl');
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
 		if(req.isAuthenticated()){
-		  res.render("home", { user : req.user}); 
+		  res.render("login", { user : req.user, message: req.flash('error') }); 
 		}else{
-			res.render("home", { user : null});
+			res.render("login", { user : null, message: req.flash('error') });
 		}
 	});
 

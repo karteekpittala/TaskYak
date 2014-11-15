@@ -9,11 +9,17 @@
      <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
       <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
       <link rel="stylesheet" href="/css/style.css"/>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
     <link  href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css"> 
     <link href="//fonts.googleapis.com/css?family=PT+Sans Narrow:400,700" rel="stylesheet" type="text/css">
+	<link href="css/ripples.min.css" rel="stylesheet">
+    <link href="css/material-wfont.min.css" rel="stylesheet">
+    <script src="js/ripples.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
 
 	<style type="text/css">
 
@@ -105,7 +111,7 @@
       </header>
       
 
-      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid #ddd;padding: 0; ">
+      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid #ddd;padding: 0; background:#FFFFFF; ">
               <div class="container-fluid">
                 <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills nav-stacked">
@@ -120,7 +126,7 @@
            </div>
      </nav>
  	<div class="col-sm-8 content">
- 		<ul class="nav nav-tabs">
+ 		<ul class="nav nav-pills">
         		<li><a href="/tasklist" data-toggle="tab">All Tasks</a></li> 
         		<li class="active"><a href="#" data-toggle="tab">Incomplete Tasks</a></li> 
         	</ul>
@@ -182,6 +188,8 @@
 		})
 
 		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    	<script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
 
   </body>
 </html>      

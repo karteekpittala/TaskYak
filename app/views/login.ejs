@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
     <link rel="stylesheet" href ="/css/login.css">
+    <link href="css/ripples.min.css" rel="stylesheet">
+    <link href="css/material-wfont.min.css" rel="stylesheet">
+    <script src="js/ripples.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="http://mymaplist.com/js/vendor/TweenLite.min.js"></script>
@@ -25,37 +34,6 @@
     </script>
   </head>
   <body>
-    <!-- <div class="jumbotron text-center">
-      <h1><span class="fa fa-lock"></span>TaskYak</h1>
-    </div>
-      <div class="container">
-        <div class="col-sm-6 col-sm-offset-3" style="border:1px solid #ddd;">
-          <h2><span class="fa fa-sign-in"></span> Login </h2>
-          <h4>
-          <% if (message.length > 0) { %>
-            <div class="alert alert-danger alert-dismissable">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <%= message %>
-            </div>
-          <%} %>
-          </h4>
-          <form action="/login" method="post">
-            <div class="form-group">
-              <label>Email</label>
-              <input type="text" name="email" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Password</label>
-              <input type="password" name="password" class="form-control">
-            </div>
-            <button type="submit" value="Log In" class="btn btn-warning btn-lg" id ="login">Login</button>
-          </form>
-          <hr>
-          <p>Need an account?  <a href="/signup" class="btn btn-warning btn-lg">Signup</a></p>
-        </div>
-      </div>
-    </div>
-  </body> -->
             <div class="container">
                 <div class="row vertical-offset-100">
                     <div class="col-md-4 col-md-offset-4">

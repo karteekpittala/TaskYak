@@ -3,17 +3,13 @@
   <head>
   
     <title> TaskYak </title>
+    <link href="css/ripples.min.css" rel="stylesheet">
+    <link href="css/material-wfont.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
      <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
-      <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
-      
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
-      <script src="/js/bootstrapValidator.min.js"/></script>
-      <script src="/js/formValidator.js"/></script>
-       <script src="/js/spinner.js"/></script>
-      <style type="text/css">
+    <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
+    <style type="text/css">
         select.frecuency {
             border: none;
             font-style: italic;
@@ -34,6 +30,19 @@
             transition: -webkit-transform .35s ease-in;
         }
       </style>
+      
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+      <script src="/js/bootstrapValidator.min.js"/></script>
+      <script src="/js/formValidator.js"/></script>
+      <script src="/js/spinner.js"/></script>
+      <script src="js/ripples.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
  </head>
   <body onload="addtaskValidator();">
     <div class="container">
@@ -44,7 +53,7 @@
       </header>
       
 
-      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid #ddd;padding: 0; ">
+      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid #ddd;padding: 0; background:#FFFFFF;">
               <div class="container-fluid">
                 <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills nav-stacked">
