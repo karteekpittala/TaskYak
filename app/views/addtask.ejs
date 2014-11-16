@@ -86,6 +86,7 @@
                   </span>
                 </div>
             </div>
+            <br>
             <div class="form-group">
             <hgroup>
           <h4>
@@ -111,13 +112,22 @@
               </div>
               </div>
 
-            </br>
-        
+            <div class="form-group">
+            <h4>Choose group</h4>
+            <div class="col-md-9 col-xs-4">
+                <select class="form-control" name="groupName" id="groupName">
+                <%for (var i = 0;i<groups.length;i++) {%>       
+                    <option value= '<%= groups[i].groupName %>' /><%= groups[i].groupName %> </option>  
+                <% }%>              
+                </select>
+                </div>
+            </div>
+        <br>
             <div class="form-group">
 			       <h4>List roommates responsible for this task</h4>
                 <div class="col-md-9 col-xs-4">
                 <select class="form-control" name="taskDoer" id="taskDoer">
-                <%for (var i = 0;i<groups.length;i++) {%>       
+                <%for (var i = 0;i<groups.length;i++) {%> 
                   <%for (var j = 0; j<groups[i].groupMembers.length; j++) {%>
                     <option value= '<%= groups[i].groupMembers[j] %>' /><%= groups[i].groupMembers[j] %> </option>
                   <% }%>                 
@@ -185,7 +195,7 @@
             }
         });
 
-      });  
+      }); 
 
       
       function removeFriend(item) {

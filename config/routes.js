@@ -81,6 +81,7 @@ module.exports = function(app, passport){
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
 		Group.find({groupMembers: name}, function (err, docs) {
+			console.log(docs);
 			res.render('addtask',{
 				groups: docs
 			});
@@ -149,7 +150,8 @@ module.exports = function(app, passport){
    				console.log("=====Finding Task"+i); 				
 
    			}
-   			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' })
+   			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' });
+   			
 			res.redirect("tasklist");
 		}
 	}); 
