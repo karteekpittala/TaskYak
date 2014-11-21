@@ -117,8 +117,8 @@
                 <ul class="nav nav-pills nav-stacked">
                   <li class="home"> <a href="/profile">Home</a> </li>
                   <li class="newTask"> <a href="/addtask">Add Task</a> </li>
-                  <li class="taskList active"> <a href="#">View Tasks</a> </li> 
-                  <li class="chooseTask"><a href="/choosetask">Choose Task</a></li>    
+                  <li class="taskList"> <a href="#">View Tasks</a> </li>  
+                   <li class="chooseTask active"><a href="/choosetask">Choose Task</a></li>      
                   <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
                   <li> <a href='/logout'>Logout</a> </li>
@@ -127,14 +127,11 @@
            </div>
      </nav>
  	<div class="col-sm-8 content">
- 		<ul class="nav nav-pills">
-        		<li><a href="/tasklist" data-toggle="tab">All Tasks</a></li> 
-        		<li class="active"><a href="#" data-toggle="tab">Incomplete Tasks</a></li> 
-        	</ul>
+ 		
         <div class="col-sm-8 col-sm-offset-1 content">	
 
-        	<form id="tasklist" name="tasklist" action="/tasklist" method="post">
-        		<%   	var l = 0; %>
+        	<form id="choosetask" name="choosetask" action="/choosetask" method="post">
+        	
         <ul id="stickytask">
         <% if (tasks.length == 0) { %>
         	<li id = "stickytask">
@@ -142,44 +139,37 @@
 			        <h4>No Tasks Found</h4>
 			        <p> Add some tasks</p>
 			      </a>
-			   </li>
+			 </li>
 		   <% } else { %>
 		      <% for(var i=0; i<tasks.length; i++) { 
-		      	if (tasks[i].taskName.length != 0 && tasks[i].isComplete == false) { %>
-		      		 <% l = l+1 %>
+		      	if (tasks[i].taskName.length != 0 && tasks[i].isComplete == false && tasks[i].taskDoer==null) { %>
+		      
 			   		 <li id = "stickytask">
 			     	 <a href="#">
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority %></p>
-				         <p> <%= tasks[i].taskDoer %></p>
+				     
 				         <p> <% var date =  new Date(tasks[i].dueDate) %>
 				        	<%= date.toDateString() %></p>
-				        	<div class="form-group onoffswitch">
-				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox">
-				        		<label class="onoffswitch-label" for="isComplete_<%=l%>">
-	       						  <span class="onoffswitch-inner"></span>
-	      						  <span class="onoffswitch-switch"></span>
-	   						 </label>
+
+
+		   					<div class="form-group">
+				        		<button id="save<%=tasks[i]._id%>" type="submit" class="btn btn-warning btn-sm" onclick="pickTask('<%= tasks[i]._id %>')"> Pick This</button> 
 				        	</div>
-							<div class="form-group">
-					        	<input type="hidden" name="primary_<%=l%>" id="primary primary_<%=l%>" value=<%= tasks[i]._id %> >
-					        </div>
+				        	
+							
 					
 			        </a>
 			      </li>
 		    <% } } } %>
 		    </ul>
+		   
 		    <div class="form-group">
-			    <input type="hidden" name="taskslength" id="taskslength" value=<%= l %> >
-			</div>
-			<% if (tasks.length > 0) { %>
-			<button id="save" type="submit" class="btn btn-warning btn-sm">  Save Tasks </button>  
-			<%}%>
+			    <input type="hidden" name="taskid" id="taskid" >
+		    </div>
 		</form>
 		
-		<!--form action="/tasklist">
-			<button id="full" type="submit" class="btn btn-warning btn-sm">  View Full Task-list </button>  
-		</form-->
+
 		</div> 
 	</div>
 		<script type="text/javascript">
@@ -189,6 +179,11 @@
 				$('#stickytask').append("<li id = 'stickytask'><a href='/addtask'><h4>No Tasks Found</h4><p> Add some tasks</p></a></li>");
 			}
 		})
+
+		function pickTask(taskid)
+		{
+			$( "#taskid" ).val(taskid);
+		}
 
 		</script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

@@ -304,6 +304,39 @@ module.exports = function(app, passport){
 		});
 	});
 
+
+	/*Code to render the page for incomplete tasks*/
+	app.get('/choosetask', Auth.isAuthenticated, function(req, res) {
+		
+		var user = req.user
+		var name = user.firstName+" "+user.lastName;
+		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+			
+			res.render('choosetask',{
+				tasks: docs
+			});
+  		// docs is an array
+		});
+	});
+
+
+	app.post('/choosetask', Auth.isAuthenticated, function(req, res) {
+		var user = req.user
+		var name = user.firstName+" "+user.lastName;
+
+    	var tasks = req.tasks;
+    	console.log("Welcome");
+    	var taskId = req.body.taskid;
+		growl('Task Assigned',{ title: 'Tasks'},{ image: 'png' });
+
+		Task.pickTask(taskId, name, function(err, user){
+					if(err) throw err;
+				});
+   	
+   		//todo: Use this id to update the task information
+   			res.redirect("/tasklist");
+	});
+
 	/*Code to post the new group*/
 	app.post('/listroommates', Auth.isAuthenticated, function(req, res) {
 		var user = req.user;
