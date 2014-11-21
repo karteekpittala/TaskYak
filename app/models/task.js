@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 TaskSchema = mongoose.Schema({
 	taskName:  String,
+	groupName: String,
 	taskCreator: String,
 	taskPriority: Number,
 	dueDate: Date,
@@ -13,11 +14,11 @@ TaskSchema = mongoose.Schema({
 });
 
 
-TaskSchema.statics.addtask = function(taskName,taskCreator, taskPriority, dueDate, isComplete, recurScore, frequency, done){
+TaskSchema.statics.addtask = function(taskName, groupName, taskCreator, taskPriority, dueDate, isComplete, recurScore, frequency, done){
 	var Task = this;
 	Task.create({
 		taskName : taskName,
-		// groupName: groupName,
+		groupName: groupName,
 		taskCreator : taskCreator,
 		taskPriority: taskPriority, 
 		dueDate: dueDate,

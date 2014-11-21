@@ -147,7 +147,7 @@
 			   </li>
 		   <% } else { %>
 		      <% for(var i=0; i<tasks.length; i++) { 
-		      	if (tasks[i].taskName.length != 0) { %>
+		      	if (tasks[i].taskName.length != 0 && tasks[i].taskDoer!= null) { %>
 		      		 <% l = l+1 %>
 			   		 <li id = "stickytask">
 			     	 <a href="#">

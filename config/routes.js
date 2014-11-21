@@ -97,42 +97,9 @@ module.exports = function(app, passport){
 		var numMonth = 1;
 		var numDate = 7;
 
-		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
+		Task.addtask(req.body.taskName,req.body.groupName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
 					if(err) throw err;				
 				});
-
-
-		// var dateList = []
-		// dateList.push(new Date(req.body.dueDate));
-
-		// for (var i=0;i<recurScore-1;i++){
-
-		// 	if (frequency==0) break;
-			
-		// 	var nextDate = new Date();
-	
-			// if(frequency==2)
-			// 	{
-			// 		nextDate.setMonth(dueDate.getMonth()+numMonth);
-			// 		dateList.push(nextDate);
-			// 		numMonth +=numMonth
-			// 	}
-
-			// else if(frequency==1)
-			// {
-			// 	nextDate.setDate(dueDate.getDate()+numDate);
-			// 	dateList.push(nextDate);
-			// 	numDate+=numDate
-			// }
-		
-		// }
-
-		// for (var j in dateList){
-		// 	console.log(new Date(dateList[j]));
-			// Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dateList[j], req.body.list, isComplete, function(err, user){
-			// 		if(err) throw err;				
-			// 	});
-		// }
 
 		res.redirect("tasklist");	
 		
@@ -310,12 +277,19 @@ module.exports = function(app, passport){
 		
 		var user = req.user
 		var name = user.firstName+" "+user.lastName;
-		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+
+		Group.find({groupMembers: name},function (err, docs) {	
 			
+			// Map the docs into an array of just the _ids
+    		var groupList = docs.map(function(doc) { return doc.groupName; });
+
+		Task.find({groupName:{$in: groupList}, taskDoer: null} ,function (err, documents) {
+			console.log(documents);
 			res.render('choosetask',{
-				tasks: docs
+				tasks: documents
 			});
   		// docs is an array
+		});
 		});
 	});
 
