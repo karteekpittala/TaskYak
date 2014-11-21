@@ -7,12 +7,13 @@ TaskSchema = mongoose.Schema({
 	dueDate: Date,
 	taskDoer:   Array,
 	isComplete: Boolean,
-	isRecurring: Boolean,
+	recurScore: Number,
+	frequency: Number,
 	
 });
 
 
-TaskSchema.statics.addtask = function(taskName,taskCreator, taskPriority, dueDate, taskDoer, isComplete, done){
+TaskSchema.statics.addtask = function(taskName,taskCreator, taskPriority, dueDate, isComplete, recurScore, frequency, done){
 	var Task = this;
 	Task.create({
 		taskName : taskName,
@@ -20,8 +21,10 @@ TaskSchema.statics.addtask = function(taskName,taskCreator, taskPriority, dueDat
 		taskCreator : taskCreator,
 		taskPriority: taskPriority, 
 		dueDate: dueDate,
-		taskDoer : taskDoer,
-		isComplete : isComplete
+		taskDoer : null,
+		isComplete : isComplete,
+		recurScore: recurScore,
+		frequency: frequency
 	}, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);

@@ -171,7 +171,9 @@
 		    <div class="form-group">
 			    <input type="hidden" name="taskslength" id="taskslength" value=<%= l %> >
 			</div>
+			<% if (tasks.length > 0) { %>
 			<button id="save" type="submit" class="btn btn-warning btn-sm">  Save Tasks </button>  
+			<%}%>
 		</form>
 		
 		<!--form action="/tasklist">

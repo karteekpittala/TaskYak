@@ -104,14 +104,14 @@ function addtaskValidator()
                        				 message: 'Points must be numeric between 1 and 10'
                     			}
                             }
-                        },
-                        doers:{
-                        	validators: {
-                                notEmpty: {
-                                    message: 'Please enter the task doers'
-                                }
-                            }
-                        }
+                         }//,
+                        // doers:{
+                        // 	validators: {
+                        //         notEmpty: {
+                        //             message: 'Please enter the task doers'
+                        //         }
+                        //     }
+                        // }
                         
               }
 

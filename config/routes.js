@@ -70,10 +70,6 @@ module.exports = function(app, passport){
 			groups:docs,
 			});
 		});
-		/*Group.find({groupMembers:{$regex : ".*"+name+".*"}}, function (err, docs) {
-			res.render('groupdetails',{
-				groups: docs
-			});*/	
 	});
 
 	/* GET Add Task page. */
@@ -96,41 +92,47 @@ module.exports = function(app, passport){
 		var taskCreator = name;
 		var isComplete = 0;
 		var dueDate = new Date(req.body.dueDate);
-		var recurScore = req.body.recurScore;
-		var frequency = req.body.frequency;
+		var recurScore = Number(req.body.recurScore);
+		var frequency = Number(req.body.frequency);
 		var numMonth = 1;
 		var numDate = 7;
-		var dateList = []
-		dateList.push(new Date(req.body.dueDate));
 
-		for (var i=0;i<recurScore-1;i++){
-
-			if (frequency==0) break;
-			
-			var nextDate = new Date();
-	
-			if(frequency==2)
-				{
-					nextDate.setMonth(dueDate.getMonth()+numMonth);
-					dateList.push(nextDate);
-					numMonth +=numMonth
-				}
-
-			else if(frequency==1)
-			{
-				nextDate.setDate(dueDate.getDate()+numDate);
-				dateList.push(nextDate);
-				numDate+=numDate
-			}
-		
-		}
-
-		for (var j in dateList){
-			console.log(new Date(dateList[j]));
-			Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dateList[j], req.body.list, isComplete, function(err, user){
+		Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
 					if(err) throw err;				
 				});
-		}
+
+
+		// var dateList = []
+		// dateList.push(new Date(req.body.dueDate));
+
+		// for (var i=0;i<recurScore-1;i++){
+
+		// 	if (frequency==0) break;
+			
+		// 	var nextDate = new Date();
+	
+			// if(frequency==2)
+			// 	{
+			// 		nextDate.setMonth(dueDate.getMonth()+numMonth);
+			// 		dateList.push(nextDate);
+			// 		numMonth +=numMonth
+			// 	}
+
+			// else if(frequency==1)
+			// {
+			// 	nextDate.setDate(dueDate.getDate()+numDate);
+			// 	dateList.push(nextDate);
+			// 	numDate+=numDate
+			// }
+		
+		// }
+
+		// for (var j in dateList){
+		// 	console.log(new Date(dateList[j]));
+			// Task.addtask(req.body.taskName, taskCreator, req.body.taskPriority, dateList[j], req.body.list, isComplete, function(err, user){
+			// 		if(err) throw err;				
+			// 	});
+		// }
 
 		res.redirect("tasklist");	
 		
@@ -147,14 +149,64 @@ module.exports = function(app, passport){
    			for(var i=1;i<=l;i++)
    			{
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
-   				console.log("=====Finding Task"+i); 				
+   				console.log("=====Finding Task"+i); 
+   				recurTask(req.body['primary_'+i]);
 
    			}
    			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' });
    			
 			res.redirect("tasklist");
 		}
-	}); 
+	});
+
+	function recurTask(taskId){
+		console.log("Inside recurTask")
+		var ObjectID = require('mongodb').ObjectID;
+		var mongoose = require('mongoose');
+		var id = mongoose.Types.ObjectId(taskId);
+		var frequency;
+		var recurScore;
+		var dueDate;
+		var nextDate = new Date();
+		var numMonth = 1;
+		var numDate = 7;
+		Task.find({_id: id}, function(err, docs){
+
+			recurScore = docs[0].recurScore;
+			frequency = docs[0].frequency;
+			dueDate= docs[0].dueDate;
+
+			if(frequency==2)
+				{
+					if (recurScore>1)
+					{
+						nextDate.setMonth(dueDate.getMonth()+numMonth);
+						recurScore -= 1;
+						update();
+					}
+				}
+
+			else if(frequency==1)
+			{
+				if (recurScore>1)
+				{
+					nextDate.setDate(dueDate.getDate()+numDate);
+					recurScore -= 1;
+					update();
+				}
+			}
+
+			});
+		
+		function update()
+		{
+
+		Task.update({_id: id},{$set:{recurScore: recurScore, dueDate: nextDate}, isComplete: false}, function(err, updated) {
+					if( err || !updated ) console.log("Task updated");
+					else console.log("Task updated");
+			});
+		}
+	} 
 
 	/*Code will update the userpoints for the tasks done*/
 	function findTaskDetails(taskId, status){

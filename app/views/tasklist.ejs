@@ -156,7 +156,7 @@
 				        	<p> <% var date =  new Date(tasks[i].dueDate) %>
 				        	<%= date.toDateString() %></p>
 				        	<div class="form-group onoffswitch">
-				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox">
+				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox" disabled>
 				        		<label class="onoffswitch-label" for="isComplete_<%=l%>">
 	       						  <span class="onoffswitch-inner"></span>
 	      						  <span class="onoffswitch-switch"></span>
@@ -174,7 +174,10 @@
 		    <div class="form-group">
 			    <input type="hidden" name="taskslength" id="taskslength" value=<%= l %> >
 			</div>
+			<% if (tasks.length > 0) { %>
 			<button id="btnsubmit" type="submit" class="btn btn-warning btn-sm">  Save Tasks </button>  
+			<%}%>
+			
 		</form>
 		<!--form action="/incomplete" method="get">
 			<button id="incompletebtn" type="submit" class="btn btn-warning btn-sm">  View Incomplete Tasks </button>  
