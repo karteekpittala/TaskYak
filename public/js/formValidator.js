@@ -85,9 +85,9 @@ function addtaskValidator()
                                 },
                                 stringLength: {
                        				 enabled: true,
-                        			 min: 8,
+                        			 min: 5,
                        				 max: 40,
-                        			 message: 'The task description must be more than 8 and less than 40 characters long'
+                        			 message: 'The task description must be more than 5 characters long'
                     			}
      
                             }
@@ -100,19 +100,11 @@ function addtaskValidator()
                                 
                                 between: {
                         			min: 1,
-                        			max: 10,
-                       				 message: 'Points must be numeric between 1 and 10'
+                        			max: 100,
+                       				 message: 'Points must be numeric and less than 100'
                     			}
                             }
-                         }//,
-                        // doers:{
-                        // 	validators: {
-                        //         notEmpty: {
-                        //             message: 'Please enter the task doers'
-                        //         }
-                        //     }
-                        // }
-                        
+                         }
               }
 
             }); 

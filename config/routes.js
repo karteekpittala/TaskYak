@@ -284,7 +284,7 @@ module.exports = function(app, passport){
     		var groupList = docs.map(function(doc) { return doc.groupName; });
 
 		Task.find({groupName:{$in: groupList}, taskDoer: null} ,function (err, documents) {
-			console.log(documents);
+	
 			res.render('choosetask',{
 				tasks: documents
 			});
@@ -299,15 +299,49 @@ module.exports = function(app, passport){
 		var name = user.firstName+" "+user.lastName;
 
     	var tasks = req.tasks;
-    	console.log("Welcome");
     	var taskId = req.body.taskid;
-		growl('Task Assigned',{ title: 'Tasks'},{ image: 'png' });
+		var ObjectID = require('mongodb').ObjectID;
+		var mongoose = require('mongoose');
+		var id = mongoose.Types.ObjectId(taskId);
+		var currentPoints;
+		var sumPoints = 0;
 
-		Task.pickTask(taskId, name, function(err, user){
-					if(err) throw err;
-				});
+		Task.find({_id : id}, function(err, docs){
+					currentPoints = 0.2*docs[0].taskPriority;
+					console.log("currentPoints"+currentPoints);
+					if(err) throw err;	
+		});	
+	
+		Task.update({_id : id},{ $set:{taskDoer : name}}, function(err, user){
+					if(err) throw err;	
+					findSum();
+		});
+
+		function findSum(){
+		Task.find({taskDoer: null},  function(err, docs) {
+					docs.forEach(function(elem) {
+						    sumPoints += elem.taskPriority;
+						});
+						if(err) throw err;
+						console.log("sumPoints"+sumPoints);
+						updatePoints();
+				}); 
+		}				
+		
+		function updatePoints()
+		{
+		Task.find({'taskDoer': null}, function(err, docs) {
+						docs.forEach(function(elem, index, array) {
+							var increment = ((elem.taskPriority/sumPoints)*currentPoints)
+						    elem.taskPriority = elem.taskPriority+increment ;
+						    elem.save();
+						});
+						if(err) throw err;
+						else console.log("Task points updated");
+				}); 
+		}			
    	
-   		//todo: Use this id to update the task information
+ 
    			res.redirect("/tasklist");
 	});
 
