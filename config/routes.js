@@ -5,6 +5,8 @@ var UserPoints = require('../app/models/userPoints');
 var Auth = require('./middlewares/authorization.js');
 var growl = require('growl');
 
+AUTO_INCREMENT = 0.2
+
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
 		if(req.isAuthenticated()){
@@ -168,7 +170,7 @@ module.exports = function(app, passport){
 		function update()
 		{
 
-		Task.update({_id: id},{$set:{recurScore: recurScore, dueDate: nextDate}, isComplete: false}, function(err, updated) {
+		Task.update({_id: id},{$set:{recurScore: recurScore, dueDate: nextDate, isComplete: false, taskDoer: null}}, function(err, updated) {
 					if( err || !updated ) console.log("Task updated");
 					else console.log("Task updated");
 			});
@@ -284,7 +286,7 @@ module.exports = function(app, passport){
     		var groupList = docs.map(function(doc) { return doc.groupName; });
 
 		Task.find({groupName:{$in: groupList}, taskDoer: null} ,function (err, documents) {
-	
+			console.log("documents"+documents);
 			res.render('choosetask',{
 				tasks: documents
 			});
@@ -307,7 +309,7 @@ module.exports = function(app, passport){
 		var sumPoints = 0;
 
 		Task.find({_id : id}, function(err, docs){
-					currentPoints = 0.2*docs[0].taskPriority;
+					currentPoints = AUTO_INCREMENT*docs[0].taskPriority;
 					console.log("currentPoints"+currentPoints);
 					if(err) throw err;	
 		});	
