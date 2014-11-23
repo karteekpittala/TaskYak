@@ -62,16 +62,30 @@
      </nav>
  
         <div class="col-sm-6 col-sm-offset-1 content">
-          <h2> Add task</h2>
+          <h2> Add a task</h2>
+        <br>
+          <h4>Add a new task</h4>
          <form id="addtask" name="addtask" action="/addtask" method="post">
             <div class="form-group">
               <input id="taskName" type="text" placeholder="A short description of the task" name="taskName" class="form-control">
             </div>
-
+            <div align="center"><h4>or</h4></div>
+            <div class="form-group">
+              <h4>Select from existing</h4>   
+                     <select class="form-control" name="taskName" id="taskName"> 
+                    <%for (var i=0;i<mastertasks.length;i++) {%>    
+                        <option value= '<%= mastertasks[i].taskName%>' /><%= mastertasks[i].taskName%> </option>  
+                    <% }%>            
+                    </select>
+                
+            </div>
+                <div id="break"></div>
                <div class="form-group">
+               <h4>Points</h4>
               <input id="taskPriority" type="text" placeholder="Points on a scale of 1 to 100" name="taskPriority" class="form-control">
             </div>
             <div class="form-group">
+             <h4>Due Date</h4>
                 <div class="input-group date">
                   <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" name="dueDate"/>
                   <span class="input-group-addon">
@@ -79,7 +93,7 @@
                   </span>
                 </div>
             </div>
-            <br>
+            
             <div class="form-group">
             <hgroup>
           <h4>
@@ -106,13 +120,13 @@
               </div>
 
             <div class="form-group">
-            <h4>Choose group</h4>
-            <div class="col-md-9 col-xs-4">
-                <select class="form-control" name="groupName" id="groupName">
-                <%for (var i = 0;i<groups.length;i++) {%>       
-                    <option value= '<%= groups[i].groupName %>' /><%= groups[i].groupName %> </option>  
-                <% }%>              
-                </select>
+              <h4>Choose group</h4>
+                <div class="col-md-9 col-xs-4">
+                    <select class="form-control" name="groupName" id="groupName">
+                    <%for (var i = 0;i<groups.length;i++) {%>       
+                        <option value= '<%= groups[i].groupName %>' /><%= groups[i].groupName %> </option>  
+                    <% }%>              
+                    </select>
                 </div>
             </div>
         <br>
@@ -135,17 +149,16 @@
                 <br>
               </div>
               <!-- <div id="doers"></div><br> -->
+              <div id="break">
+                <br>
+              </div>
+            
               <button id="btnsubmit" type="submit" class="btn btn-warning btn-default"> Submit Task </button>  
             </div>
             </div>
         </div>
           </form>
-          <div id="break">
-                <br>
-              </div>
-              <div id="break">
-                <br>
-              </div>
+          
         
       
     <script type="text/javascript">

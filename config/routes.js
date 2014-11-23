@@ -78,10 +78,39 @@ module.exports = function(app, passport){
 	app.get('/addtask', Auth.isAuthenticated, function(req, res){
 		var user = req.user
 		var name = user.firstName+" "+user.lastName
+		var taskdocuments = new Array();
+		
 		Group.find({groupMembers: name}, function (err, docs) {
-			console.log(docs);
+			
+			docs.forEach(function(task, count, array){
+					console.log("Array "+array.length);
+					console.log("Count "+count);
+					Task.find({groupName:task.groupName}, function (err, documents) {
+							
+							
+							console.log("Pushing..")	
+							taskdocuments.push.apply(taskdocuments,documents);
+							
+				
+							console.log("Array "+count==array.length-1)
+							console.log("Docs "+count== docs.length-1)
+							if(count == array.length-1) { // check if all callbacks have been called
+					            redirect();
+					        }
+
+					});			
+			 
+
+			function redirect() {
+			console.log("Master Tasks:"+taskdocuments);
+			console.log("Redirecting.....")		
 			res.render('addtask',{
-				groups: docs
+						groups: docs,
+						mastertasks: taskdocuments
+					});	
+			}
+			
+			
 			});
 
 			});		
@@ -456,7 +485,7 @@ module.exports = function(app, passport){
 			if(group!=null){
 			console.log("GroupName: "+group.groupName);
 			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
-				console.log("userpoints docs: "+userpointsDocs);
+				//console.log("userpoints docs: "+userpointsDocs);
 				var totalPoints = 0;
 				var avgPoints = 0;
 				var userDataSet = [];
@@ -476,7 +505,7 @@ module.exports = function(app, passport){
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				console.log(myPoints);
+				//console.log(myPoints);
 			
 				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints});
 			
