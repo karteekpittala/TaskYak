@@ -72,9 +72,9 @@
             <div align="center"><h4>or</h4></div>
             <div class="form-group">
               <h4>Select from existing</h4>   
-                     <select class="form-control" name="taskName" id="taskName"> 
+                     <select class="form-control" name="selecttaskName" id="selecttaskName"> 
                     <%for (var i=0;i<mastertasks.length;i++) {%>    
-                        <option value= '<%= mastertasks[i].taskName%>' /><%= mastertasks[i].taskName%> </option>  
+                        <option value= '<%= mastertasks[i]._id%>' /><%= mastertasks[i].taskName%> </option>  
                     <% }%>            
                     </select>
                 
@@ -197,6 +197,27 @@
                 event.preventDefault();
             }
         });
+
+        $(document).ready(function() {
+          var selectBox = document.getElementById("selecttaskName")
+          selectBox.onClick = function(e) {
+          var name = document.getElementById("selecttaskName").value
+          var result = $.grep(mastertasks, function(e){ return e._id == name; });
+          if (result.length == 0) {
+            // not found
+            document.getElementById("taskName").value = "Khali"
+          } else if (result.length == 1) {
+            // access the foo property using result[0].foo
+            document.getElementById("taskPriority").value = result[0].taskPriority
+            document.getElementById("recurScore").value = result[0].recurScore
+            document.getElementById("frequency").value = result[0].frequency
+          } else {
+            // multiple items found
+            document.getElementById("taskName").value = "Mama"
+          }
+          
+          
+        }); 
 
       }); 
 

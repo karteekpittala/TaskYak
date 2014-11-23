@@ -89,16 +89,23 @@ module.exports = function(app, passport){
 							
 							
 							console.log("Pushing..")	
-							taskdocuments.push.apply(taskdocuments,documents);
+							pushToArray(documents, function(){
+								if(count == array.length-1)
+								{ // check if all callbacks have been called
+					            	redirect();
+					        	}
+							});
 							
 				
-							console.log("Array "+count==array.length-1)
-							console.log("Docs "+count== docs.length-1)
-							if(count == array.length-1) { // check if all callbacks have been called
-					            redirect();
-					        }
+							// console.log("Array "+count==array.length-1)
+							// console.log("Docs "+count== docs.length-1)
+							
+					});
 
-					});			
+			function pushToArray(doc, callback){
+				taskdocuments.push.apply(taskdocuments,doc);
+				setTimeout(function() { callback(); }, 1000);
+			}					
 			 
 
 			function redirect() {
