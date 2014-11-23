@@ -34,6 +34,35 @@
       <script src="/js/bootstrapValidator.min.js"/></script>
       <script src="/js/formValidator.js"/></script>
       <script src="/js/spinner.js"/></script>
+      <script type="text/javascript">
+      function reuseTask()
+          {
+            
+            var id = document.getElementById("selecttaskName").value
+            alert(id);
+            
+            var result = mastertasks.filter(function(obj, id) {
+              return obj._id==id;
+            });
+           
+            alert(result);
+            if (result.length == 0) {
+              // not found
+              document.getElementById("taskName").value = "Khali"
+            } else if (result.length == 1) {
+              // access the foo property using result[0].foo
+              document.getElementById("taskPriority").value = result[0].taskPriority
+              document.getElementById("recurScore").value = result[0].recurScore
+              document.getElementById("frequency").value = result[0].frequency
+            } else {
+              // multiple items found
+              document.getElementById("taskName").value = "Mama"
+            }
+          }
+
+         
+
+      </script>
       
  </head>
   <body onload="addtaskValidator();">
@@ -72,7 +101,8 @@
             <div align="center"><h4>or</h4></div>
             <div class="form-group">
               <h4>Select from existing</h4>   
-                     <select class="form-control" name="selecttaskName" id="selecttaskName"> 
+                     <select class="form-control" name="selecttaskName" id="selecttaskName" onchange="reuseTask()"> 
+                     <option></option>
                     <%for (var i=0;i<mastertasks.length;i++) {%>    
                         <option value= '<%= mastertasks[i]._id%>' /><%= mastertasks[i].taskName%> </option>  
                     <% }%>            
@@ -184,6 +214,7 @@
       });
 
       $(document).ready(function() {
+
         $("button[name='add']").click(function () {
           var name = document.getElementById("taskDoer").value
         $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
@@ -196,30 +227,10 @@
               alert("Please assign this task to atleast one roommate");
                 event.preventDefault();
             }
-        });
+      
+       });   
+         
 
-        $(document).ready(function() {
-          var selectBox = document.getElementById("selecttaskName")
-          selectBox.onClick = function(e) {
-          var name = document.getElementById("selecttaskName").value
-          var result = $.grep(mastertasks, function(e){ return e._id == name; });
-          if (result.length == 0) {
-            // not found
-            document.getElementById("taskName").value = "Khali"
-          } else if (result.length == 1) {
-            // access the foo property using result[0].foo
-            document.getElementById("taskPriority").value = result[0].taskPriority
-            document.getElementById("recurScore").value = result[0].recurScore
-            document.getElementById("frequency").value = result[0].frequency
-          } else {
-            // multiple items found
-            document.getElementById("taskName").value = "Mama"
-          }
-          
-          
-        }); 
-
-      }); 
 
       
       function removeFriend(item) {
