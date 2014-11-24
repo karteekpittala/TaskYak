@@ -38,7 +38,10 @@
       function reuseTask()
           {
             var task = document.getElementById("selecttaskName").value;
-            document.getElementById("taskPriority").value = task;
+            var json = JSON.parse(task);
+            alert(typeof(json));
+            document.getElementById("taskPriority").value = json.taskPriority;
+            document.getElementById("groupName").value = json.groupName;
             document.getElementById("taskPriority").disabled = true;
           } 
 
@@ -93,7 +96,7 @@
                  <select class="form-control" name="selecttaskName" id="selecttaskName" onclick="disableInput()" onchange="reuseTask()"> 
                  <option></option>
                 <%for (var i=0;i<mastertasks.length;i++) {%>    
-                    <option value= '<%= mastertasks[i].taskPriority%>' /><%= mastertasks[i].taskName%> </option>  
+                    <option value= '<%= JSON.stringify(mastertasks[i])%>' /><%= mastertasks[i].taskName%> </option>  
                 <% }%>            
                 </select>
                 
@@ -181,7 +184,6 @@
         
       
     <script type="text/javascript">
-
       var groupsList = document.addtask.groupName;
 
       var taskDoerList = document.addtask.taskDoer;
@@ -204,7 +206,6 @@
       });
 
       $(document).ready(function() {
-
         $("button[name='add']").click(function () {
           var name = document.getElementById("taskDoer").value
         $("#doers").append("<div id='this' onClick='removeFriend(this)' ><input type='text' style='border:none' name='list'  value='"+name+"' />"+"&nbsp;<span class='glyphicon glyphicon-remove' style='color:#7F7F7F;'></span><br></div>");
@@ -217,10 +218,9 @@
               alert("Please assign this task to atleast one roommate");
                 event.preventDefault();
             }
-      
-       });   
-         
+        });
 
+      });  
 
       
       function removeFriend(item) {

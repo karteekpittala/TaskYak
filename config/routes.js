@@ -132,14 +132,25 @@ module.exports = function(app, passport){
 		var dueDate = new Date(req.body.dueDate);
 		var recurScore = Number(req.body.recurScore);
 		var frequency = Number(req.body.frequency);
+		var selectedTask = JSON.parse(req.body.selecttaskName);
+		console.log(typeof(selectedTask))
 		var numMonth = 1;
 		var numDate = 7;
-
+		if(req.body.taskName){
+		console.log("=================Inside if===================");
 		Task.addtask(req.body.taskName,req.body.groupName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
 					if(err) throw err;				
 				});
+		}
+		else if(req.body.selecttaskName){
+			console.log("=================Inside else===================");
+			Task.update({ taskName: selectedTask.taskName },{$set:{recurScore: recurScore, dueDate: req.body.dueDate, isComplete: false, taskDoer: null, frequency:frequency}}, function(err, updated) {
+					if( err || !updated ) console.log("Task updated");
+					else console.log("Task updated");
+			});
+		}	
 
-		res.redirect("tasklist");	
+		res.redirect("choosetask");	
 		
 	});
 
@@ -205,7 +216,6 @@ module.exports = function(app, passport){
 		
 		function update()
 		{
-
 		Task.update({_id: id},{$set:{recurScore: recurScore, dueDate: nextDate, isComplete: false, taskDoer: null}}, function(err, updated) {
 					if( err || !updated ) console.log("Task updated");
 					else console.log("Task updated");
@@ -287,7 +297,7 @@ module.exports = function(app, passport){
 		start.setMonth(start.getMonth() - numMonths);  
 
 		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}],"dueDate": {"$gte": start, "$lt": end}} ,function (err, docs) {
-			
+			console.log("Docs"+docs)
 			res.render('tasklist',{
 				tasks: docs
 			});
