@@ -37,29 +37,18 @@
       <script type="text/javascript">
       function reuseTask()
           {
-            
-            var id = document.getElementById("selecttaskName").value
-            alert(id);
-            
-            var result = mastertasks.filter(function(obj, id) {
-              return obj._id==id;
-            });
-           
-            alert(result);
-            if (result.length == 0) {
-              // not found
-              document.getElementById("taskName").value = "Khali"
-            } else if (result.length == 1) {
-              // access the foo property using result[0].foo
-              document.getElementById("taskPriority").value = result[0].taskPriority
-              document.getElementById("recurScore").value = result[0].recurScore
-              document.getElementById("frequency").value = result[0].frequency
-            } else {
-              // multiple items found
-              document.getElementById("taskName").value = "Mama"
-            }
-          }
+            var task = document.getElementById("selecttaskName").value;
+            document.getElementById("taskPriority").value = task;
+            document.getElementById("taskPriority").disabled = true;
+          } 
 
+      function disableSelect(){
+        document.getElementById("selecttaskName").disabled = true;
+      } 
+
+      function disableInput(){
+        document.getElementById("taskName").disabled = true;
+      }     
          
 
       </script>
@@ -94,19 +83,19 @@
           <h2> Add a task</h2>
         <br>
           <h4>Add a new task</h4>
-         <form id="addtask" name="addtask" action="/addtask" method="post">
+         <form id="addtask" name="addtask" action="/addtask" method="post" >
             <div class="form-group">
-              <input id="taskName" type="text" placeholder="A short description of the task" name="taskName" class="form-control">
+              <input id="taskName" type="text" placeholder="A short description of the task" name="taskName" class="form-control" onclick="disableSelect()">
             </div>
             <div align="center"><h4>or</h4></div>
             <div class="form-group">
               <h4>Select from existing</h4>   
-                     <select class="form-control" name="selecttaskName" id="selecttaskName" onchange="reuseTask()"> 
-                     <option></option>
-                    <%for (var i=0;i<mastertasks.length;i++) {%>    
-                        <option value= '<%= mastertasks[i]._id%>' /><%= mastertasks[i].taskName%> </option>  
-                    <% }%>            
-                    </select>
+                 <select class="form-control" name="selecttaskName" id="selecttaskName" onclick="disableInput()" onchange="reuseTask()"> 
+                 <option></option>
+                <%for (var i=0;i<mastertasks.length;i++) {%>    
+                    <option value= '<%= mastertasks[i].taskPriority%>' /><%= mastertasks[i].taskName%> </option>  
+                <% }%>            
+                </select>
                 
             </div>
                 <div id="break"></div>
@@ -192,6 +181,7 @@
         
       
     <script type="text/javascript">
+
       var groupsList = document.addtask.groupName;
 
       var taskDoerList = document.addtask.taskDoer;
