@@ -196,7 +196,8 @@ module.exports = function(app, passport){
 			if(frequency==2)
 				{
 					if (recurScore>1)
-					{
+					{		
+						nextDate.getYear(dueDate.getYear());
 						nextDate.setMonth(dueDate.getMonth()+numMonth);
 						recurScore -= 1;
 						update();
@@ -207,6 +208,8 @@ module.exports = function(app, passport){
 			{
 				if (recurScore>1)
 				{
+					nextDate.getYear(dueDate.getYear());
+					nextDate.setMonth(dueDate.getMonth());
 					nextDate.setDate(dueDate.getDate()+numDate);
 					recurScore -= 1;
 					update();
