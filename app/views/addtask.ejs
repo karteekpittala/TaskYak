@@ -39,7 +39,7 @@
           {
             var task = document.getElementById("selecttaskName").value;
             var json = JSON.parse(task);
-            alert(typeof(json));
+            // alert(typeof(json));
             document.getElementById("taskPriority").value = json.taskPriority;
             document.getElementById("groupName").value = json.groupName;
             document.getElementById("taskPriority").disabled = true;
