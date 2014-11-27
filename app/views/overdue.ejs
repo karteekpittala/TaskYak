@@ -119,11 +119,11 @@
  	<div class="col-sm-8 content">
  		<ul class="nav nav-pills">
         		<li><a href="/tasklist" data-toggle="tab">All Tasks</a></li> 
-        		<li class="active"><a href="#" data-toggle="tab">Incomplete Tasks</a></li> 
-        		<li><a href="/overdue" data-toggle="tab">Overdue Tasks</a></li> 
+        		<li><a href="/incomplete" data-toggle="tab">Incomplete Tasks</a></li> 
+        		<li class="active"><a href="#" data-toggle="tab">Overdue Tasks</a></li> 
         	</ul>
-      
         <div class="col-sm-8 col-sm-offset-1 content">	
+
 
         	<form id="tasklist" name="tasklist" action="/tasklist" method="post">
         		<%   	var l = 0; %>
@@ -137,7 +137,7 @@
 			   </li>
 		   <% } else { %>
 		      <% for(var i=0; i<tasks.length; i++) { 
-		      	if (tasks[i].taskName.length != 0  && tasks[i].taskDoer!= null) { %>
+		      	if (tasks[i].taskName.length != 0 && tasks[i].taskDoer!= null) { %>
 		      		 <% l = l+1 %>
 			   		 <li id = "stickytask">
 			     	 <a href="#">
@@ -153,29 +153,17 @@
 	      						  <span class="onoffswitch-switch"></span>
 	   						 </label>
 				        	</div>
-							<div class="form-group">
-					        	<input type="hidden" name="primary_<%=l%>" id="primary primary_<%=l%>" value=<%= tasks[i]._id %> >
-					        </div>
-					
+						
 			        </a>
 			      </li>
 		    <% } } } %>
 		    </ul>
-		    <div class="form-group">
-			    <input type="hidden" name="taskslength" id="taskslength" value=<%= l %> >
-			</div>
-			<% if (tasks.length > 0) { %>
-			<button id="save" type="submit" class="btn btn-warning btn-default">  Save Tasks </button>  
-			<%}%>
-			<div id="break"><br></div>
+		   
 		</form>
-		
-		<!--form action="/tasklist">
-			<button id="full" type="submit" class="btn btn-warning btn-sm">  View Full Task-list </button>  
-		</form-->
+        	
 		</div> 
 	</div>
-		<script type="text/javascript">
+		<!--script type="text/javascript">
 		$(document).ready(function(){
 			if ($('#stickytask li').length == 0)
 			{
@@ -183,7 +171,7 @@
 			}
 		})
 
-		</script>
+		</script-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     	<script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
 

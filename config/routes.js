@@ -314,15 +314,31 @@ module.exports = function(app, passport){
 		
 		var user = req.user
 		var name = user.firstName+" "+user.lastName;
-		Task.find({$or:[ {'taskDoer': name}, {'taskCreator': name}]} ,function (err, docs) {
+		Task.find({$and: [{$or:[ {'taskDoer': name}, {'taskCreator': name}]} , {'isComplete':false}]} ,function (err, docs) {
 			
 			res.render('incomplete',{
 				tasks: docs
 			});
   		// docs is an array
+
 		});
 	});
 
+
+	app.get('/overdue', Auth.isAuthenticated, function(req, res) {	
+		var user = req.user
+		var name = user.firstName+" "+user.lastName;
+		var d = new Date();
+
+		Task.find({$and: [{$or:[ {'taskDoer': name}, {'taskCreator': name}]}, {'isComplete':false}, {'dueDate': {$lte: d}}]} ,function (err, docs) {
+			
+			res.render('overdue',{
+				tasks: docs
+			});
+
+  		// docs is an array
+		});
+	});
 
 	/*Code to render the page for incomplete tasks*/
 	app.get('/choosetask', Auth.isAuthenticated, function(req, res) {
