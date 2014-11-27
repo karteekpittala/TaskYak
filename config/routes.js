@@ -166,8 +166,9 @@ module.exports = function(app, passport){
    			for(var i=1;i<=l;i++)
    			{
    				findTaskDetails(req.body['primary_'+i], req.body['isComplete_'+i]);
-   				console.log("=====Finding Task"+i); 
-   				recurTask(req.body['primary_'+i]);
+   				//console.log("=====Finding Task"+i); 
+   				console.log("Argument should be:"+req.body['primary_'+i])
+   				//recurTask(req.body['primary_'+i]);
 
    			}
    			growl('Task Status Saved',{ title: 'Tasks'},{ image: 'png' });
@@ -178,9 +179,10 @@ module.exports = function(app, passport){
 
 	function recurTask(taskId){
 		console.log("Inside recurTask")
+		console.log("Argument is"+taskId);
 		var ObjectID = require('mongodb').ObjectID;
 		var mongoose = require('mongoose');
-		var id = mongoose.Types.ObjectId(taskId);
+		var id = taskId;
 		var frequency;
 		var recurScore;
 		var dueDate;
@@ -192,6 +194,13 @@ module.exports = function(app, passport){
 			recurScore = docs[0].recurScore;
 			frequency = docs[0].frequency;
 			dueDate= docs[0].dueDate;
+			taskName = docs[0].taskName;
+			groupName = docs[0].groupName;
+			taskCreator = docs[0].taskCreator;
+			taskPriority = (1-AUTO_INCREMENT)*docs[0].taskPriority;
+			frequency = docs[0].frequency;
+
+
 
 			if(frequency==2)
 				{
@@ -220,7 +229,7 @@ module.exports = function(app, passport){
 		
 		function update()
 		{
-		Task.update({_id: id},{$set:{recurScore: recurScore, dueDate: nextDate, isComplete: false, taskDoer: null}}, function(err, updated) {
+		Task.addtask(taskName, groupName, taskCreator, taskPriority, nextDate ,false, recurScore, frequency, function(err, updated) {
 					if( err || !updated ) console.log("Task updated");
 					else console.log("Task updated");
 			});
@@ -359,6 +368,7 @@ module.exports = function(app, passport){
 		var sumPoints = 0;
 
 		Task.find({_id : id}, function(err, docs){
+				
 					currentPoints = AUTO_INCREMENT*docs[0].taskPriority;
 					console.log("currentPoints"+currentPoints);
 					if(err) throw err;	
@@ -390,7 +400,18 @@ module.exports = function(app, passport){
 						});
 						if(err) throw err;
 						else console.log("Task points updated");
-				}); 
+				});
+				callRecur(); 
+		}
+
+		function callRecur()
+		{
+
+		Task.find({_id : id}, function(err, docs){		
+			recurTask(docs[0]._id);
+			if(err) throw err;	
+		});	
+
 		}			
    	
  
