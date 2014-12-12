@@ -498,7 +498,10 @@ module.exports = function(app, passport){
 		function callRecur(dec)
 		{
 
-		Task.find({_id : id}, function(err, docs){		
+		Task.find({_id : id}, function(err, docs){
+			// if(docs[0].recurScore >1){
+			// 	dec = true;
+			// }		
 			recurTask(docs[0]._id, dec);
 			if(err) throw err;	
 		});	
