@@ -654,13 +654,10 @@ module.exports = function(app, passport){
 							currUpdate = lastDate.addDays(weeksElapsed * 7);
 							console.log("points " + weeklyPoints);
 							console.log("date" + currUpdate);
-							//todo: update these values for current userPoints id in the database
-						//	 updateWeeklyPoints(user, weeklyPoints, currUpdate);
-					
-							/*	UserPoints.resetPoints(userPointID, weeklyPoints, function(err, user){
-								//updateUserPoints(taskDoer, taskPoints);
+						
+								UserPoints.resetPoints(userPointID.toString(), weeklyPoints, currUpdate, function(err, user){
 								if(err) throw err;
-							});*/
+							});
 						}
 						
 

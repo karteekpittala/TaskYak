@@ -31,12 +31,12 @@ UserPointsSchema.statics.createUserPoints = function(groupName, user, done){
 
 
 
-UserPointsSchema.statics.resetPoints = function(_id, points){
+UserPointsSchema.statics.resetPoints = function(_id, points, currUpdate){
 	var UserPoints = this;
 	console.log("Welcome " + _id);
 	
 	var id = mongoose.Types.ObjectId(_id);
-	
+
 	console.log(id);
 	
 	UserPoints.update(
@@ -44,7 +44,8 @@ UserPointsSchema.statics.resetPoints = function(_id, points){
 		{
 			$set:
 			{
-				weeklyPoints : points
+				weeklyPoints : points,
+				lastUpdate : currUpdate
 			}
 		
 		}, function(err, user){
