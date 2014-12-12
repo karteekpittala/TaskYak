@@ -6,6 +6,8 @@ var Auth = require('./middlewares/authorization.js');
 var growl = require('growl');
 
 AUTO_INCREMENT = 0.2
+testDate = ""
+testFlag = false
 
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
@@ -154,6 +156,30 @@ module.exports = function(app, passport){
 		res.redirect("choosetask");	
 		
 	});
+	
+	
+	app.get('/testDate', function(req, res){
+		User.find({}, function (err, docs) {
+			res.render('testDate',{
+				users: docs
+			});
+
+		});	
+	});
+
+	/*Functionality to post the task added*/
+	app.post('/testDate', Auth.isAuthenticated, function(req, res) {
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		testDate = new Date(req.body.dueDate);
+		
+		if(testDate!=null){
+			testFlag = true;
+		}
+		
+		res.redirect("testDate");
+	});
+	
 
 	/*Functionality to post the changes to the tasks*/
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
@@ -337,7 +363,12 @@ module.exports = function(app, passport){
 	app.get('/overdue', Auth.isAuthenticated, function(req, res) {	
 		var user = req.user
 		var name = user.firstName+" "+user.lastName;
-		var d = new Date();
+		if(testFlag){
+			var d = new Date(testDate);
+		}
+		else {
+			var d = new Date();
+		}
 
 		Task.find({$and: [{$or:[ {'taskDoer': name}, {'taskCreator': name}]}, {'isComplete':false}, {'dueDate': {$lte: d}}]} ,function (err, docs) {
 			

@@ -32,11 +32,12 @@
                 <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills nav-stacked">
                   <li class="home active"> <a href="#" onclick="changeText('#','home');">Home</a> </li>
-                  <li class="newTask"> <a href="/addtask" onclick="changeText('/addtask','newTask');">Add Task</a> </li>
+                  <li id="new-Task" class="newTask"> <a href="/addtask" onclick="changeText('/addtask','newTask');">Add Task</a> </li>
                   <li class="taskList" id="tasklist"> <a href="/tasklist" onclick="changeText('/tasklist','taskList');">View Tasks</a> </li>    
                    <li class="chooseTask"><a href="/choosetask">Choose Task</a></li>    
                   <li class="listRoommates"><a href="/listroommates" onclick="changeText('/listroommates','listRoommates');">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails" onclick="changeText('/groupdetails', 'groupdetails');">My Groups</a></li>
+				  <li class="testDate"><a href="/testDate">Test Date</a></li>
                   <li> <a href='/logout'>Logout</a> </li>
                </ul>
              </div>
