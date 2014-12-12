@@ -69,7 +69,7 @@
                 <span class="sr-only"><%=userDataSet[i][2]%>% Complete (danger)</span>
               </div>
               <span class="progress-type"><%= userDataSet[i][0]%></span>
-              <span class="progress-completed"><%= userDataSet[i][1]%> Points</span>
+              <span class="progress-completed"><%= userDataSet[i][1].toFixed(2)%> Points</span>
             </div>  
           <%}%>
           <% if((i%5) == 1){%>
@@ -78,7 +78,7 @@
                 <span class="sr-only"><%=userDataSet[i][2]%>% Complete (danger)</span>
               </div>
               <span class="progress-type"><%= userDataSet[i][0]%></span>
-              <span class="progress-completed"><%= userDataSet[i][1]%> Points</span>
+              <span class="progress-completed"><%= userDataSet[i][1].toFixed(2)%> Points</span>
             </div>  
           <%}%>
           <% if((i%5) == 2){%>
@@ -87,7 +87,7 @@
                 <span class="sr-only"><%=userDataSet[i][2]%>% Complete (danger)</span>
               </div>
               <span class="progress-type"><%= userDataSet[i][0]%></span>
-              <span class="progress-completed"><%= userDataSet[i][1]%> Points</span>
+              <span class="progress-completed"><%= userDataSet[i][1].toFixed(2)%> Points</span>
             </div>  
           <%}%>
           <% if((i%5) == 3){%>
@@ -96,7 +96,7 @@
                 <span class="sr-only"><%=userDataSet[i][2]%>% Complete (danger)</span>
               </div>
               <span class="progress-type"><%= userDataSet[i][0]%></span>
-              <span class="progress-completed"><%= userDataSet[i][1]%> Points</span>
+              <span class="progress-completed"><%= userDataSet[i][1].toFixed(2)%> Points</span>
             </div>  
           <%}%>
           <% if((i%5) == 4){%>
@@ -105,13 +105,13 @@
                 <span class="sr-only"><%=userDataSet[i][2]%>% Complete (danger)</span>
               </div>
               <span class="progress-type"><%= userDataSet[i][0]%></span>
-              <span class="progress-completed"><%= userDataSet[i][1]%>Points</span>
+              <span class="progress-completed"><%= userDataSet[i][1].toFixed(2)%>Points</span>
             </div>  
           <%}%>
         <%}%>
         
-        <h4 class="display-points"><b>Each team member must finish minimum <%= avgPoints%> Points.         
-          <br> <% if(myPoints < avgPoints) { %> So, hurry up <%= user.firstName %>, you still have to finish <%= avgPoints - myPoints %> TaskYak Points.
+        <h4 class="display-points"><b>Each team member must finish minimum <%= avgPoints.toFixed(2)%> Points.         
+          <br> <% if(myPoints < avgPoints) { %> So, hurry up <%= user.firstName %>, you still have to finish <%= (avgPoints - myPoints).toFixed(2) %> TaskYak Points.
            <% } else { %> So <%= user.firstName %>, you are all set. Let others finish their part. <% } %>
          </h4>
          <% } else { %>
