@@ -141,6 +141,7 @@
 			     	 <a href="#">
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority.toFixed(2) %></p>
+				         <p>Group: <%=tasks[i].groupName %></p>
 				     
 				         <p> <% var date =  new Date(tasks[i].dueDate) %>
 				        	<%= date.toDateString() %></p>
