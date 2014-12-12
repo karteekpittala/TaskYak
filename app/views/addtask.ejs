@@ -202,8 +202,15 @@
       }
 
       $(function () {
-        $(".date").datepicker();
+        
+        $('.date').datepicker({
+            startDate: '0d'
+        });
+        $('.date').on('changeDate', function(ev){
+                    $(this).datepicker('hide');
+                });
       });
+            
 
       $(document).ready(function() {
         $("button[name='add']").click(function () {
