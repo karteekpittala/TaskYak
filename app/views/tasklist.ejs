@@ -157,6 +157,9 @@
 	      						  <span class="onoffswitch-switch"></span>
 	   						 	</label>
 				        	</div>
+				        	<%var thisDay = new Date(); if (tasks[i].isComplete == false && thisDay>tasks[i].dueDate)  { %>
+				        	<button type="button" class="btn btn-danger"> OVERDUE </button>	
+				        	<% } %>
 							<div class="form-group">
 					        	<input type="hidden" name="primary_<%=l%>" id="primary primary_<%=l%>" value=<%= tasks[i]._id %> >
 					        </div>

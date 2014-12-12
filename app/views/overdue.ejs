@@ -141,20 +141,22 @@
 		      	if (tasks[i].taskName.length != 0 && tasks[i].taskDoer!= null) { %>
 		      		 <% l = l+1 %>
 			   		 <li id = "stickytask">
-			     	 <a href="#">
+			     	 <a href="/incomplete">
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority.toFixed(2) %></p>
 				         <p> <%= tasks[i].taskDoer %></p>
 				         <p> <% var date =  new Date(tasks[i].dueDate) %>
 				        	<%= date.toDateString() %></p>
+
 				        	<div class="form-group onoffswitch">
 				        	<input type="checkbox" name="isComplete_<%=l%>" id="isComplete_<%=l%>" <% if (tasks[i].isComplete == true) { %> checked <% } %> class="onoffswitch-checkbox">
 				        		<label class="onoffswitch-label" for="isComplete_<%=l%>">
 	       						  <span class="onoffswitch-inner"></span>
 	      						  <span class="onoffswitch-switch"></span>
 	   						 </label>
+
 				        	</div>
-						
+						<button type="button" class="btn btn-danger"> OVERDUE </button>	
 			        </a>
 			      </li>
 		    <% } } } %>

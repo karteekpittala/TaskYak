@@ -56,7 +56,7 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 
 /*
 //Testcase for user story "Add Task"
-casper.test.begin('TaskYak Add Task', 3, function suite(test) {
+casper.test.begin('TaskYak Add Task', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
 		casper.waitForSelector("form[action='/login']", function() {
@@ -86,7 +86,7 @@ casper.test.begin('TaskYak Add Task', 3, function suite(test) {
 
 
 //Test case for User-Story "Incomplete tasks "
-casper.test.begin('TaskYak Incomplete Task List', 4, function suite(test) {
+casper.test.begin('TaskYak Incomplete Task List', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
         
@@ -111,7 +111,7 @@ casper.test.begin('TaskYak Incomplete Task List', 4, function suite(test) {
 });
 
 //Test case for user story "List of all Tasks"
-casper.test.begin('TaskYak Task List', 5, function suite(test) {
+casper.test.begin('TaskYak Task List', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
         
@@ -134,7 +134,7 @@ casper.test.begin('TaskYak Task List', 5, function suite(test) {
 });
 
 //Test case for user story "User points and minimum user points"
-casper.test.begin('TaskYak user points', 6, function suite(test) {
+casper.test.begin('TaskYak user points', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
         
@@ -160,7 +160,7 @@ casper.test.begin('TaskYak user points', 6, function suite(test) {
 
 //Test case for user story "Mark a task as Complete"
 
-casper.test.begin('TaskYak mark a task as Complete', 7, function suite(test) {
+casper.test.begin('TaskYak mark a task as Complete', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
         
@@ -185,7 +185,7 @@ casper.test.begin('TaskYak mark a task as Complete', 7, function suite(test) {
 });
 
 //Test case for user story "recurring tasks" 
-casper.test.begin('TaskYak recurring tasks', 8, function suite(test) {
+casper.test.begin('TaskYak recurring tasks', 1, function suite(test) {
     casper.start("http://localhost:3000/login", function() {
         
         
@@ -209,7 +209,7 @@ casper.test.begin('TaskYak recurring tasks', 8, function suite(test) {
 });
 
 
-casper.test.begin('TaskYak Login', 2, function suite(test) {
+casper.test.begin('TaskYak Login', 1, function suite(test) {
     casper.start("http://localhost:3000/profile", function() {
         
         test.assertExists('form[action="/login"]', "Redirected to the login page");
