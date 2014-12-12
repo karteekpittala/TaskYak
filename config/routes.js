@@ -296,17 +296,21 @@ module.exports = function(app, passport){
 		}
 	}
 
-	function updateWeeklyPoints(doer, points, currUpdate)
+	function updateWeeklyPoints(id, points, currUpdate)
 	{
-		console.log(doer);
+		console.log(id);
 
-		for(var i = 0; i < doer.length; i++){	
-			UserPoints.update({user: doer[i]}, {$set: {weeklyPoints: points, lastUpdate: currUpdate}}, function(err, updated) {
+		var ObjectID = require('mongodb').ObjectID;
+		var mongoose = require('mongoose');
+		var curr = mongoose.Types.ObjectId(id);
+
+		//for(var i = 0; i < doer.length; i++){	
+			UserPoints.update({_id: curr}, {$set: {weeklyPoints: points, lastUpdate: currUpdate}}, function(err, updated) {
 					if( err || !updated ) console.log("User not updated");
 					else console.log("User updated");
 			});
 			
-		}
+		
 	}
 
 
@@ -596,7 +600,7 @@ module.exports = function(app, passport){
 							console.log("points " + weeklyPoints);
 							console.log("date" + currUpdate);
 							//todo: update these values for current userPoints id in the database
-							 updateWeeklyPoints(user, weeklyPoints, currUpdate);
+						//	 updateWeeklyPoints(user, weeklyPoints, currUpdate);
 					
 							/*	UserPoints.resetPoints(userPointID, weeklyPoints, function(err, user){
 								//updateUserPoints(taskDoer, taskPoints);
