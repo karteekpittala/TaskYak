@@ -340,9 +340,8 @@ module.exports = function(app, passport){
 
 	/*Code perfomring the update the operation*/
 	function updateUserPoints(doer, taskPoints){
-
 		for(var i = 0; i < doer.length; i++){	
-			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints}}, function(err, updated) {
+			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints, weeklyPoints: -taskPoints}}, function(err, updated) {
 					if( err || !updated ) console.log("User not updated");
 					else console.log("User updated");
 			});
@@ -350,6 +349,22 @@ module.exports = function(app, passport){
 		}
 	}
 
+	function updateWeeklyPoints(id, points, currUpdate)
+	{
+		console.log(id);
+
+		var ObjectID = require('mongodb').ObjectID;
+		var mongoose = require('mongoose');
+		var curr = mongoose.Types.ObjectId(id);
+
+		//for(var i = 0; i < doer.length; i++){	
+			UserPoints.update({_id: curr}, {$set: {weeklyPoints: points, lastUpdate: currUpdate}}, function(err, updated) {
+					if( err || !updated ) console.log("User not updated");
+					else console.log("User updated");
+			});
+			
+		
+	}
 
 
  	/* GET Task list page. */
@@ -489,7 +504,6 @@ module.exports = function(app, passport){
 		});	
 
 		}			
-   	
  
    			res.redirect("/tasklist");
 	});
@@ -552,6 +566,7 @@ module.exports = function(app, passport){
 			failureFlash: true,
 			successFlash: "Welcome"
 		})
+		//console.log(Date);
 	);
 
 	app.get("/signup", function (req, res) {
@@ -593,6 +608,7 @@ module.exports = function(app, passport){
 	    res.redirect('/');
 	  });
 
+
 	app.get("/profile", Auth.isAuthenticated , function(req, res){ 
 		/*Group.find()*/
 		var user = req.user;
@@ -604,11 +620,27 @@ module.exports = function(app, passport){
 			console.log("GroupName: "+group.groupName);
 			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
 				//console.log("userpoints docs: "+userpointsDocs);
+                var curr_date =new Date();
+                var n = curr_date.getDay();
+                var start = new Date();
+
+                console.log("Today is " + n);
+     			if(n>0)
+     				start = curr_date.addDays(-n+1);
+     			var end = start.addDays(6);
+     			var dateRange = (start.getMonth() + 1) + '/' + start.getDate() + '/' +  start.getFullYear() + " to " + (end.getMonth() + 1) + '/' + end.getDate() + '/' +  end.getFullYear();
+     			//console.log(dateRange);
+
+        	//console.log(dateRange); 
 				var totalPoints = 0;
 				var avgPoints = 0;
 				var userDataSet = [];
 				var userData = [];
 				var myPoints = 0;
+			//	var weeklyPoints = 0;
+				var test = 0;
+				var today = new Date();
+				//var lastDate = new Date("12/01/2014");
 				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
 					totalPoints = totalPoints + userpointsDocs[i].points;
@@ -617,15 +649,45 @@ module.exports = function(app, passport){
 				for(var j=0; j< userpointsDocs.length; j++)
 				{
 					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
+					console.log(userpointsDocs[j].lastUpdate);
 					percentScore = parseInt(percentScore, 10);
 					if(name == userpointsDocs[j].user)
+					{
 						myPoints = userpointsDocs[j].points;
+						myWeekPoints = userpointsDocs[j].weeklyPoints;
+						myInitialPoints = userpointsDocs[j].initialPoints;
+						var lastDate = userpointsDocs[j].lastUpdate;
+						var userPointID = userpointsDocs[j]._id;
+						//console.log(userpointsDocs[j].test);
+						var diffDays = Math.abs(today.getDate() - lastDate.getDate());
+						//var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+						//console.log("difference" + diffDays);
+						var weeksElapsed = Math.floor(diffDays / 7);
+						var weeklyPoints = 0;
+						var currUpdate;
+						//console.log(weeksElapsed);
+						if(weeksElapsed > 0)
+						{
+							weeklyPoints = (25 * weeksElapsed) + myWeekPoints;
+							currUpdate = lastDate.addDays(weeksElapsed * 7);
+							//console.log("points " + weeklyPoints);
+							//console.log("date" + currUpdate);
+						
+								UserPoints.resetPoints(userPointID.toString(), weeklyPoints, currUpdate, function(err, user){
+								   if(err) throw err;
+							});
+						}
+						else
+							weeklyPoints = myWeekPoints;
+						
+
+					}
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				//console.log(myPoints);
+				//console.log(" My points " + myWeekPoints);
 			
-				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints});
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: weeklyPoints, myInitialPoints: myInitialPoints, dateRange: dateRange});
 			
 			});
 		}
@@ -640,6 +702,13 @@ module.exports = function(app, passport){
 		req.logout();
 		res.redirect('/login');
 	});
+
+	Date.prototype.addDays = function(days)
+	{
+    	var dat = new Date(this.valueOf());
+    	dat.setDate(dat.getDate() + days);
+	    return dat;
+	}
 }
 
 
