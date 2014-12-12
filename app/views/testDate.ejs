@@ -71,11 +71,15 @@
             <div class="form-group">
              <h4>Due Date</h4>
                 <div class="input-group date">
-                  <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" name="dueDate"/>
+                  <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" onclick="disabledate()" name="dueDate"/>
+				  
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                   </span>
+				  
                 </div>
+				<br>
+				  <input id="resetflag" type="radio" name="reset" value="reset" onclick="disableSelect()">Reset back to current date
             </div>            
               <button id="btnsubmit" type="submit" class="btn btn-warning btn-default"> Submit </button>  
             </div>
@@ -87,6 +91,14 @@
       
     <script type="text/javascript">
       
+	    function disabledate(){
+			document.getElementById("resetflag").disabled=true;
+	   }
+	  
+	  function disableSelect(){
+        document.getElementById("dueDate").disabled = true;
+      } 
+	  
       $(function () {
         $(".date").datepicker();
       });

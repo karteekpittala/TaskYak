@@ -187,6 +187,10 @@ module.exports = function(app, passport){
 			testFlag = true;
 		}
 		
+		else if(req.body.resetflag.checked){
+			testFlag = false;
+		}
+		
 		res.redirect("testDate");
 	});
 	
@@ -211,6 +215,9 @@ module.exports = function(app, passport){
    			
 			res.redirect("tasklist");
 		}
+		
+		
+		
 	});
 
 	function recurTask(taskId, dec){
