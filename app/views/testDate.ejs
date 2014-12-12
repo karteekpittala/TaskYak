@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <title> TaskYak </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+     <link rel="stylesheet" href="http://bsdp-assets.blackcherry.us/1.3.0/datepicker.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrapValidator.min.css"/>
+    <style type="text/css">
+        select.frecuency {
+            border: none;
+            font-style: italic;
+            background-color: transparent;
+            cursor: pointer;
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            -webkit-transition: -webkit-transform .35s ease-in;
+            transition: -webkit-transform .35s ease-in;
+            border-bottom: none;
+        }
+        select.frecuency:focus {
+            outline: none;
+            border-bottom: 5px solid #39b3d7;
+            -webkit-transform: translateY(-5px);
+            transform: translateY(-5px);
+            -webkit-transition: -webkit-transform .35s ease-in;
+            transition: -webkit-transform .35s ease-in;
+        }
+      </style>
+      
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://bsdp-assets.blackcherry.us/1.3.0/bootstrap-datepicker.min.js"></script>
+      <script src="/js/bootstrapValidator.min.js"/></script>
+      <script src="/js/formValidator.js"/></script>
+      <script src="/js/spinner.js"/></script>
+      
+      
+ </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="jumbotron text-center">
+          <h1><span class="fa fa-lock"></span>TaskYak</h1>
+        </div>
+      </header>
+      
+
+      <nav class="navbar col-md-3" role="navigation" style="border-right:1px solid #ddd;padding: 0; background:#FFFFFF;">
+              <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                <ul class="nav nav-pills nav-stacked">
+                  <li class="home"> <a href="/profile">Home</a> </li>
+                  <li class="newTask"> <a href="addtask">Add Task</a> </li>
+                  <li class="taskList"> <a href="/tasklist">View Tasks</a> </li>   
+                   <li class="chooseTask"><a href="/choosetask">Choose Task</a></li>     
+                  <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
+                  <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
+				  <li class="testDate active"> <a href="#">Test Date</a> </li>
+                  <li> <a href='/logout'>Logout</a> </li>
+               </ul>
+             </div>
+           </div>
+     </nav>
+ 
+        <div class="col-sm-6 col-sm-offset-1 content">
+          <h2> Set System Date </h2>
+        
+         <form id="testDate" name="testDate" action="/testDate" method="post" >
+            
+            <div class="form-group">
+             <h4>Due Date</h4>
+                <div class="input-group date">
+                  <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" onclick="disabledate()" name="dueDate"/>
+				  
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+				  
+                </div>
+				<br>
+				  <input id="resetflag" type="radio" name="reset" value="reset" onclick="disableSelect()">Reset back to current date
+            </div>            
+              <button id="btnsubmit" type="submit" class="btn btn-warning btn-default"> Submit </button>  
+            </div>
+            </div>
+        </div>
+          </form>
+          
+        
+      
+    <script type="text/javascript">
+      
+	    function disabledate(){
+			document.getElementById("resetflag").disabled=true;
+	   }
+	  
+	  function disableSelect(){
+        document.getElementById("dueDate").disabled = true;
+      } 
+	  
+      $(function () {
+        $(".date").datepicker();
+      });
+   
+  </script>
+  
+  </body>
+</html>

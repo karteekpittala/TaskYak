@@ -3,15 +3,15 @@
 
 
 //Testcase for user story "Login"
-casper.test.begin('TaskYak Login', 1, function suite(test) {
+casper.test.begin('TaskYak_create_group', 1, function suite(test) {
     casper.start("http://localhost:3000", function() {
         
         test.assertExists('form[action="/login"]', "Login form is found");
 		
 		casper.waitForSelector("form[action='/login']", function() {
 		this.fillSelectors('form#login-form', {
-        'input[name = email ]' : 'sudhakar553@gmail.com',
-        'input[name = password ]' : 'sudhakar',
+        'input[name = email ]' : 'karteekp1989@gmail.com',
+        'input[name = password ]' : 'karteek',
     });
 }, true);
 		
@@ -24,31 +24,33 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 		});
     });
 	
-	casper.then(function(){
-		
-		test.assertTitle("TaskYak", "Profile page found");    
-	});
-	
-	casper.then(function(){
-		console.log(this.getCurrentUrl());
-	});
-	
-	casper.thenOpen('http://localhost:3000/addtask');
-	
-	
-	/*casper.waitForSelector('nav li#newTask', function() {
-		
+	   casper.then(function(){
+        test.assertTextExists('Hi','Login successful');
+    });
+    
+    casper.then(function(){
+        console.log(this.getCurrentUrl());
+    });
+    
+    casper.thenOpen('http://localhost:3000/incomplete');
+    
+    
+    /*casper.waitForSelector('nav li#newTask', function() {
+        
         this.click('#new-Task');
     });*/
-	
-	casper.then(function(){
-		console.log(this.getCurrentUrl());
-	});
-	
-	casper.then(function(){
-		test.assertExists('#subtitle','Addtask page loaded properly');
-	});
+    
+    casper.then(function(){
+        console.log(this.getCurrentUrl());
+    });
+    
+    casper.then(function(){
+        test.assertTextExists('Incomplete Tasks','Incomplete Tasks are displayed');
+    });
 
+    casper.then(function(){
+        this.capture('incomplete-tasks.png');
+    }); 
     casper.run(function() {
         test.done();
     });

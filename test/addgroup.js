@@ -3,15 +3,15 @@
 
 
 //Testcase for user story "Login"
-casper.test.begin('TaskYak Login', 1, function suite(test) {
+casper.test.begin('TaskYak_create_group', 1, function suite(test) {
     casper.start("http://localhost:3000", function() {
         
         test.assertExists('form[action="/login"]', "Login form is found");
 		
 		casper.waitForSelector("form[action='/login']", function() {
 		this.fillSelectors('form#login-form', {
-        'input[name = email ]' : 'sudhakar553@gmail.com',
-        'input[name = password ]' : 'sudhakar',
+        'input[name = email ]' : 'karteekp1989@gmail.com',
+        'input[name = password ]' : 'karteek',
     });
 }, true);
 		
@@ -24,30 +24,84 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 		});
     });
 	
-	casper.then(function(){
-		
-		test.assertTitle("TaskYak", "Profile page found");    
-	});
-	
-	casper.then(function(){
-		console.log(this.getCurrentUrl());
-	});
-	
-	casper.thenOpen('http://localhost:3000/addtask');
-	
-	
-	/*casper.waitForSelector('nav li#newTask', function() {
-		
+	   casper.then(function(){
+        test.assertTextExists('Hi','Login successful');
+    });
+    
+    casper.then(function(){
+        console.log(this.getCurrentUrl());
+    });
+    
+    casper.thenOpen('http://localhost:3000/listroommates');
+    
+    
+    /*casper.waitForSelector('nav li#newTask', function() {
+        
         this.click('#new-Task');
     });*/
-	
-	casper.then(function(){
-		console.log(this.getCurrentUrl());
-	});
-	
-	casper.then(function(){
-		test.assertExists('#subtitle','Addtask page loaded properly');
-	});
+    
+    casper.then(function(){
+        console.log(this.getCurrentUrl());
+    });
+    
+    casper.then(function(){
+        test.assertTextExists('List your Roommates','Add groups page loaded properly');
+    });
+
+    casper.then(function(){
+        this.fillSelectors('form#listroommates', {
+        'input[name = groupName ]' : 'Test Group',
+        'input[name = listRoomMates1 ]' : 'Maulik Kothari',
+        });
+    });
+
+    casper.then(function(){
+        this.evaluate(function() {
+            document.getElementById("add").click();
+        });
+    });
+
+    casper.then(function(){
+        this.fillSelectors('form#listroommates', {
+        'input[name = listRoomMates1 ]' : 'sudhakar gollapini',
+        });
+    
+    });
+    
+    casper.then(function(){
+        this.evaluate(function() {
+            document.getElementById("add").click();
+        });
+    });
+
+    casper.then(function(){
+        this.fillSelectors('form#listroommates', {
+        'input[name = listRoomMates1 ]' : 'Divya Lalwani',
+        });
+    
+    });
+    
+    casper.then(function(){
+        this.evaluate(function() {
+            document.getElementById("add").click();
+        });
+    });
+
+    casper.then(function(){
+        this.capture('creategroup.png');
+    });
+
+    casper.then(function(){
+        this.evaluate(function() {
+            document.getElementById("btnsubmit").click();
+        });
+    });
+
+    casper.then(function(){
+        test.assertTextExists('Hi','Login successful');
+    });
+
+
 
     casper.run(function() {
         test.done();

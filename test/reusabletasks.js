@@ -10,8 +10,8 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 		
 		casper.waitForSelector("form[action='/login']", function() {
 		this.fillSelectors('form#login-form', {
-        'input[name = email ]' : 'sudhakar553@gmail.com',
-        'input[name = password ]' : 'sudhakar',
+        'input[name = email ]' : 'karteekp1989@gmail.com',
+        'input[name = password ]' : 'karteek',
     });
 }, true);
 		
@@ -25,8 +25,7 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
     });
 	
 	casper.then(function(){
-		
-		test.assertTitle("TaskYak", "Profile page found");    
+		test.assertTextExists('Hi','Login successful');
 	});
 	
 	casper.then(function(){
@@ -48,6 +47,30 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 	casper.then(function(){
 		test.assertExists('#subtitle','Addtask page loaded properly');
 	});
+
+    casper.then(function(){
+    this.evaluate(function() {
+    //      document.querySelector('select.selecttaskName').selectedIndex = 2; //it is obvious
+        //return true;
+        this.fillSelectors('form#asstask', {
+        'select[name="selecttaskName"]': 1
+        ```         this.capture('result.png');
+    });
+    
+});
+
+    
+
+
+
+
+    
+    
+    casper.then(function(){
+        console.log("selected index"+document.getElementById('selecttaskName').selectedIndex());
+        this.capture('screenshotkp.png');
+    });
+
 
     casper.run(function() {
         test.done();

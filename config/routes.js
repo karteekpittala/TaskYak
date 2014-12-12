@@ -6,6 +6,8 @@ var Auth = require('./middlewares/authorization.js');
 var growl = require('growl');
 
 AUTO_INCREMENT = 0.2
+testDate = ""
+testFlag = false
 
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
@@ -137,6 +139,16 @@ module.exports = function(app, passport){
 		console.log(typeof(selectedTask))
 		var numMonth = 1;
 		var numDate = 7;
+
+		var dueDays = parseInt(req.body.dueDays);
+		var today = new Date();
+
+
+		if(typeof req.body.dueDate == "undefined"){
+		dueDate = today
+		dueDate.setDate(today.getDate()+dueDays);
+		}
+
 		if(req.body.taskName){
 		
 		Task.addtask(req.body.taskName,req.body.groupName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
@@ -145,7 +157,7 @@ module.exports = function(app, passport){
 		}
 		else if(req.body.selecttaskName){
 			
-			Task.update({ taskName: thisTask.taskName },{$set:{recurScore: recurScore, dueDate: req.body.dueDate, isComplete: false, taskDoer: null, frequency:frequency}}, function(err, updated) {
+			Task.update({ taskName: thisTask.taskName },{$set:{recurScore: recurScore, dueDate:dueDate, isComplete: false, taskDoer: null, frequency:frequency}}, function(err, updated) {
 					if( err || !updated ) console.log("Task updated");
 					else console.log("Task updated");
 			});
@@ -154,6 +166,34 @@ module.exports = function(app, passport){
 		res.redirect("choosetask");	
 		
 	});
+	
+	
+	app.get('/testDate', function(req, res){
+		User.find({}, function (err, docs) {
+			res.render('testDate',{
+				users: docs
+			});
+
+		});	
+	});
+
+	/*Functionality to post the task added*/
+	app.post('/testDate', Auth.isAuthenticated, function(req, res) {
+		var user = req.user;
+		var name = user.firstName+" "+user.lastName;
+		testDate = new Date(req.body.dueDate);
+		
+		if(testDate!=null){
+			testFlag = true;
+		}
+		
+		else if(req.body.resetflag.checked){
+			testFlag = false;
+		}
+		
+		res.redirect("testDate");
+	});
+	
 
 	/*Functionality to post the changes to the tasks*/
 	app.post('/tasklist', Auth.isAuthenticated, function(req, res) {
@@ -175,9 +215,12 @@ module.exports = function(app, passport){
    			
 			res.redirect("tasklist");
 		}
+		
+		
+		
 	});
 
-	function recurTask(taskId){
+	function recurTask(taskId, dec){
 		console.log("Inside recurTask")
 		console.log("Argument is"+taskId);
 		var ObjectID = require('mongodb').ObjectID;
@@ -197,7 +240,12 @@ module.exports = function(app, passport){
 			taskName = docs[0].taskName;
 			groupName = docs[0].groupName;
 			taskCreator = docs[0].taskCreator;
+			if(dec){
 			taskPriority = (1-AUTO_INCREMENT)*docs[0].taskPriority;
+			}
+			else{
+				taskPriority = docs[0].taskPriority;
+			}
 			frequency = docs[0].frequency;
 
 
@@ -206,7 +254,7 @@ module.exports = function(app, passport){
 				{
 					if (recurScore>1)
 					{		
-						nextDate.getYear(dueDate.getYear());
+						nextDate.setYear(dueDate.getYear());
 						nextDate.setMonth(dueDate.getMonth()+numMonth);
 						recurScore -= 1;
 						update();
@@ -352,7 +400,12 @@ module.exports = function(app, passport){
 	app.get('/overdue', Auth.isAuthenticated, function(req, res) {	
 		var user = req.user
 		var name = user.firstName+" "+user.lastName;
-		var d = new Date();
+		if(testFlag){
+			var d = new Date(testDate);
+		}
+		else {
+			var d = new Date();
+		}
 
 		Task.find({$and: [{$or:[ {'taskDoer': name}, {'taskCreator': name}]}, {'isComplete':false}, {'dueDate': {$lte: d}}]} ,function (err, docs) {
 			
@@ -376,7 +429,7 @@ module.exports = function(app, passport){
     		var groupList = docs.map(function(doc) { return doc.groupName; });
 
 		Task.find({groupName:{$in: groupList}, taskDoer: null} ,function (err, documents) {
-			console.log("documents"+documents);
+			
 			res.render('choosetask',{
 				tasks: documents
 			});
@@ -423,8 +476,10 @@ module.exports = function(app, passport){
 		
 		function updatePoints()
 		{
+			var decrement = false
 		Task.find({'taskDoer': null}, function(err, docs) {
 						docs.forEach(function(elem, index, array) {
+							decrement = true
 							var increment = ((elem.taskPriority/sumPoints)*currentPoints)
 						    elem.taskPriority = elem.taskPriority+increment ;
 						    elem.save();
@@ -432,14 +487,14 @@ module.exports = function(app, passport){
 						if(err) throw err;
 						else console.log("Task points updated");
 				});
-				callRecur(); 
+				callRecur(decrement); 
 		}
 
-		function callRecur()
+		function callRecur(dec)
 		{
 
 		Task.find({_id : id}, function(err, docs){		
-			recurTask(docs[0]._id);
+			recurTask(docs[0]._id, dec);
 			if(err) throw err;	
 		});	
 

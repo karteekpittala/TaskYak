@@ -44,7 +44,7 @@
                               <%} %>
                             </h4>
                             <div class="panel-body">
-                                <form action="/login" method="post"  accept-charset="UTF-8" role="form" class="form-signin">
+                                <form id="login-form" action="/login" method="post"  accept-charset="UTF-8" role="form" class="form-signin">
                                     <fieldset>
                                         <label class="panel-login">
                                             <div class="login_result"></div>
@@ -59,7 +59,7 @@
                                         <a href="/auth/facebook" class="btn btn-primary btn-block"><span class="fa fa-facebook">  Log In With Facebook</span></a>
                                         </div>
                                     </fieldset>
-                                    <p>Need an account?  <a href="/signup" class="btn btn-lg btn-success btn-block">Signup</a></p>
+                                    <p>Need an account? <a href="/signup" id="signup" class="btn btn-lg btn-success btn-block">Signup</a></p>
                                 </form>
                             </div>
                         </div>

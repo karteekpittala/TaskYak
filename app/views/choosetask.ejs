@@ -113,6 +113,7 @@
                    <li class="chooseTask active"><a href="/choosetask">Choose Task</a></li>      
                   <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
+				  <li class="testDate"><a href="/testDate">Test Date</a></li>
                   <li> <a href='/logout'>Logout</a> </li>
                </ul>
              </div>
@@ -140,6 +141,7 @@
 			     	 <a href="#">
 				         <h4><%= tasks[i].taskName %></h4>
 				         <p>Points: <%=tasks[i].taskPriority.toFixed(2) %></p>
+				         <p>Group: <%=tasks[i].groupName %></p>
 				     
 				         <p> <% var date =  new Date(tasks[i].dueDate) %>
 				        	<%= date.toDateString() %></p>

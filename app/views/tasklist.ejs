@@ -115,6 +115,7 @@
                   <li class="chooseTask"><a href="/choosetask">Choose Task</a></li>   
                   <li class="listRoommates"> <a href="/listroommates">Add Group</a> </li>
                   <li class="groupDetails"><a href="/groupdetails">My Groups</a></li>
+				  <li class="testDate"><a href="/testDate">Test Date</a></li>
                   <li> <a href='/logout'>Logout</a> </li>
                </ul>
              </div>
@@ -156,6 +157,9 @@
 	      						  <span class="onoffswitch-switch"></span>
 	   						 	</label>
 				        	</div>
+				        	<%var thisDay = new Date(); if (tasks[i].isComplete == false && thisDay>tasks[i].dueDate)  { %>
+				        	<button type="button" class="btn btn-danger"> OVERDUE </button>	
+				        	<% } %>
 							<div class="form-group">
 					        	<input type="hidden" name="primary_<%=l%>" id="primary primary_<%=l%>" value=<%= tasks[i]._id %> >
 					        </div>
