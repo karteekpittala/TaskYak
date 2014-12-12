@@ -213,7 +213,7 @@ module.exports = function(app, passport){
 		}
 	});
 
-	function recurTask(taskId){
+	function recurTask(taskId, dec){
 		console.log("Inside recurTask")
 		console.log("Argument is"+taskId);
 		var ObjectID = require('mongodb').ObjectID;
@@ -233,7 +233,12 @@ module.exports = function(app, passport){
 			taskName = docs[0].taskName;
 			groupName = docs[0].groupName;
 			taskCreator = docs[0].taskCreator;
+			if(dec){
 			taskPriority = (1-AUTO_INCREMENT)*docs[0].taskPriority;
+			}
+			else{
+				taskPriority = docs[0].taskPriority;
+			}
 			frequency = docs[0].frequency;
 
 
@@ -449,8 +454,10 @@ module.exports = function(app, passport){
 		
 		function updatePoints()
 		{
+			var decrement = false
 		Task.find({'taskDoer': null}, function(err, docs) {
 						docs.forEach(function(elem, index, array) {
+							decrement = true
 							var increment = ((elem.taskPriority/sumPoints)*currentPoints)
 						    elem.taskPriority = elem.taskPriority+increment ;
 						    elem.save();
@@ -458,14 +465,14 @@ module.exports = function(app, passport){
 						if(err) throw err;
 						else console.log("Task points updated");
 				});
-				callRecur(); 
+				callRecur(decrement); 
 		}
 
-		function callRecur()
+		function callRecur(dec)
 		{
 
 		Task.find({_id : id}, function(err, docs){		
-			recurTask(docs[0]._id);
+			recurTask(docs[0]._id, dec);
 			if(err) throw err;	
 		});	
 
