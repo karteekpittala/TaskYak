@@ -603,6 +603,7 @@ module.exports = function(app, passport){
 	    res.redirect('/');
 	  });
 
+
 	app.get("/profile", Auth.isAuthenticated , function(req, res){ 
 		/*Group.find()*/
 		var user = req.user;
@@ -614,6 +615,18 @@ module.exports = function(app, passport){
 			console.log("GroupName: "+group.groupName);
 			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
 				//console.log("userpoints docs: "+userpointsDocs);
+                var curr_date =new Date();
+                var n = curr_date.getDay();
+                var start = new Date();
+
+                console.log("Today is " + n);
+     			if(n>0)
+     				start = curr_date.addDays(-n+1);
+     			var end = start.addDays(6);
+     			var dateRange = (start.getMonth() + 1) + '/' + start.getDate() + '/' +  start.getFullYear() + " to " + (end.getMonth() + 1) + '/' + end.getDate() + '/' +  end.getFullYear();
+     			//console.log(dateRange);
+
+        	//console.log(dateRange); 
 				var totalPoints = 0;
 				var avgPoints = 0;
 				var userDataSet = [];
@@ -669,7 +682,7 @@ module.exports = function(app, passport){
 				}
 				//console.log(" My points " + myWeekPoints);
 			
-				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: weeklyPoints, myInitialPoints: myInitialPoints});
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: weeklyPoints, myInitialPoints: myInitialPoints, dateRange: dateRange});
 			
 			});
 		}

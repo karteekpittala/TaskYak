@@ -48,6 +48,8 @@
           <!--h2>
             <span class="fa fa-sign-in"></span> Profile
           </h2-->
+          <!--get week range-->
+          
             <% if(user.firstName) { %>
               <h3 class="hi">Hi, <%= user.firstName %></h3>
                <% } else { %>
@@ -56,6 +58,22 @@
         </div>
     <div class="cols-m-6 col-sm-offset-0" >
       <div class="container" style="width: 650px;">
+
+         <div class="row">    
+        <h4 class="display-week-points">
+          <b>
+          Status for this week (<%= dateRange %>) :
+         <% if(myWeekPoints >= 0) { %>
+            Hurry Up, you still have to finish <b> <%= myWeekPoints.toFixed(2) %> </b> points.
+          <% } else { %>
+             Sit back and relax for the rest of the week. You are ahead by <b> <%= -myWeekPoints.toFixed(2) %> </b> 
+             points.
+             <% } %>
+           </b>
+        </h4>
+      </div>
+
+
         <% if(userDataSet != null) { %> <!-- We have group for this user -->
       <div class="row">                   
         <div class="progress-completed">
@@ -110,17 +128,13 @@
           <%}%>
         <%}%>
         
-        
+
         <h4 class="display-points"><b>Each team member must finish minimum <%= avgPoints.toFixed(2)%> Points.         
           <br> <% if(myPoints < avgPoints) { %> So, hurry up <%= user.firstName %>, you still have to finish <%= (avgPoints - myPoints).toFixed(2) %> TaskYak Points.
            <% } else { %> So <%= user.firstName %>, you are all set. Let others finish their part. <% } %>
          </h4>
           <!--  For this week, your initial points are <%= myInitialPoints %>. -->
-           <% if(myWeekPoints >= 0) { %>
-            You still have to finish <%= myWeekPoints.toFixed(2) %> points for this week.
-          <% } else { %>
-             Sit back and relax for this week. You are ahead by <%= -myWeekPoints.toFixed(2) %> points.
-             <% } %>
+          
          <% } else { %>
          You don't have any group assigned yet.
         <% } %>
