@@ -640,34 +640,36 @@ module.exports = function(app, passport){
 						myInitialPoints = userpointsDocs[j].initialPoints;
 						var lastDate = userpointsDocs[j].lastUpdate;
 						var userPointID = userpointsDocs[j]._id;
-						console.log(userpointsDocs[j].test);
+						//console.log(userpointsDocs[j].test);
 						var diffDays = Math.abs(today.getDate() - lastDate.getDate());
 						//var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-						console.log("difference" + diffDays);
+						//console.log("difference" + diffDays);
 						var weeksElapsed = Math.floor(diffDays / 7);
 						var weeklyPoints = 0;
 						var currUpdate;
-						console.log(weeksElapsed);
+						//console.log(weeksElapsed);
 						if(weeksElapsed > 0)
 						{
 							weeklyPoints = (25 * weeksElapsed) + myWeekPoints;
 							currUpdate = lastDate.addDays(weeksElapsed * 7);
-							console.log("points " + weeklyPoints);
-							console.log("date" + currUpdate);
+							//console.log("points " + weeklyPoints);
+							//console.log("date" + currUpdate);
 						
 								UserPoints.resetPoints(userPointID.toString(), weeklyPoints, currUpdate, function(err, user){
-								if(err) throw err;
+								   if(err) throw err;
 							});
 						}
+						else
+							weeklyPoints = myWeekPoints;
 						
 
 					}
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				console.log(" My points " + myWeekPoints);
+				//console.log(" My points " + myWeekPoints);
 			
-				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: myWeekPoints, myInitialPoints: myInitialPoints});
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: weeklyPoints, myInitialPoints: myInitialPoints});
 			
 			});
 		}
