@@ -287,7 +287,6 @@ module.exports = function(app, passport){
 
 	/*Code perfomring the update the operation*/
 	function updateUserPoints(doer, taskPoints){
-
 		for(var i = 0; i < doer.length; i++){	
 			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints, weeklyPoints: -taskPoints}}, function(err, updated) {
 					if( err || !updated ) console.log("User not updated");
@@ -297,6 +296,18 @@ module.exports = function(app, passport){
 		}
 	}
 
+	function updateWeeklyPoints(doer, points, currUpdate)
+	{
+		console.log(doer);
+
+		for(var i = 0; i < doer.length; i++){	
+			UserPoints.update({user: doer[i]}, {$set: {weeklyPoints: points, lastUpdate: currUpdate}}, function(err, updated) {
+					if( err || !updated ) console.log("User not updated");
+					else console.log("User updated");
+			});
+			
+		}
+	}
 
 
  	/* GET Task list page. */
@@ -429,7 +440,6 @@ module.exports = function(app, passport){
 		});	
 
 		}			
-   	
  
    			res.redirect("/tasklist");
 	});
@@ -492,6 +502,7 @@ module.exports = function(app, passport){
 			failureFlash: true,
 			successFlash: "Welcome"
 		})
+		//console.log(Date);
 	);
 
 	app.get("/signup", function (req, res) {
@@ -549,7 +560,10 @@ module.exports = function(app, passport){
 				var userDataSet = [];
 				var userData = [];
 				var myPoints = 0;
-				var weeklyPoints = 0;
+			//	var weeklyPoints = 0;
+				var test = 0;
+				var today = new Date();
+				//var lastDate = new Date("12/01/2014");
 				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
 					totalPoints = totalPoints + userpointsDocs[i].points;
@@ -558,12 +572,39 @@ module.exports = function(app, passport){
 				for(var j=0; j< userpointsDocs.length; j++)
 				{
 					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
+					console.log(userpointsDocs[j].lastUpdate);
 					percentScore = parseInt(percentScore, 10);
 					if(name == userpointsDocs[j].user)
 					{
 						myPoints = userpointsDocs[j].points;
 						myWeekPoints = userpointsDocs[j].weeklyPoints;
 						myInitialPoints = userpointsDocs[j].initialPoints;
+						var lastDate = userpointsDocs[j].lastUpdate;
+						var userPointID = userpointsDocs[j]._id;
+						console.log(userpointsDocs[j].test);
+						var diffDays = Math.abs(today.getDate() - lastDate.getDate());
+						//var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+						console.log("difference" + diffDays);
+						var weeksElapsed = Math.floor(diffDays / 7);
+						var weeklyPoints = 0;
+						var currUpdate;
+						console.log(weeksElapsed);
+						if(weeksElapsed > 0)
+						{
+							weeklyPoints = (25 * weeksElapsed) + myWeekPoints;
+							currUpdate = lastDate.addDays(weeksElapsed * 7);
+							console.log("points " + weeklyPoints);
+							console.log("date" + currUpdate);
+							//todo: update these values for current userPoints id in the database
+							 updateWeeklyPoints(user, weeklyPoints, currUpdate);
+					
+							/*	UserPoints.resetPoints(userPointID, weeklyPoints, function(err, user){
+								//updateUserPoints(taskDoer, taskPoints);
+								if(err) throw err;
+							});*/
+						}
+						
+
 					}
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
@@ -585,6 +626,13 @@ module.exports = function(app, passport){
 		req.logout();
 		res.redirect('/login');
 	});
+
+	Date.prototype.addDays = function(days)
+	{
+    	var dat = new Date(this.valueOf());
+    	dat.setDate(dat.getDate() + days);
+	    return dat;
+	}
 }
 
 
