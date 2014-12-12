@@ -45,10 +45,6 @@
      </nav>
      <div class="col-sm-6 col-sm-offset-1" id="content">
         <div>
-          <!--h2>
-            <span class="fa fa-sign-in"></span> Profile
-          </h2-->
-          <!--get week range-->
           
             <% if(user.firstName) { %>
               <h3 class="hi">Hi, <%= user.firstName %></h3>
@@ -62,9 +58,9 @@
          <div class="row">    
         <h4 class="display-week-points">
           <b>
-          Status for this week (<%= dateRange %>) :
+          Points Crunch for week from <%= dateRange %> <br>
          <% if(myWeekPoints >= 0) { %>
-            Hurry Up, you still have to finish <b> <%= myWeekPoints.toFixed(2) %> </b> points.
+            You have to finish <b> <%= myWeekPoints.toFixed(2) %> </b> points this week.
           <% } else { %>
              Sit back and relax for the rest of the week. You are ahead by <b> <%= -myWeekPoints.toFixed(2) %> </b> 
              points.

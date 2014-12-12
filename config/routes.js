@@ -87,7 +87,7 @@ module.exports = function(app, passport){
 			docs.forEach(function(task, count, array){
 					console.log("Array "+array.length);
 					console.log("Count "+count);
-					Task.find({groupName:task.groupName}, function (err, documents) {
+					Task.find({groupName:task.groupName, isComplete: true, recurScore:{$lte: 1}}, function (err, documents) {
 							
 							
 							console.log("Pushing..")	
@@ -606,6 +606,7 @@ module.exports = function(app, passport){
 
 	app.get("/profile", Auth.isAuthenticated , function(req, res){ 
 		/*Group.find()*/
+		console.log("============= TEST========"+testFlag);
 		var user = req.user;
 		var name = user.firstName+" "+user.lastName;
 		Group.findOne({groupMembers: name}, function (err, group) {	
@@ -615,9 +616,15 @@ module.exports = function(app, passport){
 			console.log("GroupName: "+group.groupName);
 			UserPoints.find({groupName: group.groupName}, function(err, userpointsDocs){
 				//console.log("userpoints docs: "+userpointsDocs);
-                var curr_date =new Date();
-                var n = curr_date.getDay();
                 var start = new Date();
+                var curr_date =new Date();
+
+                var n = curr_date.getDay();
+                
+                if(testFlag == true){
+				   var curr_date = testDate;
+				   var start = testDate;
+				}
 
                 console.log("Today is " + n);
      			if(n>0)
@@ -625,16 +632,19 @@ module.exports = function(app, passport){
      			var end = start.addDays(6);
      			var dateRange = (start.getMonth() + 1) + '/' + start.getDate() + '/' +  start.getFullYear() + " to " + (end.getMonth() + 1) + '/' + end.getDate() + '/' +  end.getFullYear();
      			//console.log(dateRange);
-
-        	//console.log(dateRange); 
 				var totalPoints = 0;
 				var avgPoints = 0;
 				var userDataSet = [];
 				var userData = [];
 				var myPoints = 0;
 			//	var weeklyPoints = 0;
-				var test = 0;
 				var today = new Date();
+				var test = 0;
+				// if(testFlag == true)
+				// {
+				// var today = testDate;
+				// }
+				console.log("Today"+today)
 				//var lastDate = new Date("12/01/2014");
 				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
