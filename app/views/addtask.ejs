@@ -51,6 +51,14 @@
 
       function disableInput(){
         document.getElementById("taskName").disabled = true;
+      }   
+
+      function disableDays(){
+        document.getElementById("dueDays").disabled = true;
+      }  
+
+      function disableDate(){
+        document.getElementById("dueDate").disabled = true;
       }     
          
 
@@ -106,14 +114,26 @@
                <h4>Points</h4>
               <input id="taskPriority" type="text" placeholder="Points on a scale of 1 to 100" name="taskPriority" class="form-control">
             </div>
+
             <div class="form-group">
              <h4>Due Date</h4>
-                <div class="input-group date">
-                  <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" name="dueDate"/>
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
+                  <div class="input-group date">
+                    <input id="dueDate" type="text" class="form-control" placeholder="Specify a deadline" name="dueDate" onclick="disableDays()" />
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                  <div align="center"><h4>or</h4></div>
+                  <h4>How many days from now?</h4> 
+                  <div class="input-group number-spinner">
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="dwn"><span class="glyphicon glyphicon-minus" onclick="disableDate()"></span></button>
+                </span>
+                <input id ="dueDays" name="dueDays" type="text" class="form-control text-center" value="1" onclick="disableDate()">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="up"><span class="glyphicon glyphicon-plus" onclick="disableDate()"></span></button>
+                </span>
+              </div>
             </div>
             
             <div class="form-group">
@@ -200,6 +220,22 @@
           taskDoerList.options[0] = new Option("None", "None");
         }
       }
+
+
+      function changer(selection)
+      {
+            var scam = $(selection).attr('id');
+            if (scam === 'date') {
+                $('.date').show();
+                $('.days').val("");
+                $('.days').hide(); 
+            }
+            else if (scam === 'day') {
+                $('.days').show();
+                $('.date').children(":first").val("");
+                $('.date').hide();
+            }
+        }
 
       $(function () {
         

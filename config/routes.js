@@ -137,6 +137,16 @@ module.exports = function(app, passport){
 		console.log(typeof(selectedTask))
 		var numMonth = 1;
 		var numDate = 7;
+
+		var dueDays = parseInt(req.body.dueDays);
+		var today = new Date();
+
+
+		if(typeof req.body.dueDate == "undefined"){
+		dueDate = today
+		dueDate.setDate(today.getDate()+dueDays);
+		}
+
 		if(req.body.taskName){
 		
 		Task.addtask(req.body.taskName,req.body.groupName, taskCreator, req.body.taskPriority, dueDate, isComplete, recurScore, frequency, function(err, user){
@@ -145,7 +155,7 @@ module.exports = function(app, passport){
 		}
 		else if(req.body.selecttaskName){
 			
-			Task.update({ taskName: thisTask.taskName },{$set:{recurScore: recurScore, dueDate: req.body.dueDate, isComplete: false, taskDoer: null, frequency:frequency}}, function(err, updated) {
+			Task.update({ taskName: thisTask.taskName },{$set:{recurScore: recurScore, dueDate:dueDate, isComplete: false, taskDoer: null, frequency:frequency}}, function(err, updated) {
 					if( err || !updated ) console.log("Task updated");
 					else console.log("Task updated");
 			});
@@ -206,7 +216,7 @@ module.exports = function(app, passport){
 				{
 					if (recurScore>1)
 					{		
-						nextDate.getYear(dueDate.getYear());
+						nextDate.setYear(dueDate.getYear());
 						nextDate.setMonth(dueDate.getMonth()+numMonth);
 						recurScore -= 1;
 						update();
@@ -361,7 +371,7 @@ module.exports = function(app, passport){
     		var groupList = docs.map(function(doc) { return doc.groupName; });
 
 		Task.find({groupName:{$in: groupList}, taskDoer: null} ,function (err, documents) {
-			console.log("documents"+documents);
+			
 			res.render('choosetask',{
 				tasks: documents
 			});
