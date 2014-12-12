@@ -1,6 +1,6 @@
 // googletesting.js
 
-
+var mouse = require("mouse").create(casper);
 
 //Testcase for user story "Login"
 casper.test.begin('TaskYak Login', 1, function suite(test) {
@@ -48,6 +48,46 @@ casper.test.begin('TaskYak Login', 1, function suite(test) {
 	casper.then(function(){
 		test.assertExists('#subtitle','Addtask page loaded properly');
 	});
+	
+	casper.waitForSelector("form[action='/addtask']", function() {
+		this.fillSelectors('form#addtask', {
+        'input[name = taskName ]' : 'fill addtask',
+        'input[name = taskPriority ]' : '75',
+		'input[name = dueDays ]' : 3,
+		'input[name = recurScore ]' : 3,
+    });
+}, true);
+
+	casper.then(function(){
+        this.evaluate(function() {
+			document.getElementById("btnsubmit").click();
+		});
+    });
+	
+	casper.then(function(){
+		test.assertExists('#subtitle','task submitted successfully and redirected to choose task');
+	});
+	
+	casper.waitForSelector("li[id='stickytask']", function() {
+		this.mouseEvent('mouseover','li');
+		this.click('button');
+    
+}, true);
+	
+	
+	
+	casper.then(function(){
+		test.assertExists('#stickytask', 'task chosen successfully and redirected to All Tasks page');
+	});
+	
+	
+	casper.thenOpen('http://localhost:3000/testDate');
+		
+	casper.then(function(){
+		test.assertTextExists('Due Date', 'Test date page loaded');
+	});
+	
+	
 
     casper.run(function() {
         test.done();

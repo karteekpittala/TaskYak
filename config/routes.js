@@ -8,6 +8,8 @@ var growl = require('growl');
 AUTO_INCREMENT = 0.2
 testDate = ""
 testFlag = false
+resetFlag = false
+
 
 module.exports = function(app, passport){
 	app.get("/", function(req, res){ 
@@ -169,7 +171,9 @@ module.exports = function(app, passport){
 	
 	
 	app.get('/testDate', function(req, res){
+			
 		User.find({}, function (err, docs) {
+			
 			res.render('testDate',{
 				users: docs
 			});
@@ -187,9 +191,10 @@ module.exports = function(app, passport){
 			testFlag = true;
 		}
 		
-		else if(req.body.resetflag.checked){
-			testFlag = false;
+		else if(req.body.resetflag.checked) {
+			testFlag = false;			
 		}
+		
 		
 		res.redirect("testDate");
 	});
