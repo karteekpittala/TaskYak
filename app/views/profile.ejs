@@ -111,8 +111,15 @@
         
         <h4 class="display-points"><b>Each team member must finish minimum <%= avgPoints%> Points.         
           <br> <% if(myPoints < avgPoints) { %> So, hurry up <%= user.firstName %>, you still have to finish <%= avgPoints - myPoints %> TaskYak Points.
-           <% } else { %> So <%= user.firstName %>, you are all set. Let others finish their part. <% } %>
+           <% } else { %> So <%= user.firstName %>, you are all set. Let others finish their part. 
+           <% } %>
          </h4>
+          <!--  For this week, your initial points are <%= myInitialPoints %>. -->
+           <% if(myWeekPoints >= 0) { %>
+            You still have to finish <%= myWeekPoints %>.
+          <% } else { %>
+             Sit back and relax for this week. You are ahead by <%= -myWeekPoints %>.
+             <% } %>
          <% } else { %>
          You don't have any group assigned yet.
         <% } %>

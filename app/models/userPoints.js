@@ -4,7 +4,9 @@ var start_score = 0;
 UserPointsSchema = mongoose.Schema({
 	groupName:  String,
 	user: String,
-	points: Number
+	points: Number,
+	initialPoints: Number,
+	weeklyPoints: Number,
 });
 
 
@@ -13,7 +15,9 @@ UserPointsSchema.statics.createUserPoints = function(groupName, user, done){
 	UserPoints.create({
 		groupName : groupName,
 		user : user,
-		points : start_score
+		points : start_score,
+		initialPoints : start_score,
+		weeklyPoints : start_score + 25,
 	}, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);

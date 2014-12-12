@@ -289,7 +289,7 @@ module.exports = function(app, passport){
 	function updateUserPoints(doer, taskPoints){
 
 		for(var i = 0; i < doer.length; i++){	
-			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints}}, function(err, updated) {
+			UserPoints.update({user: doer[i]}, {$inc: {points: taskPoints, weeklyPoints: -taskPoints}}, function(err, updated) {
 					if( err || !updated ) console.log("User not updated");
 					else console.log("User updated");
 			});
@@ -549,6 +549,7 @@ module.exports = function(app, passport){
 				var userDataSet = [];
 				var userData = [];
 				var myPoints = 0;
+				var weeklyPoints = 0;
 				//for computing scores
 				for(var i = 0; i < userpointsDocs.length; i++){
 					totalPoints = totalPoints + userpointsDocs[i].points;
@@ -559,13 +560,17 @@ module.exports = function(app, passport){
 					var percentScore = ((userpointsDocs[j].points/totalPoints)*100);
 					percentScore = parseInt(percentScore, 10);
 					if(name == userpointsDocs[j].user)
+					{
 						myPoints = userpointsDocs[j].points;
+						myWeekPoints = userpointsDocs[j].weeklyPoints;
+						myInitialPoints = userpointsDocs[j].initialPoints;
+					}
 					userData = [userpointsDocs[j].user, userpointsDocs[j].points, percentScore];
 					userDataSet.push(userData);
 				}
-				//console.log(myPoints);
+				console.log(" My points " + myWeekPoints);
 			
-				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints});
+				res.render("profile",{ user : req.user, userDataSet: userDataSet, groupName: group.groupName, avgPoints: avgPoints, myPoints: myPoints, myWeekPoints: myWeekPoints, myInitialPoints: myInitialPoints});
 			
 			});
 		}
